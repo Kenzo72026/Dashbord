@@ -32,7 +32,7 @@ La base `db.sqlite3` fournie contient déjà les données chargées le **18/11/2
 ```powershell
 python manage.py fetch_all            # POLA, CPPI, CNUCED, PortWatch, météo + recalcul des analyses
 python manage.py fetch_all --offline  # recharge seulement les CSV de data/processed (aucun réseau)
-python manage.py test tests           # 36 tests automatisés
+python manage.py test tests           # 37 tests automatisés
 python manage.py export_static        # instantané HTML autonome dans docs/export/ (ouvrir index.html, sans Python)
 ```
 
@@ -135,7 +135,7 @@ niveau d'automatisation, avec **maquette de l'écran**. La même fiche est dans 
 * **CNUCED, période** : escales et temps médian s'arrêtent en **2023** ; le temps médian est une médiane **par pays**, pas par port.
 * **Sources différentes, grandeurs différentes** : le CPPI est un **score** de temps au port (pas un volume), la CNUCED donne des chiffres **par pays**, PortWatch compte des **navires**. Les comparaisons se font en rang ou en indice (2019 = 100), jamais en valeur brute.
 * **CPPI** : les éditions 2023, 2020-2024 et 2025 n'ont pas exactement le même périmètre (405, 403 puis 400 ports ; Yangshan est regroupé avec Shanghai en 2025) et un rang bouge beaucoup d'une année à l'autre (Los Angeles : 359ᵉ en 2024, 88ᵉ en 2025 ; Djibouti : 364ᵉ puis 53ᵉ) : on lit la direction, pas l'écart au rang près.
-* **AIS** : la couverture gratuite d'aisstream.io (stations terrestres) est partielle : sur la zone de Los Angeles, le flux apporte quelques messages par seconde au mieux, et le **type d'un navire n'est connu qu'après réception de son message statique** (d'où un groupe « Inconnu » en début d'écoute). Le flux a été **testé en conditions réelles le 19/11/2026** : lien permanent ouvert, 15 messages et 29 navires en 35 secondes dans le navigateur. La clé est personnelle : le serveur seul la détient, le navigateur reçoit uniquement les positions. L'archive du TP est un extrait de 7 jours d'hiver : sa référence horaire est indicative.
+* **AIS** : la couverture gratuite d'aisstream.io (stations terrestres) est partielle : sur la zone de Los Angeles, le flux apporte quelques messages par seconde au mieux, et le **type d'un navire n'est connu qu'après réception de son message statique** (d'où un groupe « Inconnu » en début d'écoute). Le flux a été **testé en conditions réelles le 19/11/2026**, en local puis sur le site en ligne : lien permanent ouvert, une dizaine de messages en 20 secondes et plus de 80 navires suivis dans le navigateur. La clé est personnelle : le serveur seul la détient, le navigateur reçoit uniquement les positions. L'archive du TP est un extrait de 7 jours d'hiver : sa référence horaire est indicative.
 * **Météo** : modèles globaux (~11 km vent, ~5 km vagues), indicatifs, pas une mesure au quai ; vagues calculées au large de la jetée.
 * **Prévision** : ne voit pas les chocs (grève, tempête, tarifs). Fiabilité mesurée sur 24 dates passées ; la fourchette « ± MAE » contient la valeur réelle environ 6 fois sur 10 : lire l'ordre de grandeur, pas une garantie.
 * **Seuils météo** : pédagogiques, inspirés des avis du NWS ; une capitainerie applique ses propres limites.
@@ -157,13 +157,13 @@ dashboard/
   management/commands/   fetch_all, import_polb, collect_ais, fetch_weather, build_ais_archive
 data/raw, data/processed copies brutes et fichiers nettoyés
 docs/                    fiche de conception (PDF), captures
-tests/                   36 tests (pages avec base vide, prévision, anomalies, alertes, AIS, import Long Beach, BTS, estimation Long Beach, lecture Los Angeles, tonnes PortWatch, absence de clé)
+tests/                   37 tests (pages avec base vide, prévision, anomalies, alertes, AIS, import Long Beach, BTS, estimation Long Beach, lecture Los Angeles, tonnes PortWatch, absence de clé)
 ```
 
 ## 7. Code source et déploiement
 
 * **Code** : <https://github.com/Kenzo72026/Dashbord>
-* **Application en ligne** : hébergée sur Render (offre gratuite) ; l'adresse est donnée dans le dépôt GitHub une fois le service créé. Sur l'offre gratuite, le service **se met en veille après quelques minutes sans visite** : la première page peut mettre une cinquantaine de secondes à s'afficher.
+* **Application en ligne** : <https://san-pedro-bay-dashboard.onrender.com> (hébergée sur Render, offre gratuite, déploiement automatique à chaque envoi sur GitHub). Sur l'offre gratuite, le service **se met en veille après quelques minutes sans visite** : la première page peut mettre une cinquantaine de secondes à s'afficher.
 
 Le tableau de bord est une application Django classique. Les fichiers de déploiement sont dans le dépôt :
 
@@ -175,7 +175,7 @@ Le tableau de bord est une application Django classique. Les fichiers de déploi
 
 Commande de démarrage : `gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --threads 16 --timeout 120` (un seul processus : il porte le lien permanent avec le flux AIS ; chaque navigateur connecté au direct occupe un fil). Variables d'environnement : `DJANGO_DEBUG=0`,
 `DJANGO_SECRET_KEY` (générée), `RENDER_EXTERNAL_HOSTNAME` (fournie par Render : elle alimente `ALLOWED_HOSTS` et les origines CSRF) et, si l'on veut le flux AIS en direct,
-`AISSTREAM_API_KEY` (saisie dans le tableau de bord Render, jamais dans le code) : dès que la clé existe, le serveur ouvre un **lien permanent** avec le flux AIS dans un fil de fond (`dashboard/services/collectors/ais_stream.py`) et le diffuse aux navigateurs en continu (`/api/ais/stream/`, Server-Sent Events). `AIS_AUTOSTART=0` l'empêche.
+`AISSTREAM_API_KEY` (saisie dans le tableau de bord Render, jamais dans le code) : dès que la clé existe, le serveur ouvre à la première page un **lien permanent** avec le flux AIS, dans un fil de fond du processus qui répond (`dashboard/services/collectors/ais_stream.py`) et le diffuse aux navigateurs en continu (`/api/ais/stream/`, Server-Sent Events). `AIS_AUTOSTART=0` l'empêche.
 
 **Données en ligne** : la base `db.sqlite3` du dépôt contient les données du 18-19/11/2026. Le disque de l'offre gratuite est **éphémère** : une actualisation faite en ligne
 (météo) est perdue au prochain déploiement, et la commande `fetch_all` ne tourne pas sur cette offre. Le lien AIS se coupe quand le service est en veille et se rouvre au réveil. Pour une mise à jour régulière, il faut
