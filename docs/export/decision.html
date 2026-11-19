@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf" content="iUd2EiG11tqvaBsRmVH8HbDisPctqMHYpHjjyC5Hq6ApZavuPKAPMmcBE5Nqr9So">
+  <meta name="theme-color" content="#2b1b12">
+  <title>San Pedro Bay · Aide à la décision</title>
+  <meta name="description" content="Tableau de bord du complexe portuaire de San Pedro Bay (Los Angeles et Long Beach) : volumes, comparaison mondiale, direct AIS et météo, prévisions et recommandations.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d8571a'/%3E%3Cpath d='M16 6v15M10 12h12M7 19c1 5 5 8 9 8s8-3 9-8' fill='none' stroke='%231e120b' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="static/dashboard/css/dashboard.css">
+  
+</head>
+<body data-export="1">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="app">
+  <aside class="rail" aria-label="Navigation principale">
+    <a class="brand" href="index.html" aria-label="San Pedro Bay, retour à la vue d'ensemble">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div>
+      <div><b>San Pedro Bay</b><span>Los Angeles · Long Beach</span></div>
+    </a>
+    <nav class="nav">
+      
+      <a href="index.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>Vue d&#x27;ensemble</span></a>
+      
+      <a href="volumes.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg><span>Volumes LA · LB</span></a>
+      
+      <a href="monde.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Comparaison mondiale</span></a>
+      
+      <a href="direct.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg><span>En direct</span></a>
+      
+      <a href="decision.html" class="on" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span>Aide à la décision</span></a>
+      
+      <a href="sources.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Sources &amp; méthode</span></a>
+      
+      <a href="fiche.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg><span>Fiche de conception</span></a>
+      
+    </nav>
+    <div class="rail-foot">
+      <div class="compass-card" role="group" aria-label="Vent actuel">
+        <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring" cx="50" cy="50" r="44"/><circle class="ring" cx="50" cy="50" r="33" stroke-dasharray="2 5"/>
+          <path class="tick" d="M50 4v8M50 88v8M4 50h8M88 50h8"/>
+          <text class="lbl" x="50" y="22">N</text><text class="lbl" x="82" y="54">E</text><text class="lbl" x="50" y="86">S</text><text class="lbl" x="18" y="54">O</text>
+          <g class="needle" id="needle" data-deg="174,0"><polygon class="north" points="50,16 57,50 43,50"/><polygon class="south" points="50,84 57,50 43,50"/><circle cx="50" cy="50" r="4.2" fill="#2b1b12" stroke="#ebe0cd" stroke-width="1.6"/></g>
+        </svg>
+        <div><b>6 nœuds</b><span>Vent du S (174°)<br>rafales 6 nœuds</span></div>
+      </div>
+      <div class="src-card"><b>9 sources</b> suivies ·
+        <span class="bad">1 indisponible</span>
+        <br><a href="sources.html">voir le détail →</a></div>
+      <svg class="waves" viewBox="0 0 600 54" preserveAspectRatio="none" aria-hidden="true">
+        <g class="w1"><path d="M0 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H0z M600 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H600z" fill="rgba(216,87,26,.35)"/></g>
+        <g class="w2"><path d="M0 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H0z M600 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H600z" fill="rgba(235,224,205,.16)"/></g>
+      </svg>
+    </div>
+  </aside>
+
+  <main class="main" id="contenu" tabindex="-1">
+    <div class="toolbar">
+      <div class="crumbs"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg>San Pedro Bay <span aria-hidden="true">/</span>
+        <b>Aide à la décision</b></div>
+      <div class="topbar-m"><div class="brand-mark" style="background:linear-gradient(145deg,#ea8943,#c54b12);display:grid;place-items:center;border-radius:12px"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:#1e120b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div><div><b>San Pedro Bay</b><small>Port intelligence</small></div></div>
+      <div class="top-right">
+        <div class="clock" aria-label="Heure"><i aria-hidden="true"></i><b id="clock-utc">--:--:-- UTC</b> · <span id="clock-la">--:--</span></div>
+        <span class="pill vigilance" role="status"><i aria-hidden="true"></i>Vigilance</span>
+        <button class="btn primary" id="btn-refresh" type="button" aria-label="Actualiser les données" title="Actualise la météo si elle a plus de 15 minutes (Maj + clic : forcer)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg><span class="lbl">Actualiser</span></button>
+      </div>
+    </div>
+
+    <div class="stage">
+    
+    <div class="ticker" role="marquee" aria-label="Bulletin portuaire">
+      <div class="ticker-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" style="stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 17c3-4 6-4 9 0s6 4 9 0M3 11c3-4 6-4 9 0s6 4 9 0"/></svg><span>Bulletin</span></div>
+      <div class="ticker-track">
+        <span class="ticker-item" ><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" ><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" ><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" ><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" ><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" ><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" ><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" ><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span>
+      </div>
+    </div>
+    
+
+    
+
+    
+    <header class="pagehead">
+      <div>
+        <div class="kicker">Du tableau de bord à la décision</div>
+        <h1>Qu'est-ce que je décide, et sur quelle base ?</h1>
+        <p>Ce tableau de bord répond aux quatre niveaux d'analyse (descriptif, diagnostic, prédictif, prescriptif). Il <b>propose</b> ; une personne <b>choisit</b>. Voici les recommandations du jour, leurs preuves, et les limites à garder en tête.</p>
+      </div>
+      <div class="pagehead-art" aria-hidden="true"><svg viewBox="0 0 240 150" role="img" aria-label="Barre de navire et validation"><title>Barre de navire et validation</title><g class="art-spin" style="animation-duration:40s"><circle class="art-stroke" cx="108" cy="78" r="46"/><circle class="art-stroke" cx="108" cy="78" r="22"/><circle class="art-fill-b" cx="108" cy="78" r="8"/><g class="art-stroke"><path d="M108 32 V10 M108 124 V146 M62 78 H40 M154 78 H176 M75 45 L60 30 M141 111 L156 126 M141 45 L156 30 M75 111 L60 126"/></g><g class="art-fill-o"><circle cx="108" cy="10" r="5"/><circle cx="108" cy="146" r="5"/><circle cx="40" cy="78" r="5"/><circle cx="176" cy="78" r="5"/></g></g><path d="M184 100 l12 14 l28 -34" fill="none" stroke="#617a3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+    </header>
+    
+
+    
+<section class="levels reveal" data-stagger>
+  <div class="level on" data-i="1"><div class="n">Descriptif</div><h3>Que s'est-il passé ?</h3><p>Les chiffres, avec référence et tendance.</p>
+    <div class="eg">1 026 872 EVP en oct. 2026 (+21,0 % sur un an).</div></div>
+  <div class="level on" data-i="2"><div class="n">Diagnostic</div><h3>Pourquoi ?</h3><p>Écarts détectés et flux responsables ; alertes météo.</p>
+    <div class="eg">3 mois hors norme depuis 2019 ; 2 épisodes météo à 48 h.</div></div>
+  <div class="level on" data-i="3"><div class="n">Prédictif</div><h3>Que va-t-il se passer ?</h3><p>Prévision à 6 mois avec fourchette d'erreur.</p>
+    <div class="eg">nov. 2026 : 962 829 EVP, ±56 720 (MAE).</div></div>
+  <div class="level on" data-i="4"><div class="n">Prescriptif</div><h3>Que faire ?</h3><p>Actions proposées, avec effet attendu et décideur.</p>
+    <div class="eg">5 recommandations ci-dessous.</div></div>
+</section>
+
+<section class="mt2"><div class="kicker">Niveau prescriptif</div><h2 >Recommandations d'action</h2>
+  <p class="muted" style="max-width:80ch">Chaque carte indique la priorité, l'action, les preuves chiffrées, l'effet attendu, qui décide, le niveau d'automatisation et <b>quand ne pas la suivre</b>.</p></section>
+<section data-stagger class="grid g2 mt">
+  
+  <div class="rec reveal p2">
+    <div class="rec-head"><span class="prio p2">À PLANIFIER</span><span class="muted small">Horizon : 0 à 48 h</span></div>
+    <h3>Surveiller la dégradation météo</h3><p class="action">Garder le plan d&#x27;escales actuel, mais vérifier la prévision toutes les 6 heures et prévenir les pilotes d&#x27;une possible dégradation.</p>
+    <dl><dt>Pourquoi</dt><dd><ul><li>Rafales jusqu&#x27;à 30,9 nœuds entre 19/11 10h et 19/11 11h (heure de Los Angeles) — seuil de vigilance : 28 nœuds.</li></ul></dd>
+      <dt>Effet attendu</dt><dd>Réagir tôt si la prévision se durcit, sans déclencher d&#x27;alerte inutile.</dd><dt>Qui décide</dt><dd>Chef de quart de la capitainerie</dd>
+      <dt>Automatisation</dt><dd><span class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></span> <span class="small">Niveau 3 · l&#x27;outil recommande, un humain valide ou refuse</span></dd>
+      <dt>À ne pas suivre si</dt><dd>Seuils de vigilance indicatifs (inspirés des avis du NWS).</dd></dl>
+  </div>
+  
+  <div class="rec reveal p2">
+    <div class="rec-head"><span class="prio p2">À PLANIFIER</span><span class="muted small">Horizon : ce mois-ci</span></div>
+    <h3>Préparer la montée en charge</h3><p class="action">Planifier des équipes et des postes à quai supplémentaires pour les semaines de pointe ; reporter les maintenances lourdes non urgentes.</p>
+    <dl><dt>Pourquoi</dt><dd><ul><li>Prévision nov. 2026 : 962 829 EVP (fourchette 906 109 à 1 019 548).</li><li>Même mois un an avant : 782 249 EVP (+23,1 %).</li><li>Périmètre : Los Angeles seul (Long Beach non importé). Erreur moyenne du modèle Holt-Winters (tendance amortie + saison) : ±56 720 EVP.</li></ul></dd>
+      <dt>Effet attendu</dt><dd>Absorber le pic sans allonger le temps d&#x27;escale.</dd><dt>Qui décide</dt><dd>Planification / exploitation des terminaux</dd>
+      <dt>Automatisation</dt><dd><span class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></span> <span class="small">Niveau 3 · l&#x27;outil recommande, un humain valide ou refuse</span></dd>
+      <dt>À ne pas suivre si</dt><dd>La prévision ne voit pas les chocs (grève, tempête, changement de service des armateurs) : revoir si une anomalie apparaît.</dd></dl>
+  </div>
+  
+  <div class="rec reveal p2">
+    <div class="rec-head"><span class="prio p2">À PLANIFIER</span><span class="muted small">Horizon : aujourd&#x27;hui</span></div>
+    <h3>Compléter les volumes avec Long Beach</h3><p class="action">Obtenir le CSV mensuel de Long Beach par une voie légitime (polb.com refuse l&#x27;accès depuis ce réseau : autre réseau, camarade, enseignante), l&#x27;enregistrer dans data/raw/polb_teu_monthly.csv puis lancer la commande « python manage.py import_polb ».</p>
+    <dl><dt>Pourquoi</dt><dd><ul><li>Les volumes et la prévision portent actuellement sur Los Angeles seul.</li></ul></dd>
+      <dt>Effet attendu</dt><dd>Prévisions et indicateurs sur l&#x27;ensemble de San Pedro Bay.</dd><dt>Qui décide</dt><dd>Administrateur du tableau de bord</dd>
+      <dt>Automatisation</dt><dd><span class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></span> <span class="small">Niveau 3 · l&#x27;outil recommande, un humain valide ou refuse</span></dd>
+      <dt>À ne pas suivre si</dt><dd>Sans Long Beach, ne pas présenter les chiffres comme ceux du complexe (source inaccessible, voir la page Sources).</dd></dl>
+  </div>
+  
+  <div class="rec reveal p3">
+    <div class="rec-head"><span class="prio p3">STRATÉGIQUE</span><span class="muted small">Horizon : trimestre</span></div>
+    <h3>Sécuriser le repositionnement des conteneurs vides</h3><p class="action">Prévoir des surfaces de stockage de vides et des créneaux d&#x27;évacuation dédiés dans les terminaux et les parcs d&#x27;appui.</p>
+    <dl><dt>Pourquoi</dt><dd><ul><li>Les conteneurs vides représentent 76 % des exportations (oct. 2026).</li><li>Les exportations chargées ne pèsent que 11 % du total contre 52 % pour les importations chargées.</li></ul></dd>
+      <dt>Effet attendu</dt><dd>Libérer de l&#x27;espace dans le parc et éviter que les vides n&#x27;occupent des postes utiles.</dd><dt>Qui décide</dt><dd>Exploitation des parcs</dd>
+      <dt>Automatisation</dt><dd><span class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></span> <span class="small">Niveau 3 · l&#x27;outil recommande, un humain valide ou refuse</span></dd>
+      <dt>À ne pas suivre si</dt><dd>Constat tiré des chiffres du port ; l&#x27;optimum dépend des contrats des armateurs.</dd></dl>
+  </div>
+  
+  <div class="rec reveal p3">
+    <div class="rec-head"><span class="prio p3">STRATÉGIQUE</span><span class="muted small">Horizon : année</span></div>
+    <h3>Cibler le temps passé par les navires au port</h3><p class="action">Mesurer chaque mois le temps d&#x27;attente au mouillage et le temps à quai par terminal (données AIS), puis fixer une cible de réduction et publier le suivi.</p>
+    <dl><dt>Pourquoi</dt><dd><ul><li>Rang CPPI 2025 : Long Beach 305ᵉ et Los Angeles 88ᵉ sur 400 ports, Djibouti 53ᵉ.</li><li>En un an : Los Angeles 359ᵉ → 88ᵉ (score −52 → +29), Long Beach 318ᵉ → 305ᵉ (−22 → −21) ; 0 = temps moyen au port.</li><li>Djibouti : +91 en 2022, −64 en 2023, −56 en 2024, +63 en 2025.</li><li>Les deux ports du complexe sont très éloignés (écart de 217 places en 2025 contre 41 en 2024) : chercher la cause (terminaux, mouillage, mix de navires) avant d&#x27;agir.</li></ul></dd>
+      <dt>Effet attendu</dt><dd>Remonter dans le classement CPPI, qui ne mesure que le temps au port.</dd><dt>Qui décide</dt><dd>Direction des ports et des terminaux</dd>
+      <dt>Automatisation</dt><dd><span class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></span> <span class="small">Niveau 3 · l&#x27;outil recommande, un humain valide ou refuse</span></dd>
+      <dt>À ne pas suivre si</dt><dd>Le CPPI est un score de temps, pas de volume ni de qualité de service : à lire avec le trafic traité.</dd></dl>
+  </div>
+  
+</section>
+
+<section data-stagger class="grid g2 mt2">
+  <div class="card reveal"><div class="kicker">Niveau d'automatisation</div><h2>Pourquoi le niveau 3 et pas plus</h2>
+    <p class="sub">Échelle du cours (1 = l'outil affiche, 5 = l'outil exécute et informe). Cinq critères pour choisir.</p>
+    <table class="t"><thead><tr><th>Critère</th><th>Ici</th><th>Pousse vers</th></tr></thead><tbody>
+      <tr><td>Fréquence de la décision</td><td>quelques-unes par semaine</td><td>humain</td></tr>
+      <tr><td>Temps disponible</td><td>plusieurs heures</td><td>humain</td></tr>
+      <tr><td>Coût d'une erreur</td><td>élevé (sécurité, retards en chaîne)</td><td>humain</td></tr>
+      <tr><td>Réversibilité</td><td>partielle (un navire différé ne se rattrape pas)</td><td>humain</td></tr>
+      <tr><td>Qualité des données</td><td>partielle : modèles globaux, sources publiques décalées</td><td>humain</td></tr></tbody></table>
+    <div class="callout mt"><b>Niveau 3 : l'outil recommande une option, un humain valide ou refuse.</b> Aucune action n'est exécutée automatiquement. Une décision comme « fermer le port » reste au niveau 1 : l'outil informe, la capitainerie décide.</div></div>
+  <div class="card reveal"><div class="kicker">Limites à connaître</div><h2>Comment ce tableau de bord s'en protège</h2>
+    <table class="t"><thead><tr><th>Limite</th><th>Parade dans l'écran</th></tr></thead><tbody>
+      <tr><td><b>Biais d'automatisation</b><br><span class="muted small">suivre la recommandation sans vérifier</span></td><td>Chaque action liste ses preuves et son « à ne pas suivre si ». Les valeurs affichent leur source et leur date.</td></tr>
+      <tr><td><b>Fatigue d'alerte</b><br><span class="muted small">trop d'alertes, on les ignore toutes</span></td><td>Deux niveaux seulement ; une alerte par épisode ; horizon 48 h ; seuils visibles et réglables.</td></tr>
+      <tr><td><b>Boîte noire</b><br><span class="muted small">recommandation sans explication</span></td><td>Méthodes simples et décrites (backtest, STL, règles écrites) ; l'erreur du modèle est affichée à côté de la prévision.</td></tr>
+      <tr><td><b>Responsabilité</b><br><span class="muted small">qui répond si la décision tourne mal ?</span></td><td>Le décideur est nommé sur chaque carte ; l'outil ne décide jamais seul.</td></tr></tbody></table></div>
+</section>
+
+<section class="card reveal mt2"><div class="kicker">Architecture du système d'aide à la décision</div><h2>Données · modèles · règles · interface · retour</h2>
+  <div class="grid g4 mt" style="gap:12px">
+    <div class="hstat"><b style="font-size:18px">Données</b><span>Volumes des ports, CPPI, CNUCED, PortWatch, météo, AIS. Chaque source : adresse, date, état.</span></div>
+    <div class="hstat"><b style="font-size:18px">Modèles</b><span>Prévision (Holt-Winters, backtest), anomalies (STL robuste), alertes par seuil.</span></div>
+    <div class="hstat"><b style="font-size:18px">Règles métier</b><span>Seuils de vent et de vagues, seuil de variation, niveau d'automatisation maximal.</span></div>
+    <div class="hstat"><b style="font-size:18px">Interface</b><span>Tuiles à quatre éléments, graphiques adaptés à la question, bannières « source indisponible ».</span></div></div>
+  <p class="small muted" style="margin:14px 0 0"><b>Retour (cinquième élément, à construire) :</b> enregistrer la décision prise et son résultat pour recalculer l'erreur des modèles et ajuster les seuils. L'erreur du modèle est déjà recalculée à chaque actualisation des données.</p></section>
+
+
+    <footer class="foot">
+      <span>Données publiques sourcées (voir « Sources &amp; méthode »). Projet universitaire, IA sectorielle · secteur portuaire.</span>
+      <span>Vue générée le 19/11/2026 13:44 UTC · Los Angeles seul (Long Beach non importé)</span>
+    </footer>
+    </div>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigation mobile">
+  
+  <a href="index.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Accueil</a>
+  
+  <a href="volumes.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes</a>
+  
+  <a href="monde.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Monde</a>
+  
+  <a href="direct.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>Direct</a>
+  
+  <button type="button" id="tab-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>Plus</button>
+</nav>
+<div class="sheet-scrim" aria-hidden="true"></div>
+<div class="more-sheet" id="sheet" role="dialog" aria-label="Autres pages">
+  <div class="grab"></div><h3>Toutes les pages</h3>
+  
+  <a href="index.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Vue d&#x27;ensemble</a>
+  
+  <a href="volumes.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes LA · LB</a>
+  
+  <a href="monde.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Comparaison mondiale</a>
+  
+  <a href="direct.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>En direct</a>
+  
+  <a href="decision.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Aide à la décision</a>
+  
+  <a href="sources.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Sources &amp; méthode</a>
+  
+  <a href="fiche.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg>Fiche de conception</a>
+  
+</div>
+
+<script src="static/dashboard/vendor/plotly.min.js"></script>
+<script src="static/dashboard/js/app.js"></script>
+
+</body>
+</html>

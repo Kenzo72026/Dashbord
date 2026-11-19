@@ -1,0 +1,113 @@
+{% extends "dashboard/base.html" %}
+{% load dash %}
+{% block titre %}Vue d'ensemble{% endblock %}
+
+{% block tete %}
+<section class="harbor" aria-labelledby="titre-situation">
+  {% include "dashboard/_scene.html" %}
+  <div class="harbor-panel">
+    <div class="kicker">Comment se porte le complexe ?</div>
+    <h1 id="titre-situation">{% if synthese.niveau == 'alerte' %}Une alerte demande une décision aujourd'hui.{% elif synthese.niveau == 'vigilance' %}Situation normale, {{ a_surveiller|length }} point{{ a_surveiller|length|pluralize }} à surveiller.{% elif synthese.niveau == 'ok' %}Activité normale, aucun seuil franchi.{% else %}Situation en cours de calcul.{% endif %}</h1>
+    <ul>{% for p in phrases %}<li>{{ p }}</li>{% endfor %}</ul>
+    {% if a_surveiller %}<p class="watch"><b>À surveiller :</b> {{ a_surveiller|join:" · " }}.</p>{% endif %}
+    <p class="watch" style="border:0;padding-top:0;margin-top:8px">{{ maintenant|date:"d/m/Y" }} · {{ perimetre }}</p>
+  </div>
+  <div class="harbor-stats" aria-label="Chiffres clés">
+    {% for t in kpis %}{% if t.id == 'volumes' or t.id == 'prevision' or t.id == 'cppi' or t.id == 'vent' %}
+    <div class="hstat"><b class="num" data-count>{{ t.valeur }}</b><span>{{ t.titre }}{% if t.unite %} · {{ t.unite }}{% endif %}</span></div>
+    {% endif %}{% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="secthead mt2 reveal">
+  <div><div class="kicker">Indicateurs clés</div><h2>Huit repères, chacun relié à une décision</h2></div>
+  <span class="muted small">Chaque tuile : valeur, référence, tendance, fraîcheur. Survolez ou touchez une tuile pour voir la décision qu'elle éclaire.</span>
+</div>
+<section class="tiles mt" data-stagger aria-label="Indicateurs clés">
+  {% for t in kpis %}
+  <article class="tile reveal {{ t.statut }}" tabindex="0" aria-label="{{ t.titre }}">
+    <div class="tile-lid"><span>CTR · {{ forloop.counter|stringformat:"02d" }}</span><span class="st">{% if t.statut == 'ok' %}Normal{% elif t.statut == 'warn' %}À surveiller{% elif t.statut == 'alert' %}Alerte{% elif t.statut == 'info' %}Repère{% else %}Indisponible{% endif %}</span></div>
+    <div class="tile-body">
+      <div class="tile-head"><h3>{{ t.titre }}</h3>{% if t.badge %}<span class="badge {% if t.statut == 'na' %}red{% endif %}">{{ t.badge }}</span>{% endif %}</div>
+      <div class="val"><span class="num" data-count>{{ t.valeur }}</span><span class="unit">{{ t.unite }}</span></div>
+      {% if t.tendance %}<div class="trend {{ t.sens }}">{{ t.tendance }}</div>{% endif %}
+      <div class="ref">{{ t.reference }}</div>
+      <div class="spark" data-spark='{{ t.spark|tojson }}'></div>
+      <div class="tile-foot"><span><b>Période</b> · {{ t.periode }}</span>
+        <span><b>Source</b> · {{ t.source }}</span><span>récupéré le {{ t.recupere|frdate }}</span></div>
+      <div class="tile-hint">Touchez pour voir la décision éclairée</div>
+    </div>
+    <div class="why" role="note"><b>Décision éclairée</b>{{ t.decision }}<span class="small">{{ t.detail }}</span></div>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="grid g-2-1 mt2">
+  <div class="card reveal">
+    <div class="kicker">Niveau prédictif</div>
+    <h2>Volumes mensuels : historique et prévision à 6 mois</h2>
+    {% if forecast.ok %}
+    <p class="sub">{{ forecast.modele }}. La bande foncée est la prévision ± l'erreur moyenne du modèle (MAE du backtest), la bande claire couvre 80 % des erreurs passées. Erreur inférieure de {{ forecast.gain_vs_naif_pct|floatformat:0 }} % à « même mois l'an dernier ».</p>
+    <div id="chart-forecast" class="chart tall"></div>
+    {% else %}<div class="banner"><div><b>Prévision indisponible</b><span>{{ forecast.raison }}</span></div></div>{% endif %}
+  </div>
+  <div style="display:grid;gap:clamp(14px,1.6vw,22px);align-content:start">
+    {% for r in recs|slice:":1" %}
+    <div class="rec p{{ r.priorite }} reveal">
+      <div class="rec-head"><span class="prio p{{ r.priorite }}">{% if r.priorite == 1 %}URGENT{% elif r.priorite == 2 %}À PLANIFIER{% else %}STRATÉGIQUE{% endif %}</span><span class="muted small">{{ r.horizon }}</span></div>
+      <div class="kicker">Action recommandée</div>
+      <h3>{{ r.titre }}</h3>
+      <p class="action">{{ r.action }}</p>
+      <dl><dt>Pourquoi</dt><dd><ul>{% for p in r.pourquoi %}<li>{{ p }}</li>{% endfor %}</ul></dd>
+        <dt>Qui décide</dt><dd>{{ r.qui }}</dd>
+        <dt>Automatisation</dt><dd><span class="steps" aria-hidden="true">{% for i in "12345" %}<i class="{% if forloop.counter <= r.automatisation.niveau %}on{% endif %}"></i>{% endfor %}</span> <span class="small">{{ r.automatisation.libelle }}</span></dd></dl>
+      <p class="small muted" style="margin:14px 0 0"><b>À ne pas suivre si :</b> {{ r.limites }}</p>
+    </div>
+    {% endfor %}
+    <a class="btn primary" href="/decision/" style="justify-content:center">Voir les {{ nb_recs }} recommandations →</a>
+  </div>
+</section>
+
+<section class="grid g2 mt">
+  <div class="card reveal">
+    <div class="kicker">Niveau diagnostic · météo des 48 prochaines heures</div>
+    <h2>Alertes</h2>
+    {% if meteo.disponible %}
+      {% if meteo.alertes %}<div class="alerts mt">{% for a in meteo.alertes %}<div class="alert-item {{ a.niveau }}"><b>{{ a.niveau }}</b><span>{{ a.message }}</span></div>{% endfor %}</div>
+      {% else %}<p class="muted">Aucun épisode au-dessus des seuils de vigilance (vent ≥ 21 nœuds, rafales ≥ 28, vagues ≥ 2,5 m) sur 48 h. Les alertes sont regroupées par épisode pour éviter la fatigue d'alerte.</p>{% endif %}
+    {% else %}<div class="banner"><div><b>Météo indisponible</b><span>{{ meteo.message }}</span></div></div>{% endif %}
+  </div>
+  <div class="card reveal">
+    <div class="kicker">Niveau diagnostic · anomalies des volumes</div>
+    <h2>Mois hors norme détectés</h2>
+    {% if anom_m.ok %}
+      {% if anom_m.anomalies %}<div class="scroll"><table class="t mt"><thead><tr><th>Mois</th><th class="r">Volume</th><th class="r">Attendu</th><th class="r">Écart</th></tr></thead><tbody>
+      {% for a in anom_m.anomalies %}<tr><td>{{ a.mois|moisfr }}</td><td class="r">{{ a.valeur|nbfr }}</td><td class="r">{{ a.attendu|nbfr }}</td><td class="r" style="color:var(--{% if a.sens == 'baisse' %}brick{% else %}olive{% endif %});font-weight:700">{{ a.ecart_pct|floatformat:1 }} %</td></tr>{% endfor %}
+      </tbody></table></div>
+      <p class="small muted" style="margin-top:10px">{{ anom_m.methode }}. L'outil dit <b>quoi</b> et <b>de combien</b> ; l'humain cherche <b>pourquoi</b>.</p>
+      {% else %}<p class="muted">Aucun mois hors norme ({{ anom_m.methode }}).</p>{% endif %}
+    {% else %}<div class="banner"><div><b>Détection indisponible</b><span>{{ anom_m.raison }}</span></div></div>{% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ forecast|json_script:"d-forecast" }}
+<script>
+(function () {
+  const f = JSON.parse(document.getElementById("d-forecast").textContent);
+  if (!f.ok) return;
+  const C = SPB.C, h = f.historique.slice(-36), p = f.prevision;
+  const j = m => m + "-01", mh = h.map(d => j(d.mois)), vh = h.map(d => d.valeur), mp = p.map(d => j(d.mois));
+  const x0 = [mh[mh.length - 1]].concat(mp), y0 = [vh[vh.length - 1]].concat(p.map(d => d.valeur));
+  const band = (lo, hi, col) => ({ x: mp.concat(mp.slice().reverse()), y: p.map(d => d[hi]).concat(p.map(d => d[lo]).reverse()), fill: "toself", mode: "lines", fillcolor: col, line: { width: 0 }, hoverinfo: "skip", showlegend: false });
+  const traces = [].concat(band("bas80", "haut80", "rgba(216,87,26,.13)"), band("bas", "haut", "rgba(216,87,26,.3)"), [
+    { x: mh, y: vh, mode: "lines", name: "Réel (EVP)", line: { color: C.text, width: 2.4 }, hovertemplate: "%{y:,.0f} EVP" },
+    { x: x0, y: y0, mode: "lines+markers", name: "Prévision", line: { color: C.cyan, width: 3, dash: "dot" }, marker: { size: 8, color: C.cyan, line: { color: C.paper, width: 1.5 } },
+      customdata: [[null, null]].concat(p.map(d => [d.bas, d.haut])), hovertemplate: "%{y:,.0f} EVP<br>fourchette %{customdata[0]:,.0f} – %{customdata[1]:,.0f}" }]);
+  SPB.plot("chart-forecast", traces, { yaxis: { tickformat: ",.0f", title: { text: "EVP par mois", font: { size: 11 } } }, xaxis: { type: "date", tickformat: "%b %Y", dtick: "M6" } });
+})();
+</script>
+{% endblock %}

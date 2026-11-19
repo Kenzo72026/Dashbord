@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf" content="19wgQGNpYo1Af1JKInuYhEyiiD6OK8q88WCxK0c5n1bu4AMnbcnFmP7BuTHLLvBy">
+  <meta name="theme-color" content="#2b1b12">
+  <title>San Pedro Bay · Sources et méthode</title>
+  <meta name="description" content="Tableau de bord du complexe portuaire de San Pedro Bay (Los Angeles et Long Beach) : volumes, comparaison mondiale, direct AIS et météo, prévisions et recommandations.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d8571a'/%3E%3Cpath d='M16 6v15M10 12h12M7 19c1 5 5 8 9 8s8-3 9-8' fill='none' stroke='%231e120b' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="static/dashboard/css/dashboard.css">
+  
+</head>
+<body data-export="1">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="app">
+  <aside class="rail" aria-label="Navigation principale">
+    <a class="brand" href="index.html" aria-label="San Pedro Bay, retour à la vue d'ensemble">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div>
+      <div><b>San Pedro Bay</b><span>Los Angeles · Long Beach</span></div>
+    </a>
+    <nav class="nav">
+      
+      <a href="index.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>Vue d&#x27;ensemble</span></a>
+      
+      <a href="volumes.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg><span>Volumes LA · LB</span></a>
+      
+      <a href="monde.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Comparaison mondiale</span></a>
+      
+      <a href="direct.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg><span>En direct</span></a>
+      
+      <a href="decision.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span>Aide à la décision</span></a>
+      
+      <a href="sources.html" class="on" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Sources &amp; méthode</span></a>
+      
+      <a href="fiche.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg><span>Fiche de conception</span></a>
+      
+    </nav>
+    <div class="rail-foot">
+      <div class="compass-card" role="group" aria-label="Vent actuel">
+        <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring" cx="50" cy="50" r="44"/><circle class="ring" cx="50" cy="50" r="33" stroke-dasharray="2 5"/>
+          <path class="tick" d="M50 4v8M50 88v8M4 50h8M88 50h8"/>
+          <text class="lbl" x="50" y="22">N</text><text class="lbl" x="82" y="54">E</text><text class="lbl" x="50" y="86">S</text><text class="lbl" x="18" y="54">O</text>
+          <g class="needle" id="needle" data-deg="174,0"><polygon class="north" points="50,16 57,50 43,50"/><polygon class="south" points="50,84 57,50 43,50"/><circle cx="50" cy="50" r="4.2" fill="#2b1b12" stroke="#ebe0cd" stroke-width="1.6"/></g>
+        </svg>
+        <div><b>6 nœuds</b><span>Vent du S (174°)<br>rafales 6 nœuds</span></div>
+      </div>
+      <div class="src-card"><b>9 sources</b> suivies ·
+        <span class="bad">1 indisponible</span>
+        <br><a href="sources.html">voir le détail →</a></div>
+      <svg class="waves" viewBox="0 0 600 54" preserveAspectRatio="none" aria-hidden="true">
+        <g class="w1"><path d="M0 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H0z M600 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H600z" fill="rgba(216,87,26,.35)"/></g>
+        <g class="w2"><path d="M0 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H0z M600 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H600z" fill="rgba(235,224,205,.16)"/></g>
+      </svg>
+    </div>
+  </aside>
+
+  <main class="main" id="contenu" tabindex="-1">
+    <div class="toolbar">
+      <div class="crumbs"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg>San Pedro Bay <span aria-hidden="true">/</span>
+        <b>Sources &amp; méthode</b></div>
+      <div class="topbar-m"><div class="brand-mark" style="background:linear-gradient(145deg,#ea8943,#c54b12);display:grid;place-items:center;border-radius:12px"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:#1e120b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div><div><b>San Pedro Bay</b><small>Port intelligence</small></div></div>
+      <div class="top-right">
+        <div class="clock" aria-label="Heure"><i aria-hidden="true"></i><b id="clock-utc">--:--:-- UTC</b> · <span id="clock-la">--:--</span></div>
+        <span class="pill vigilance" role="status"><i aria-hidden="true"></i>Vigilance</span>
+        <button class="btn primary" id="btn-refresh" type="button" aria-label="Actualiser les données" title="Actualise la météo si elle a plus de 15 minutes (Maj + clic : forcer)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg><span class="lbl">Actualiser</span></button>
+      </div>
+    </div>
+
+    <div class="stage">
+    
+    <div class="ticker" role="marquee" aria-label="Bulletin portuaire">
+      <div class="ticker-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" style="stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 17c3-4 6-4 9 0s6 4 9 0M3 11c3-4 6-4 9 0s6 4 9 0"/></svg><span>Bulletin</span></div>
+      <div class="ticker-track">
+        <span class="ticker-item" ><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" ><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" ><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" ><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" ><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" ><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" ><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" ><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span>
+      </div>
+    </div>
+    
+
+    
+      <details class="banner fold " role="status">
+        <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+          <b>Source indisponible · Port of Long Beach · statistiques de conteneurs (EVP mensuels)</b><span class="peek">Données de Long Beach non importées : polb.com refuse l&#x27;accès (« Access Denied », erreur 403), aux téléchargements automatiques comme à certains navigateurs selon le réseau. Si le CSV mensuel (TEU) de la page « Port Statistics » est obtenu autrement (autre réseau, camarade, enseignante), le placer dans data/raw/polb_teu_monthly.csv puis lancer `python manage.py import_polb`. En attendant, la page Volumes affiche Long Beach observé jusqu&#x27;en août 2023 (BTS) puis estimé, et le complexe entier en tonnes (FMI PortWatch).</span>
+          <span class="more">Détail <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+        <p class="body">Données de Long Beach non importées : polb.com refuse l&#x27;accès (« Access Denied », erreur 403), aux téléchargements automatiques comme à certains navigateurs selon le réseau. Si le CSV mensuel (TEU) de la page « Port Statistics » est obtenu autrement (autre réseau, camarade, enseignante), le placer dans data/raw/polb_teu_monthly.csv puis lancer `python manage.py import_polb`. En attendant, la page Volumes affiche Long Beach observé jusqu&#x27;en août 2023 (BTS) puis estimé, et le complexe entier en tonnes (FMI PortWatch).</p></details>
+    
+
+    
+    <header class="pagehead">
+      <div>
+        <div class="kicker">Traçabilité · méthode · limites</div>
+        <h1>D'où viennent les chiffres, et ce qu'ils ne disent pas</h1>
+        <p>Chaque donnée est sourcée avec son adresse et sa date de récupération. Aucune clé d'API n'apparaît dans le code ni dans les fichiers : la clé AIS est lue dans une variable d'environnement.</p>
+      </div>
+      <div class="pagehead-art" aria-hidden="true"><svg viewBox="0 0 240 150" role="img" aria-label="Livre de bord et ancre"><title>Livre de bord et ancre</title><g class="art-float"><rect class="art-fill-s" x="30" y="34" width="110" height="84" rx="6"/><rect class="art-fill-b" x="30" y="34" width="14" height="84" rx="4"/><g class="art-stroke" style="stroke:#53382a"><path d="M58 56 H124 M58 70 H124 M58 84 H110 M58 98 H118"/></g><path class="art-fill-o" d="M118 34 h12 v30 l-6 -6 l-6 6Z"/></g><g class="art-float d2"><circle class="art-stroke" cx="186" cy="52" r="8"/><path class="art-stroke" d="M186 60 V118 M168 76 H204 M162 102 q6 20 24 20 q18 0 24-20"/></g><path class="art-stroke" d="M12 134 q15-8 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" opacity=".7"/></svg>
+</div>
+    </header>
+    
+
+    
+<section class="card reveal"><div class="kicker">Registre des sources</div><h2>État en ce moment</h2>
+  <div class="scroll"><table class="t"><thead><tr><th>Source</th><th>Adresse</th><th>Récupérée le</th><th>Dernière période</th><th>État</th></tr></thead><tbody>
+  <tr><td><b>aisstream.io · positions AIS en direct</b><br><span class="muted small">direct</span></td>
+    <td class="small"><a href="https://aisstream.io/documentation" target="_blank" rel="noopener">https://aisstream.io/documentation</a></td><td class="small">19/11/2026 13:42 UTC</td><td>2026-11-19 13:42 UTC</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">23 navires reçus en 75 s ; 23 navires suivis (positions &lt; 6 h). <br><i>Note :</i> Couverture gratuite par stations terrestres : peut être faible hors de la baie de Los Angeles.</td></tr>
+  <tr><td><b>Open-Meteo · prévisions de vent et de vagues</b><br><span class="muted small">direct</span></td>
+    <td class="small"><a href="https://open-meteo.com/" target="_blank" rel="noopener">https://open-meteo.com/</a></td><td class="small">18/11/2026 20:36 UTC</td><td>2026-11-18T20:30</td>
+    <td><span class="pill warn"><i></i>Périmée</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">96 heures (24 h passées + 72 h de prévision), vent (33.72, -118.25), vagues (33.6, -118.3). <br><i>Note :</i> Modèles de prévision globaux (grille ~ 11 km pour le vent, ~ 5 km pour les vagues) : indicatif, pas une mesure au quai. Vagues calculées au large de la jetée, pas dans le bassin abrité.</td></tr>
+  <tr><td><b>MarineCadastre (NOAA/BOEM) · extrait AIS du TP, 23/02-01/03/2026</b><br><span class="muted small">statique · 350 lignes</span></td>
+    <td class="small"><a href="https://marinecadastre.gov/ais/" target="_blank" rel="noopener">https://marinecadastre.gov/ais/</a></td><td class="small">18/11/2026 20:19 UTC</td><td>2026-03-01</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">350 navires (dernière position du 01/03/2026). Données historiques, pas du direct. <br><i>Note :</i> Extrait fourni avec le TP (MarineCadastre AIS, NOAA/BOEM), zone Los Angeles-Long Beach.</td></tr>
+  <tr><td><b>BTS (ministère américain des Transports) · EVP mensuels de Long Beach, 2019 → août 2023</b><br><span class="muted small">statique · 56 lignes</span></td>
+    <td class="small"><a href="https://data.bts.gov/d/rd72-aq8r" target="_blank" rel="noopener">https://data.bts.gov/d/rd72-aq8r</a></td><td class="small">19/11/2026 08:45 UTC</td><td>2023-08</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">56 mois de Long Beach (2019-01 → 2023-08), total EVP uniquement. Divergence entre les deux jeux : 2020-11. <br><i>Note :</i> Domaine public (U.S. DOT / BTS). Total mensuel seulement ; s&#x27;arrête en août 2023. EVP de Los Angeles du BTS = ceux du port (écart ≤ 2 EVP).</td></tr>
+  <tr><td><b>Banque mondiale · Container Port Performance Index (CPPI 2023, 2020-2024 et 2020-2025)</b><br><span class="muted small">statique · 2623 lignes</span></td>
+    <td class="small"><a href="https://documents1.worldbank.org/curated/en/099091925073051415/pdf/P509479-9781ba16-3dbc-4064-9d8f-8eaf9951e09d.pdf" target="_blank" rel="noopener">https://documents1.worldbank.org/curated/en/099091925073051415/pdf/P509479-9781ba16-3dbc-4064-9d8f-8eaf9951e09d.pdf</a></td><td class="small">18/11/2026 20:23 UTC</td><td>2025</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">419 ports lus ; classements publiés : 2025 (400 ports), 2024 (403) et 2023. <br><i>Note :</i> Score = points d&#x27;indice (temps au port, comparé à la moyenne de la classe de navires). Édition 2025 : annexe Excel officielle ; ses scores 2020-2024 coïncident avec ceux extraits du PDF 2020-2024 (0 écart &gt; 2 points sur plus de 300 ports). Shanghai et Yangshan sont regroupés en 2025 (Yangshan n&#x27;a plus de score).</td></tr>
+  <tr><td><b>Port of Los Angeles · statistiques de conteneurs (EVP mensuels)</b><br><span class="muted small">statique · 94 lignes</span></td>
+    <td class="small"><a href="https://www.portoflosangeles.org/business/statistics/container-statistics/historical-teu-statistics-2026" target="_blank" rel="noopener">https://www.portoflosangeles.org/business/statistics/container-statistics/historical-teu-statistics-2026</a></td><td class="small">18/11/2026 21:35 UTC</td><td>2026-10</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">94 mois chargés (2019-01 → 2026-10). Correction à la source : 2020-11 (total illisible sur le site du port, reconstitué par la somme des 4 composantes). <br><i>Note :</i> Valeurs publiées par le port ; le dernier mois peut être révisé. EVP = équivalent vingt pieds (TEU).</td></tr>
+  <tr><td><b>Port of Long Beach · statistiques de conteneurs (EVP mensuels)</b><br><span class="muted small">statique · 0 lignes</span></td>
+    <td class="small"><a href="https://polb.com/business/port-statistics/" target="_blank" rel="noopener">https://polb.com/business/port-statistics/</a></td><td class="small">—</td><td>—</td>
+    <td><span class="pill alert"><i></i>Indisponible</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">Données de Long Beach non importées : polb.com refuse l&#x27;accès (« Access Denied », erreur 403), aux téléchargements automatiques comme à certains navigateurs selon le réseau. Si le CSV mensuel (TEU) de la page « Port Statistics » est obtenu autrement (autre réseau, camarade, enseignante), le placer dans data/raw/polb_teu_monthly.csv puis lancer `python manage.py import_polb`. En attendant, la page Volumes affiche Long Beach observé jusqu&#x27;en août 2023 (BTS) puis estimé, et le complexe entier en tonnes (FMI PortWatch). </td></tr>
+  <tr><td><b>FMI · PortWatch (escales quotidiennes, signaux AIS des Nations unies)</b><br><span class="muted small">statique · 11496 lignes</span></td>
+    <td class="small"><a href="https://portwatch.imf.org/" target="_blank" rel="noopener">https://portwatch.imf.org/</a></td><td class="small">18/11/2026 20:16 UTC</td><td>2026-11-13</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">11496 jours-ports chargés, dernier jour publié : 2026-11-13. </td></tr>
+  <tr><td><b>CNUCED · UNCTADstat (escales, temps au port, débit EVP, connectivité)</b><br><span class="muted small">statique · 1422 lignes</span></td>
+    <td class="small"><a href="https://unctadstat.unctad.org/datacentre/" target="_blank" rel="noopener">https://unctadstat.unctad.org/datacentre/</a></td><td class="small">18/11/2026 20:16 UTC</td><td>2026Q3</td>
+    <td><span class="pill ok"><i></i>À jour</span></td></tr>
+  <tr><td colspan="5" class="small muted" style="padding-top:0">1422 valeurs chargées (escales/temps 2018-2023, débit jusqu&#x27;en 2024, connectivité jusqu&#x27;à 2026Q3). <br><i>Note :</i> Djibouti est ABSENT des séries d&#x27;escales et de temps médian d&#x27;UNCTADstat (non publié) ; repère régional « Afrique de l&#x27;Est » affiché à titre indicatif.</td></tr>
+  </tbody></table></div></section>
+
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><div class="kicker">Fichiers téléchargés</div><h2>Adresses précises</h2>
+    <table class="t"><thead><tr><th>Jeu</th><th>Adresse</th></tr></thead><tbody>
+    <tr><td>Los Angeles, EVP mensuels</td><td class="small"><a href="https://www.portoflosangeles.org/business/statistics/container-statistics" target="_blank" rel="noopener">portoflosangeles.org/…/container-statistics</a> → pages « Historical TEU Statistics 2019 … 2026 »</td></tr>
+    <tr><td>Long Beach, EVP totaux (2019 → août 2023)</td><td class="small"><a href="https://data.bts.gov/d/rd72-aq8r" target="_blank" rel="noopener">data.bts.gov/d/rd72-aq8r</a> et data.bts.gov/resource/iahn-a7j4 (BTS, domaine public, API sans clé)</td></tr>
+    <tr><td>Long Beach, EVP mensuels (site du port)</td><td class="small"><a href="https://polb.com/business/port-statistics/" target="_blank" rel="noopener">polb.com/business/port-statistics</a> (CSV à télécharger à la main, le site refuse les accès automatiques)</td></tr>
+    <tr><td>CPPI 2020-2025 (annexe Excel, juin 2026)</td><td class="small"><a href="https://www.worldbank.org/en/topic/transport/publication/cppi" target="_blank" rel="noopener">worldbank.org/…/publication/cppi</a> → fichier : openknowledge.worldbank.org/server/api/core/bitstreams/9cf20807-7dcd-4de7-9de2-fdb2d0589a73/content</td></tr>
+    <tr><td>CPPI 2020-2024</td><td class="small"><a href="https://documents1.worldbank.org/curated/en/099091925073051415/pdf/P509479-9781ba16-3dbc-4064-9d8f-8eaf9951e09d.pdf" target="_blank" rel="noopener">documents1.worldbank.org/…/099091925073051415</a></td></tr>
+    <tr><td>CPPI 2023</td><td class="small"><a href="https://documents1.worldbank.org/curated/en/099060324114539683/pdf/P17583313892300871be641a5ea7b90e0e6.pdf" target="_blank" rel="noopener">documents1.worldbank.org/…/099060324114539683</a></td></tr>
+    <tr><td>CNUCED (5 jeux)</td><td class="small">unctadstat-api.unctad.org/bulkdownload/<b>US.PortCalls</b>, <b>US.PortCallsArrivals</b>, <b>US.ContPortThroughput</b>, <b>US.PLSCI</b>, <b>US.LSCI</b></td></tr>
+    <tr><td>FMI PortWatch</td><td class="small">services9.arcgis.com/…/<b>Daily_Ports_Data</b> (ports 664, 294, 1201, 1114)</td></tr>
+    <tr><td>Météo</td><td class="small">api.open-meteo.com/v1/forecast · marine-api.open-meteo.com/v1/marine</td></tr>
+    <tr><td>AIS en direct</td><td class="small">wss://stream.aisstream.io/v0/stream</td></tr>
+    <tr><td>AIS archive</td><td class="small"><a href="https://marinecadastre.gov/ais/" target="_blank" rel="noopener">marinecadastre.gov/ais</a> (extrait fourni avec le TP)</td></tr></tbody></table></div>
+  <div class="card reveal"><div class="kicker">Méthode</div><h2>Traitements appliqués</h2>
+    <ul class="muted" style="padding-left:18px;margin:0;display:grid;gap:7px">
+      <li><b>Volumes</b> : lecture des tableaux mensuels de chaque année, conversion en nombres, un CSV propre ; le complexe est la somme des deux ports sur les mois communs.</li>
+      <li><b>CPPI</b> : édition 2025 : annexe Excel officielle lue par intitulés de colonnes ; éditions 2024 et 2023 : tableaux des rapports PDF extraits par coordonnées (les cases vides ne décalent pas les colonnes). Contrôles : 403 rangs 2024 présents sans doublon ; les scores 2020-2024 de l'annexe 2025 coïncident avec ceux du PDF (0 écart > 2 points sur plus de 300 ports).</li>
+      <li><b>CNUCED</b> : archives .7z de l'API publique, filtrées sur les pays et ports de comparaison ; Djibouti absent des séries d'escales, c'est signalé.</li>
+      <li><b>Prévision</b> : 3 modèles comparés par backtest sur 24 dates passées ; le plus précis est retenu ; fourchette = prévision ± MAE de l'horizon.</li>
+      <li><b>Anomalies</b> : décomposition STL robuste (période 12), écart en écarts robustes (MAD), seuil ±3.</li>
+      <li><b>Alertes</b> : seuils de vent, rafales, vagues, visibilité ; épisodes regroupés ; horizon 48 h.</li>
+      <li><b>Actualisation</b> : les pages lisent la base ; la météo n'est rappelée qu'après 15 minutes ; l'AIS est alimenté par un processus séparé.</li></ul></div>
+</section>
+
+<section class="card reveal mt"><div class="kicker">Limites</div><h2>Ce qu'il faut savoir avant de s'en servir</h2>
+  <div class="grid g2" style="gap:12px;margin-top:10px">
+    <div class="callout warn"><b>Long Beach.</b> polb.com refuse l'accès (HTTP 403 en automatique, « Access Denied » dans un navigateur ordinaire depuis le réseau de l'étudiant) ; aucun contournement n'a été tenté. Sources de remplacement : <b>BTS</b> (total mensuel officiel, 2019 → août 2023) puis une <b>estimation</b> à partir des tonnes de conteneurs du complexe (PortWatch), tracée avec sa marge d'erreur (±3,9 % sur le complexe, contrôlée sur des mois mis de côté). Long Beach n'est donc <b>pas</b> une donnée publiée après août 2023, et on ne dispose ni de son détail import/export/vides ni des EVP chargés. Un CSV obtenu par une voie légitime s'importe avec <code>import_polb</code>.</div>
+    <div class="callout warn"><b>Djibouti à la CNUCED.</b> Les séries d'escales et de temps médian ne publient pas Djibouti (22 économies individuelles). Repères alternatifs : débit en EVP, connectivité, escales PortWatch.</div>
+    <div class="callout warn"><b>CNUCED : période.</b> Escales et temps médian s'arrêtent en 2023 (publication de mars 2024). Le temps médian est une médiane par pays, pas par port.</div>
+    <div class="callout warn"><b>CPPI.</b> C'est un score de temps au port : il ne mesure ni le volume ni la qualité de service. Les trois éditions (2023, 2020-2024, 2025) n'ont pas exactement le même périmètre (405, 403 puis 400 ports ; Yangshan regroupé avec Shanghai en 2025) et un rang bouge beaucoup d'une année à l'autre : on lit la direction, pas l'écart au rang près.</div>
+    <div class="callout warn"><b>AIS.</b> La couverture gratuite d'aisstream.io peut être faible hors de Los Angeles. Sans clé, la carte affiche l'archive du TP, clairement datée. Le flux en direct n'a pas pu être testé ici faute de clé ; son traitement est vérifié sur des messages types.</div>
+    <div class="callout warn"><b>Météo.</b> Modèles globaux (≈ 11 km pour le vent, ≈ 5 km pour les vagues) : indicatifs, pas une mesure au quai ; les vagues sont au large de la jetée.</div>
+    <div class="callout warn"><b>Prévision.</b> Elle ne voit pas les chocs (grève, tempête, tarifs). L'erreur est calculée sur 24 origines passées : elle varie dans le temps.</div>
+    <div class="callout warn"><b>Données du dernier mois.</b> Les ports peuvent réviser leurs chiffres récents.</div></div></section>
+
+
+    <footer class="foot">
+      <span>Données publiques sourcées (voir « Sources &amp; méthode »). Projet universitaire, IA sectorielle · secteur portuaire.</span>
+      <span>Vue générée le 19/11/2026 13:44 UTC · Los Angeles seul (Long Beach non importé)</span>
+    </footer>
+    </div>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigation mobile">
+  
+  <a href="index.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Accueil</a>
+  
+  <a href="volumes.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes</a>
+  
+  <a href="monde.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Monde</a>
+  
+  <a href="direct.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>Direct</a>
+  
+  <button type="button" id="tab-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>Plus</button>
+</nav>
+<div class="sheet-scrim" aria-hidden="true"></div>
+<div class="more-sheet" id="sheet" role="dialog" aria-label="Autres pages">
+  <div class="grab"></div><h3>Toutes les pages</h3>
+  
+  <a href="index.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Vue d&#x27;ensemble</a>
+  
+  <a href="volumes.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes LA · LB</a>
+  
+  <a href="monde.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Comparaison mondiale</a>
+  
+  <a href="direct.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>En direct</a>
+  
+  <a href="decision.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Aide à la décision</a>
+  
+  <a href="sources.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Sources &amp; méthode</a>
+  
+  <a href="fiche.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg>Fiche de conception</a>
+  
+</div>
+
+<script src="static/dashboard/vendor/plotly.min.js"></script>
+<script src="static/dashboard/js/app.js"></script>
+
+</body>
+</html>

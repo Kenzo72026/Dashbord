@@ -1,0 +1,11 @@
+.env
+*.pyc
+__pycache__/
+.venv/
+venv/
+staticfiles/
+data/raw/*.pdf
+data/raw/*.7z
+*.sqlite3-journal
+.idea/
+.vscode/

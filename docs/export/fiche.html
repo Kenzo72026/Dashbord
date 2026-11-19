@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf" content="eFHGNbVHE6KjxXSwzPvr69t1w2Kg21iqlsNXHvkn3JUdmwV92Eo8bk2kIild3otQ">
+  <meta name="theme-color" content="#2b1b12">
+  <title>San Pedro Bay · Fiche de conception</title>
+  <meta name="description" content="Tableau de bord du complexe portuaire de San Pedro Bay (Los Angeles et Long Beach) : volumes, comparaison mondiale, direct AIS et météo, prévisions et recommandations.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d8571a'/%3E%3Cpath d='M16 6v15M10 12h12M7 19c1 5 5 8 9 8s8-3 9-8' fill='none' stroke='%231e120b' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="static/dashboard/css/dashboard.css">
+  
+<style>
+  .sheet { background: #fff; color: #2B1B12; border-radius: 10px; padding: 20px 24px; max-width: 1040px; margin: 0 auto; box-shadow: 0 30px 70px -30px #000; font-size: 11.2px; line-height: 1.38; }
+  .sheet h1, .sheet h2, .sheet h3 { color: #2B1B12; margin: 0; }
+  .sheet .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #2B1B12; padding-bottom: 7px; margin-bottom: 9px; }
+  .sheet .head h2 { font-size: 17px; } .sheet .head span { color: #6F5846; font-size: 10.5px; text-align: right; }
+  .sheet .cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  .sheet .box { border: 1px solid #DFD0B6; border-radius: 7px; padding: 6px 9px; background: #FBF7EF; }
+  .sheet .box b.n { display: inline-block; background: #2B1B12; color: #fff; border-radius: 50%; width: 15px; height: 15px; text-align: center; line-height: 15px; font-size: 9.5px; margin-right: 5px; }
+  .sheet .box h3 { font-size: 11.5px; margin-bottom: 2px; } .sheet .box p { margin: 0; }
+  .sheet table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 10.2px; }
+  .sheet th { background: #2B1B12; color: #fff; text-align: left; padding: 3px 5px; font-weight: 600; }
+  .sheet td { border-bottom: 1px solid #EBE0CD; padding: 3px 5px; vertical-align: top; }
+  .sheet tr:nth-child(even) td { background: #F6EFE3; }
+  .sheet .lower { display: grid; grid-template-columns: 1.15fr 1fr; gap: 10px; }
+  .mock { border: 1.5px solid #2B1B12; border-radius: 8px; padding: 6px; background: #F5EEE1; display: grid; gap: 4px; font-size: 8.6px; color: #2B1B12; }
+  .mock .r { display: grid; gap: 4px; } .mock .r4 { grid-template-columns: repeat(4, 1fr); } .mock .r2 { grid-template-columns: 2fr 1fr; } .mock .rm { grid-template-columns: 1fr 1fr; }
+  .mock div.b { border: 1px dashed #B39B7C; background: #fff; border-radius: 4px; padding: 3px 4px; min-height: 24px; }
+  .mock div.b.top { background: #2B1B12; color: #fff; border: 0; display: flex; justify-content: space-between; gap: 8px; }
+  .mock div.b.warn { background: #fff4de; border-color: #e0a22f; } .mock div.b.hi { background: #FBE6D2; border-color: #D8571A; }
+  .sheet .foot2 { margin-top: 6px; color: #6F5846; font-size: 9.6px; border-top: 1px solid #DFD0B6; padding-top: 4px; }
+  @media (max-width: 719px) { .sheet { padding: 14px 12px; font-size: 12.5px; } .sheet .head { flex-direction: column; align-items: flex-start; gap: 4px; } .sheet .head span { text-align: left; }
+    .sheet .cols, .sheet .lower { grid-template-columns: 1fr !important; } .sheet table { display: block; overflow-x: auto; white-space: nowrap; } .sheet td { white-space: normal; min-width: 120px; } }
+  @media print { .topbar, .banner, .foot, .main > p { display: none !important; } @page { size: A4 landscape; margin: 8mm; } .sheet { box-shadow: none; padding: 0; border-radius: 0; } body { background: #fff !important; } }
+</style>
+
+</head>
+<body data-export="1">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="app">
+  <aside class="rail" aria-label="Navigation principale">
+    <a class="brand" href="index.html" aria-label="San Pedro Bay, retour à la vue d'ensemble">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div>
+      <div><b>San Pedro Bay</b><span>Los Angeles · Long Beach</span></div>
+    </a>
+    <nav class="nav">
+      
+      <a href="index.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>Vue d&#x27;ensemble</span></a>
+      
+      <a href="volumes.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg><span>Volumes LA · LB</span></a>
+      
+      <a href="monde.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Comparaison mondiale</span></a>
+      
+      <a href="direct.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg><span>En direct</span></a>
+      
+      <a href="decision.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span>Aide à la décision</span></a>
+      
+      <a href="sources.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Sources &amp; méthode</span></a>
+      
+      <a href="fiche.html" class="on" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg><span>Fiche de conception</span></a>
+      
+    </nav>
+    <div class="rail-foot">
+      <div class="compass-card" role="group" aria-label="Vent actuel">
+        <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring" cx="50" cy="50" r="44"/><circle class="ring" cx="50" cy="50" r="33" stroke-dasharray="2 5"/>
+          <path class="tick" d="M50 4v8M50 88v8M4 50h8M88 50h8"/>
+          <text class="lbl" x="50" y="22">N</text><text class="lbl" x="82" y="54">E</text><text class="lbl" x="50" y="86">S</text><text class="lbl" x="18" y="54">O</text>
+          <g class="needle" id="needle" data-deg="174,0"><polygon class="north" points="50,16 57,50 43,50"/><polygon class="south" points="50,84 57,50 43,50"/><circle cx="50" cy="50" r="4.2" fill="#2b1b12" stroke="#ebe0cd" stroke-width="1.6"/></g>
+        </svg>
+        <div><b>6 nœuds</b><span>Vent du S (174°)<br>rafales 6 nœuds</span></div>
+      </div>
+      <div class="src-card"><b>9 sources</b> suivies ·
+        <span class="bad">1 indisponible</span>
+        <br><a href="sources.html">voir le détail →</a></div>
+      <svg class="waves" viewBox="0 0 600 54" preserveAspectRatio="none" aria-hidden="true">
+        <g class="w1"><path d="M0 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H0z M600 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H600z" fill="rgba(216,87,26,.35)"/></g>
+        <g class="w2"><path d="M0 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H0z M600 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H600z" fill="rgba(235,224,205,.16)"/></g>
+      </svg>
+    </div>
+  </aside>
+
+  <main class="main" id="contenu" tabindex="-1">
+    <div class="toolbar">
+      <div class="crumbs"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg>San Pedro Bay <span aria-hidden="true">/</span>
+        <b>Fiche de conception</b></div>
+      <div class="topbar-m"><div class="brand-mark" style="background:linear-gradient(145deg,#ea8943,#c54b12);display:grid;place-items:center;border-radius:12px"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:#1e120b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div><div><b>San Pedro Bay</b><small>Port intelligence</small></div></div>
+      <div class="top-right">
+        <div class="clock" aria-label="Heure"><i aria-hidden="true"></i><b id="clock-utc">--:--:-- UTC</b> · <span id="clock-la">--:--</span></div>
+        <span class="pill vigilance" role="status"><i aria-hidden="true"></i>Vigilance</span>
+        <button class="btn primary" id="btn-refresh" type="button" aria-label="Actualiser les données" title="Actualise la météo si elle a plus de 15 minutes (Maj + clic : forcer)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg><span class="lbl">Actualiser</span></button>
+      </div>
+    </div>
+
+    <div class="stage">
+    
+    <div class="ticker" role="marquee" aria-label="Bulletin portuaire">
+      <div class="ticker-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" style="stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 17c3-4 6-4 9 0s6 4 9 0M3 11c3-4 6-4 9 0s6 4 9 0"/></svg><span>Bulletin</span></div>
+      <div class="ticker-track">
+        <span class="ticker-item" ><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" ><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" ><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" ><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" ><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" ><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" ><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" ><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span>
+      </div>
+    </div>
+    
+
+    
+
+    
+    <header class="pagehead">
+      <div>
+        <div class="kicker">Conception · une page</div>
+        <h1>Fiche de conception du tableau de bord</h1>
+        <p>Remplie selon la grille en huit cases du cours (séquence 6, partie 2) : utilisateur, décision, indicateurs, références, forme, fraîcheur, intelligence, automatisation. Imprimable en une page A4 (fichier PDF fourni dans <code>docs/</code>).</p>
+      </div>
+      <div class="pagehead-art" aria-hidden="true"><svg viewBox="0 0 240 150" role="img" aria-label="Plan de conception et compas"><title>Plan de conception et compas</title><g class="art-float"><rect class="art-fill-s" x="40" y="22" width="120" height="104" rx="6"/><g class="art-stroke" style="stroke:#53382a;stroke-width:1.6"><rect x="52" y="34" width="96" height="14"/><rect x="52" y="56" width="44" height="26"/><rect x="104" y="56" width="44" height="26"/><rect x="52" y="90" width="96" height="26" stroke-dasharray="4 4"/></g></g><g class="art-float d2"><circle class="art-stroke" cx="184" cy="34" r="6"/><path class="art-stroke" d="M184 40 L168 112 M184 40 L204 112"/><path class="art-stroke" d="M172 84 H199" stroke="#d8571a"/><path class="art-fill-o" d="M204 112 l6 12 l-12 0Z"/></g><path class="art-stroke" d="M12 140 H228" opacity=".7"/></svg>
+</div>
+    </header>
+    
+
+    
+<div class="sheet">
+  <div class="head"><div><h2>Fiche de conception · Tableau de bord du complexe portuaire de San Pedro Bay</h2>
+    <span style="text-align:left">Los Angeles + Long Beach · comparaison mondiale (CPPI, CNUCED, PortWatch, dont Djibouti) · direct AIS et météo</span></div>
+    <span>IA sectorielle · secteur portuaire · Master 2<br>Version du 18/11/2026</span></div>
+
+  <div class="cols">
+    <div class="box"><h3><b class="n">1</b>Pour qui ?</h3><p><b>Utilisateur principal :</b> directeur d'exploitation / planification d'un terminal ou de l'autorité portuaire (niveau <b>tactique</b>, quelques minutes par jour). <b>Secondaires :</b> capitainerie (vue « En direct », opérationnel) ; direction (vue « Comparaison mondiale », stratégique).</p></div>
+    <div class="box"><h3><b class="n">2</b>Quelle décision ?</h3><p>Quelles <b>équipes, postes à quai et pilotes</b> mobiliser cette semaine et ce mois ? Faut-il <b>différer des mouvements</b> à cause du vent ou des vagues dans les 48 h ? Où <b>chercher des gains de temps d'escale</b> face aux autres ports ?</p></div>
+    <div class="box"><h3><b class="n">8</b>Automatisation</h3><p><b>Niveau 3 sur 5 :</b> l'outil <b>recommande</b>, un humain <b>valide ou refuse</b> (capitainerie pour la météo, planificateur pour la charge). Jamais d'exécution automatique : coût d'erreur élevé, données partielles.</p></div>
+  </div>
+
+  <div class="box" style="margin-bottom:6px"><h3><b class="n">3</b>Indicateurs (8) et <b class="n">4</b>références <span style="font-weight:400">· chaque tuile affiche : valeur, référence, tendance, date de mise à jour et source</span></h3>
+  <table>
+    <thead><tr><th>#</th><th>Indicateur</th><th>Calcul</th><th>Référence (cible / seuil)</th><th>Source (référence)</th><th>Fréquence</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Volume mensuel</b> (EVP)</td><td>EVP importés + exportés, chargés + vides, LA (+ LB)</td><td>Cible ≥ même mois N−1 ; alerte &lt; −10 %</td><td>Port of Los Angeles ; Port of Long Beach</td><td>Mensuelle</td></tr>
+      <tr><td>2</td><td><b>Prévision du mois prochain</b> ± erreur</td><td>Modèle retenu par backtest (24 dates) ; fourchette = prévision ± MAE de l'horizon</td><td>Écart vs même mois N−1 ; fiabilité = MAE affichée</td><td>Calcul interne sur les volumes</td><td>À chaque actualisation</td></tr>
+      <tr><td>3</td><td><b>Escales de porte-conteneurs</b> / semaine</td><td>Somme lundi-dimanche, LA-LB</td><td>Médiane des 26 sem. ; alerte si |z| ≥ 3</td><td>FMI PortWatch</td><td>Hebdomadaire</td></tr>
+      <tr><td>4</td><td><b>Rang CPPI</b></td><td>Rang publié (score = temps au port)</td><td>Djibouti ; Fuzhou (1ᵉʳ en 2025) ; médiane mondiale</td><td>Banque mondiale, CPPI 2023, 2020-2024 et 2020-2025</td><td>Annuelle</td></tr>
+      <tr><td>5</td><td><b>Temps médian au port</b> (conteneurs, États-Unis)</td><td>Médiane en jours, par pays</td><td>Comparaison Pays-Bas, Chine, Allemagne ; tendance N−1</td><td>CNUCED, UNCTADstat (US.PortCalls)</td><td>Annuelle</td></tr>
+      <tr><td>6</td><td><b>Gros navires dans la baie</b> (AIS)</td><td>Cargos + pétroliers présents ; dont à l'ancre</td><td>Habituel à l'heure (plage p25-p75) ; file si ancre &gt; p75+3</td><td>aisstream.io (sinon archive MarineCadastre, datée)</td><td>Minutes (direct)</td></tr>
+      <tr><td>7</td><td><b>Vent et rafales</b> (nœuds)</td><td>Actuel + maximum prévu 48 h</td><td>Vigilance 21 / 28 ; alerte ≥ 34 (NWS)</td><td>Open-Meteo (forecast)</td><td>15 minutes</td></tr>
+      <tr><td>8</td><td><b>Vagues au large</b> (m)</td><td>Hauteur significative, actuelle + max 48 h</td><td>Vigilance ≥ 2,5 m ; alerte ≥ 4 m</td><td>Open-Meteo (marine)</td><td>15 minutes</td></tr>
+    </tbody></table></div>
+
+  <div class="lower">
+    <div>
+      <div class="cols" style="grid-template-columns:1fr 1fr;margin-bottom:6px">
+        <div class="box"><h3><b class="n">5</b>Forme (graphique ↔ question)</h3><p>Courbe/barres empilées : évolution des volumes · carte de chaleur : saisonnalité · barres triées + courbes : classement et score · carte : où sont les navires · chiffre + cible + écart : tuiles. Axes à zéro ; pas de camembert.</p></div>
+        <div class="box"><h3><b class="n">6</b>Fraîcheur</h3><p>Chaque valeur porte sa <b>période</b>, sa <b>date de récupération</b> et sa <b>source</b>. Sources lentes lues en base (pas d'appel à chaque page) ; météo rappelée après 15 min ; AIS par processus séparé ; bannière claire si une source est indisponible.</p></div>
+      </div>
+      <div class="box"><h3><b class="n">7</b>Intelligence ajoutée</h3><p><b>Prédictif :</b> prévision à 6 mois avec marge d'erreur (backtest). <b>Diagnostic :</b> détection d'anomalies mensuelles (STL robuste) avec flux responsable ; alerte météo par épisode à 48 h. <b>Prescriptif :</b> recommandations d'action avec preuves, décideur et « à ne pas suivre si ».</p>
+        <p style="margin-top:3px"><b>Exemple de recommandation :</b> « Rafales ≥ 34 nœuds prévues demain 14 h-20 h : prévenir pilotes et capitainerie, avancer ou différer les mouvements, informer les transporteurs. »</p></div>
+      <p class="foot2"><b>Limites :</b> sources aux périmètres différents (score, pays, navires) ; Djibouti absent des séries d'escales de la CNUCED ; Long Beach à importer à la main ; couverture AIS gratuite variable ; météo = modèle global.</p>
+    </div>
+    <div>
+      <div class="mock" aria-label="Maquette de l'écran">
+        <div class="b top"><span><b>San Pedro Bay</b> · Vue d'ensemble</span><span>● Vigilance · 20:15 UTC · [Actualiser]</span></div>
+        <div class="b warn">⚠ Bannière : « Source indisponible : … » (message clair + quoi faire)</div>
+        <div class="r r4"><div class="b hi"><b>1 Volume</b><br>1 026 872 EVP<br>▲ +21 % · réf N−1 · oct. 2026</div><div class="b hi"><b>2 Prévision</b><br>987 622 ± 65 220<br>nov. 2026</div><div class="b hi"><b>3 Escales</b><br>39 / semaine<br>réf médiane 26 sem.</div><div class="b hi"><b>4 CPPI</b><br>305ᵉ / 88ᵉ<br>Djibouti 53ᵉ</div></div>
+        <div class="r r4"><div class="b"><b>5 Temps médian</b><br>1,08 j · États-Unis</div><div class="b"><b>6 Navires AIS</b><br>41 · dont 8 ancre</div><div class="b"><b>7 Vent</b><br>4 / 5 nœuds · 21-34</div><div class="b"><b>8 Vagues</b><br>1,2 m · 2,5-4</div></div>
+        <div class="r r2"><div class="b" style="min-height:62px"><b>Volumes LA + LB et prévision</b> (courbe réel + bande ± MAE)<br>▁▂▃▅▆▇▆▅ ┄┄┄ bande</div><div class="b hi" style="min-height:62px"><b>Action recommandée</b><br>Titre · action · preuves · qui décide · niveau 3/5 · à ne pas suivre si…</div></div>
+        <div class="r rm"><div class="b" style="min-height:48px"><b>Comparaison mondiale</b><br>CPPI : scores/rangs LA, LB, Djibouti + 3 ports · CNUCED : escales, temps médian</div><div class="b" style="min-height:48px"><b>En direct</b><br>Carte AIS (type, statut, vitesse) · météo 72 h + seuils</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="small muted" style="text-align:center;margin-top:14px">Maquette : schéma de l'écran « Vue d'ensemble ». Les valeurs sont celles du 18/11/2026.</p>
+
+
+    <footer class="foot">
+      <span>Données publiques sourcées (voir « Sources &amp; méthode »). Projet universitaire, IA sectorielle · secteur portuaire.</span>
+      <span>Vue générée le 19/11/2026 13:44 UTC · Los Angeles seul (Long Beach non importé)</span>
+    </footer>
+    </div>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigation mobile">
+  
+  <a href="index.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Accueil</a>
+  
+  <a href="volumes.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes</a>
+  
+  <a href="monde.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Monde</a>
+  
+  <a href="direct.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>Direct</a>
+  
+  <button type="button" id="tab-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>Plus</button>
+</nav>
+<div class="sheet-scrim" aria-hidden="true"></div>
+<div class="more-sheet" id="sheet" role="dialog" aria-label="Autres pages">
+  <div class="grab"></div><h3>Toutes les pages</h3>
+  
+  <a href="index.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Vue d&#x27;ensemble</a>
+  
+  <a href="volumes.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes LA · LB</a>
+  
+  <a href="monde.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Comparaison mondiale</a>
+  
+  <a href="direct.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>En direct</a>
+  
+  <a href="decision.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Aide à la décision</a>
+  
+  <a href="sources.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Sources &amp; méthode</a>
+  
+  <a href="fiche.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg>Fiche de conception</a>
+  
+</div>
+
+<script src="static/dashboard/vendor/plotly.min.js"></script>
+<script src="static/dashboard/js/app.js"></script>
+
+</body>
+</html>

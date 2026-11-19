@@ -1,0 +1,122 @@
+{% extends "dashboard/base.html" %}
+{% load dash %}
+{% block titre %}Comparaison mondiale{% endblock %}
+{% block kicker %}Comparaison mondiale · décision stratégique{% endblock %}
+{% block h1 %}Où se situe San Pedro Bay face aux autres ports du monde ?{% endblock %}
+{% block lead %}Trois sources qui ne mesurent pas la même chose : le CPPI est un <b>score</b> de temps au port, la CNUCED donne des chiffres <b>par pays</b>, PortWatch compte des <b>escales de navires</b>. Chaque graphique dit ce qu'il mesure.{% endblock %}
+
+{% block art %}{% include "dashboard/_art_monde.html" %}{% endblock %}
+
+{% block content %}
+<div class="callout"><b>Comment lire cette page.</b> Un grand port actif peut être mal classé au CPPI : l'indice ne regarde que le <i>temps passé au port</i> par les navires, pas le volume traité. Les comparaisons entre sources se font donc en tendance (indice 100 = 2019) ou en rang, jamais en valeur brute.</div>
+
+<section class="mt2"><div class="kicker">1 · Banque mondiale · Container Port Performance Index (CPPI)</div>
+  <h2 >Le temps passé au port : Los Angeles, Long Beach, Djibouti et cinq références</h2></section>
+<section data-stagger class="grid g-tab mt">
+  <div class="card reveal"><h2>Classement</h2><p class="sub">Rang publié (sur {{ donnees.cppi_n }} ports en 2025). 1 = port le plus rapide.</p>
+    <div class="scroll"><table class="t compact"><thead><tr><th>Port</th><th class="r">2023</th><th class="r">2024</th><th class="r">2025</th><th class="r">Δ 24→25</th><th class="r">Score 2025</th></tr></thead><tbody id="tb-cppi"></tbody></table></div>
+    <p class="small muted" style="margin:10px 0 0">Rangs publiés dans trois éditions : CPPI 2023 (405 ports), CPPI 2020-2024 (403 ports) et CPPI 2025 (400 ports, publiée en juin 2026). Les périmètres changent un peu d'une édition à l'autre (Yangshan est regroupé avec Shanghai en 2025) : on lit la <b>direction</b>, pas la différence exacte. Le classement d'un port bouge beaucoup d'une année à l'autre.</p></div>
+  <div class="card reveal"><h2>Score CPPI par année</h2><p class="sub">Points d'indice : 0 = temps moyen au port ; positif = plus rapide que la moyenne, négatif = plus lent.</p><div id="c-cppi" class="chart"></div></div>
+</section>
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><h2>Où se placent-ils parmi les {{ donnees.cppi_n }} ports ?</h2><p class="sub">Répartition des scores CPPI 2025 : chaque barre regroupe des ports ; les traits marquent nos ports.</p><div id="c-dist" class="chart short"></div></div>
+  <div class="card reveal"><h2>Ce que montre le CPPI</h2>
+    <div class="alerts" id="cppi-lectures"></div>
+    <p class="small muted" style="margin:12px 0 0">Source : Banque mondiale et S&amp;P Global Market Intelligence, rapports « The Container Port Performance Index 2023 », « 2020 to 2024 » et « 2025 » (adresses dans « Sources &amp; méthode »).</p></div>
+</section>
+
+<section class="mt2"><div class="kicker">2 · CNUCED · UNCTADstat</div>
+  <h2 >Escales, temps médian et connectivité, par pays et par port</h2></section>
+<div class="banner blue mt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg><div><b>Djibouti n'est pas dans les séries d'escales et de temps médian de la CNUCED</b><span>{{ donnees.djibouti_note }}</span></div></div>
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><h2>Temps médian au port · porte-conteneurs</h2><p class="sub">Jours, par pays (CNUCED, 2018-2023). Plus bas = plus rapide.</p><div id="c-median" class="chart short"></div></div>
+  <div class="card reveal"><h2>Nombre d'escales de porte-conteneurs</h2><p class="sub">Indice 100 = 2019, par pays. Le nombre d'escales baisse quand les navires grossissent.</p><div id="c-calls" class="chart short"></div></div>
+</section>
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><h2>Débit de conteneurs · États-Unis, Djibouti et comparaison</h2><p class="sub">Indice 100 = 2019 (CNUCED, EVP par pays). À droite de chaque courbe : le volume absolu 2024.</p><div id="c-teu" class="chart short"></div></div>
+  <div class="card reveal"><h2>Connectivité maritime des ports (PLSCI)</h2><p class="sub">Indice trimestriel (100 = moyenne du 1ᵉʳ trim. 2023) : nombre de services, capacité et taille des navires qui desservent le port.</p><div id="c-plsci" class="chart short"></div></div>
+</section>
+
+<section class="mt2"><div class="kicker">3 · FMI · PortWatch (escales AIS)</div>
+  <h2 >Même mesure pour quatre ports : les escales hebdomadaires de porte-conteneurs</h2></section>
+<section data-stagger class="grid g-2-1 mt">
+  <div class="card reveal"><p class="sub">Moyenne glissante sur 8 semaines, indice 100 = moyenne hebdomadaire de 2019. C'est la seule mesure de cette page où Djibouti est comparable aux autres.</p><div id="c-pw" class="chart"></div></div>
+  <div class="card reveal"><h2>Niveau d'activité</h2><p class="sub">Escales de porte-conteneurs par semaine.</p>
+    <table class="t"><thead><tr><th>Port</th><th class="r">12 dernières sem.</th><th class="r">vs 2019</th></tr></thead><tbody id="tb-pw"></tbody></table>
+    <p class="small muted" style="margin:10px 0 0">Les ports n'ont pas la même taille : on compare les <b>évolutions</b>, pas les niveaux. Le nombre d'escales ne dit rien de la quantité de conteneurs par navire.</p></div>
+</section>
+
+<section class="card reveal mt2"><div class="kicker">Comparer ce qui est comparable</div><h2>Ce que mesure chaque source</h2>
+  <div class="scroll"><table class="t"><thead><tr><th>Source</th><th>Mesure</th><th>Unité</th><th>Niveau</th><th>Djibouti ?</th><th>À utiliser pour</th></tr></thead><tbody>
+  <tr><td>Banque mondiale · CPPI</td><td>Temps passé au port par les navires, corrigé de la taille</td><td>Score (points)</td><td>Port</td><td>Oui</td><td>Situer l'efficacité d'escale</td></tr>
+  <tr><td>CNUCED · escales / temps médian</td><td>Nombre d'escales ; temps médian au port</td><td>Escales ; jours</td><td>Pays</td><td>Non publié</td><td>Comparer les États-Unis à d'autres pays</td></tr>
+  <tr><td>CNUCED · débit et connectivité</td><td>EVP traités ; indice de liaisons maritimes</td><td>EVP ; indice</td><td>Pays ; port</td><td>Oui</td><td>Situer la taille et la desserte</td></tr>
+  <tr><td>FMI · PortWatch</td><td>Escales de navires (signaux AIS)</td><td>Escales</td><td>Port</td><td>Oui</td><td>Suivre l'activité en quasi-continu</td></tr>
+  <tr><td>Ports de Los Angeles / Long Beach</td><td>Conteneurs manutentionnés</td><td>EVP</td><td>Port</td><td>—</td><td>Mesurer le volume de San Pedro Bay</td></tr></tbody></table></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ donnees|json_script:"d-monde" }}
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("d-monde").textContent), C = SPB.C, nf0 = SPB.nf0;
+  const couleur = { "Los Angeles": C.cyan, "Long Beach": C.amber, "Djibouti": "#8E3B5F", "Fuzhou": C.green, "Singapore": C.violet, "Rotterdam": C.blue, "Savannah": "#8F7A68", "Jeddah": C.teal };
+  const colEt = {}; D.cppi.forEach(p => colEt[p.etiquette] = couleur[p.port]);
+  const accent = n => ["Los Angeles", "Long Beach", "Djibouti"].includes(n);
+  // ---- tableau CPPI (rangs publiés 2023, 2024, 2025)
+  const lignes = D.cppi.slice().sort((a, b) => (a.rang_2025 || 999) - (b.rang_2025 || 999));
+  document.getElementById("tb-cppi").innerHTML = lignes.map(p => {
+    const d = (p.rang_2024 && p.rang_2025) ? p.rang_2024 - p.rang_2025 : null;
+    const sc = p.scores[2025];
+    return '<tr' + (accent(p.port) ? ' style="background:rgba(216,87,26,.06)"' : "") + '><td><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:' + couleur[p.port] + ';margin-right:8px"></i>' + p.etiquette + '</td><td class="r">' + (p.rang_2023 || "—") + '</td><td class="r">' + (p.rang_2024 || "—") + '</td><td class="r"><b>' + (p.rang_2025 || "—") + '</b></td><td class="r" style="color:' + (d > 0 ? "var(--green)" : d < 0 ? "var(--amber)" : "var(--muted)") + '">' + (d == null ? "—" : (d > 0 ? "▲ " : d < 0 ? "▼ " : "") + Math.abs(d)) + '</td><td class="r">' + (sc != null ? (sc > 0 ? "+" : "−") + Math.abs(Math.round(sc)) : "—") + "</td></tr>";
+  }).join("");
+  // ---- scores par année
+  const ans = [2020, 2021, 2022, 2023, 2024, 2025];
+  SPB.plot("c-cppi", D.cppi.map(p => ({ x: ans, y: ans.map(a => p.scores[a] == null ? null : p.scores[a]), mode: "lines+markers", name: p.etiquette, line: { color: couleur[p.port], width: accent(p.port) ? 3.4 : 1.8 }, marker: { size: accent(p.port) ? 8 : 5 }, hovertemplate: "%{y:+.0f} pts" })),
+    { yaxis: { title: { text: "Score CPPI (points)", font: { size: 11 } }, zeroline: true, zerolinecolor: "rgba(43,27,18,.3)" }, xaxis: { dtick: 1, tickformat: "d" }, margin: { l: 58, r: 20, t: innerWidth < 720 ? 118 : 84, b: 44 }, legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 11, color: C.text } } });
+  // ---- distribution des scores 2025
+  const sc = D.cppi_distribution, marq = D.cppi.filter(p => p.scores[2025] != null && ["Los Angeles", "Long Beach", "Djibouti", "Fuzhou"].includes(p.port));
+  SPB.plot("c-dist", [{ x: sc, type: "histogram", xbins: { size: 20 }, marker: { color: "rgba(62,106,120,.55)", line: { color: "rgba(62,106,120,.9)", width: 1 } }, name: "Ports", hovertemplate: "%{y} ports<extra></extra>" }],
+    { xaxis: { title: { text: "Score CPPI 2025", font: { size: 11 } } }, yaxis: { title: { text: "Nombre de ports", font: { size: 11 } } }, showlegend: false, hovermode: "closest", bargap: .06,
+      shapes: marq.map(p => ({ type: "line", x0: p.scores[2025], x1: p.scores[2025], yref: "paper", y0: 0, y1: .88, line: { color: couleur[p.port], width: 2.5 } })),
+      annotations: marq.map(p => { const niv = { "Long Beach": [.99, "right"], "Los Angeles": [.90, "left"], "Djibouti": [.81, "left"], "Fuzhou": [.99, "right"] }[p.port];
+        return { x: p.scores[2025], yref: "paper", y: niv[0], xanchor: niv[1], text: (niv[1] === "left" ? " " : "") + p.etiquette.split(" (")[0] + (niv[1] === "right" ? " " : ""), showarrow: false, font: { color: couleur[p.port], size: 11 } }; }) });
+  // ---- lectures
+  const g = n => D.cppi.find(p => p.port === n), la = g("Los Angeles"), lb = g("Long Beach"), dj = g("Djibouti"), fz = g("Fuzhou");
+  const L = [];
+  if (la && lb) L.push(["Position", "En 2025, Long Beach est " + lb.rang_2025 + "ᵉ et Los Angeles " + la.rang_2025 + "ᵉ sur " + D.cppi_n + " : deux ports voisins d'un même complexe, mais " + Math.abs(lb.rang_2025 - la.rang_2025) + " places d'écart."]);
+  if (la && lb && la.rang_2024) L.push(["Tendance", "Los Angeles gagne " + (la.rang_2024 - la.rang_2025) + " places en un an (score " + Math.round(la.scores[2024]) + " → " + Math.round(la.scores[2025]) + "), Long Beach " + (lb.rang_2024 - lb.rang_2025) + " (" + Math.round(lb.scores[2024]) + " → " + Math.round(lb.scores[2025]) + ")."]);
+  if (dj) L.push(["Djibouti", "Rang " + dj.rang_2025 + "ᵉ en 2025 (" + dj.rang_2024 + "ᵉ en 2024) : score " + Math.round(dj.scores[2022]) + " en 2022, " + Math.round(dj.scores[2023]) + " en 2023, " + Math.round(dj.scores[2024]) + " en 2024, " + Math.round(dj.scores[2025]) + " en 2025. Le rapport 2020-2024 notait déjà +8 points en 2024 malgré la crise de la mer Rouge."]);
+  if (fz) L.push(["Référence", "Fuzhou est 1ᵉʳ avec " + Math.round(fz.scores[2025]) + " points : " + Math.round(fz.scores[2025] - la.scores[2025]) + " points devant Los Angeles, " + Math.round(fz.scores[2025] - lb.scores[2025]) + " devant Long Beach."]);
+  if (la) L.push(["Prudence", "Un rang CPPI peut bouger de plusieurs centaines de places en un an (Los Angeles : " + la.rang_2024 + "ᵉ → " + la.rang_2025 + "ᵉ) : il mesure le temps passé au port une année donnée, pas un niveau stable de performance."]);
+  document.getElementById("cppi-lectures").innerHTML = L.map(l => '<div class="alert-item"><b style="color:var(--cyan)">' + l[0] + "</b><span>" + l[1].replace(/-(\d)/g, "−$1") + "</span></div>").join("");
+  // ---- CNUCED
+  const pal = ["#8F7A68", C.violet, C.blue, C.green, C.amber, C.teal, "#8E3B5F", C.red];
+  const nomsCol = {}; let k = 0; const col = n => nomsCol[n] || (nomsCol[n] = n === "États-Unis" ? C.cyan : n === "Djibouti" ? "#8E3B5F" : pal[(k++) % pal.length]);
+  const trace = (o, nom, f, w) => ({ x: Object.keys(o).sort(), y: Object.keys(o).sort().map(a => f ? f(o[a], o) : o[a]), mode: "lines+markers", name: nom, line: { color: col(nom), width: nom === "États-Unis" || nom === "Djibouti" ? 3.4 : 1.8 }, marker: { size: nom === "États-Unis" ? 8 : 5 } });
+  const med = Object.keys(D.median).filter(n => !n.includes("région"));
+  SPB.plot("c-median", med.map(n => Object.assign(trace(D.median[n], n), { hovertemplate: "%{y:.2f} j" })), { yaxis: { rangemode: "tozero", ticksuffix: " j" }, xaxis: { type: "category" }, legend: { orientation: "h", y: 1.2, font: { size: 11, color: C.text } } });
+  const idx = (o) => { const b = o["2019"]; return b ? (v) => v / b * 100 : null; };
+  const callsN = Object.keys(D.calls).filter(n => !n.includes("région") && D.calls[n]["2019"]);
+  SPB.plot("c-calls", callsN.map(n => Object.assign(trace(D.calls[n], n, v => v / D.calls[n]["2019"] * 100), { hovertemplate: "%{y:.0f}" })), { yaxis: { title: { text: "Indice (2019 = 100)", font: { size: 11 } } }, xaxis: { type: "category" }, legend: { orientation: "h", y: 1.2, font: { size: 11, color: C.text } } });
+  const teuN = Object.keys(D.teu).filter(n => D.teu[n]["2019"] && ["États-Unis", "Djibouti", "Chine", "Singapour", "Pays-Bas", "Égypte", "Kenya"].includes(n));
+  const teuTrace = n => { const o = D.teu[n], ans = Object.keys(o).map(Number).filter(a => a >= 2017).sort((x, y) => x - y);
+    return { x: ans, y: ans.map(a => o[a] / o[2019] * 100), mode: "lines+markers", name: n, line: { color: col(n), width: n === "États-Unis" || n === "Djibouti" ? 3.4 : 1.8 }, marker: { size: n === "États-Unis" ? 8 : 5 }, hovertemplate: "%{y:.0f}" }; };
+  SPB.plot("c-teu", teuN.map(teuTrace),
+    { yaxis: { title: { text: "Indice (2019 = 100)", font: { size: 11 } } }, xaxis: { type: "linear", dtick: 1, tickformat: "d" }, legend: { orientation: "h", y: 1.25, font: { size: 11, color: C.text } },
+      annotations: ["États-Unis", "Djibouti"].filter(n => D.teu[n]).map(n => { const o = D.teu[n]; return { x: 2024, y: o[2024] / o[2019] * 100, xanchor: "left", text: " " + (o[2024] / 1e6).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M EVP", showarrow: false, font: { size: 10.5, color: col(n) } }; }),
+      margin: { r: 78, l: 56, t: 18, b: 42 } });
+  const plN = Object.keys(D.plsci);
+  const colPl = { "Los Angeles": C.cyan, "Long Beach": C.amber, "Djibouti": "#8E3B5F", "Singapour": C.violet, "Rotterdam": C.blue, "Shanghai": C.green, "Djeddah": C.teal, "Savannah": "#8F7A68" };
+  SPB.plot("c-plsci", plN.map(n => ({ x: Object.keys(D.plsci[n]), y: Object.values(D.plsci[n]), mode: "lines", name: n, line: { color: colPl[n], width: ["Los Angeles", "Long Beach", "Djibouti"].includes(n) ? 3.2 : 1.6 }, hovertemplate: "%{y:.0f}" })),
+    { yaxis: { title: { text: "Indice de connectivité", font: { size: 11 } } }, xaxis: { type: "category", nticks: 7, tickangle: 0 }, legend: { orientation: "h", y: 1.25, font: { size: 11, color: C.text } } });
+  // ---- PortWatch
+  const pwCol = { "Los Angeles-Long Beach": C.cyan, "Djibouti": "#8E3B5F", "Singapour": C.violet, "Rotterdam": C.blue };
+  const pw = Object.keys(D.portwatch);
+  SPB.plot("c-pw", pw.map(n => ({ x: D.portwatch[n].semaines, y: D.portwatch[n].indice, mode: "lines", name: n, line: { color: pwCol[n], width: n.startsWith("Los") || n === "Djibouti" ? 3 : 1.8 }, hovertemplate: "%{y:.0f}" })),
+    { yaxis: { title: { text: "Indice (moyenne 2019 = 100)", font: { size: 11 } } }, xaxis: { type: "date" }, shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: 100, y1: 100, line: { color: "rgba(43,27,18,.3)", dash: "dot" } }] });
+  document.getElementById("tb-pw").innerHTML = pw.map(n => { const o = D.portwatch[n], v = o.variation_vs_2019_pct; return '<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:' + pwCol[n] + ';margin-right:8px"></i>' + n + '</td><td class="r">' + SPB.nf1.format(o.moyenne_12_sem) + '</td><td class="r" style="color:' + (v >= 0 ? "var(--green)" : "var(--amber)") + '">' + (v >= 0 ? "+" : "−") + SPB.nf1.format(Math.abs(v)) + " %</td></tr>"; }).join("");
+})();
+</script>
+{% endblock %}

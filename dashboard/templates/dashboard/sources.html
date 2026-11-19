@@ -1,0 +1,54 @@
+{% extends "dashboard/base.html" %}
+{% load dash %}
+{% block titre %}Sources et méthode{% endblock %}
+{% block kicker %}Traçabilité · méthode · limites{% endblock %}
+{% block h1 %}D'où viennent les chiffres, et ce qu'ils ne disent pas{% endblock %}
+{% block lead %}Chaque donnée est sourcée avec son adresse et sa date de récupération. Aucune clé d'API n'apparaît dans le code ni dans les fichiers : la clé AIS est lue dans une variable d'environnement.{% endblock %}
+
+{% block art %}{% include "dashboard/_art_sources.html" %}{% endblock %}
+
+{% block content %}
+<section class="card reveal"><div class="kicker">Registre des sources</div><h2>État en ce moment</h2>
+  <div class="scroll"><table class="t"><thead><tr><th>Source</th><th>Adresse</th><th>Récupérée le</th><th>Dernière période</th><th>État</th></tr></thead><tbody>
+  {% for s in liste %}<tr><td><b>{{ s.name }}</b><br><span class="muted small">{% if s.kind == 'live' %}direct{% else %}statique{% endif %}{% if s.kind == 'static' %} · {{ s.rows }} lignes{% endif %}</span></td>
+    <td class="small"><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url }}</a></td><td class="small">{{ s.retrieved_at|frdate }}</td><td>{{ s.last_period|default:"—" }}</td>
+    <td><span class="pill {% if s.status == 'ok' %}ok{% elif s.status == 'stale' %}warn{% else %}alert{% endif %}"><i></i>{{ s.get_status_display }}</span></td></tr>
+  {% if s.message or s.notes %}<tr><td colspan="5" class="small muted" style="padding-top:0">{{ s.message }} {% if s.notes %}<br><i>Note :</i> {{ s.notes }}{% endif %}</td></tr>{% endif %}
+  {% endfor %}</tbody></table></div></section>
+
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><div class="kicker">Fichiers téléchargés</div><h2>Adresses précises</h2>
+    <table class="t"><thead><tr><th>Jeu</th><th>Adresse</th></tr></thead><tbody>
+    <tr><td>Los Angeles, EVP mensuels</td><td class="small"><a href="https://www.portoflosangeles.org/business/statistics/container-statistics" target="_blank" rel="noopener">portoflosangeles.org/…/container-statistics</a> → pages « Historical TEU Statistics 2019 … 2026 »</td></tr>
+    <tr><td>Long Beach, EVP totaux (2019 → août 2023)</td><td class="small"><a href="https://data.bts.gov/d/rd72-aq8r" target="_blank" rel="noopener">data.bts.gov/d/rd72-aq8r</a> et data.bts.gov/resource/iahn-a7j4 (BTS, domaine public, API sans clé)</td></tr>
+    <tr><td>Long Beach, EVP mensuels (site du port)</td><td class="small"><a href="https://polb.com/business/port-statistics/" target="_blank" rel="noopener">polb.com/business/port-statistics</a> (CSV à télécharger à la main, le site refuse les accès automatiques)</td></tr>
+    <tr><td>CPPI 2020-2025 (annexe Excel, juin 2026)</td><td class="small"><a href="https://www.worldbank.org/en/topic/transport/publication/cppi" target="_blank" rel="noopener">worldbank.org/…/publication/cppi</a> → fichier : openknowledge.worldbank.org/server/api/core/bitstreams/9cf20807-7dcd-4de7-9de2-fdb2d0589a73/content</td></tr>
+    <tr><td>CPPI 2020-2024</td><td class="small"><a href="https://documents1.worldbank.org/curated/en/099091925073051415/pdf/P509479-9781ba16-3dbc-4064-9d8f-8eaf9951e09d.pdf" target="_blank" rel="noopener">documents1.worldbank.org/…/099091925073051415</a></td></tr>
+    <tr><td>CPPI 2023</td><td class="small"><a href="https://documents1.worldbank.org/curated/en/099060324114539683/pdf/P17583313892300871be641a5ea7b90e0e6.pdf" target="_blank" rel="noopener">documents1.worldbank.org/…/099060324114539683</a></td></tr>
+    <tr><td>CNUCED (5 jeux)</td><td class="small">unctadstat-api.unctad.org/bulkdownload/<b>US.PortCalls</b>, <b>US.PortCallsArrivals</b>, <b>US.ContPortThroughput</b>, <b>US.PLSCI</b>, <b>US.LSCI</b></td></tr>
+    <tr><td>FMI PortWatch</td><td class="small">services9.arcgis.com/…/<b>Daily_Ports_Data</b> (ports 664, 294, 1201, 1114)</td></tr>
+    <tr><td>Météo</td><td class="small">api.open-meteo.com/v1/forecast · marine-api.open-meteo.com/v1/marine</td></tr>
+    <tr><td>AIS en direct</td><td class="small">wss://stream.aisstream.io/v0/stream</td></tr>
+    <tr><td>AIS archive</td><td class="small"><a href="https://marinecadastre.gov/ais/" target="_blank" rel="noopener">marinecadastre.gov/ais</a> (extrait fourni avec le TP)</td></tr></tbody></table></div>
+  <div class="card reveal"><div class="kicker">Méthode</div><h2>Traitements appliqués</h2>
+    <ul class="muted" style="padding-left:18px;margin:0;display:grid;gap:7px">
+      <li><b>Volumes</b> : lecture des tableaux mensuels de chaque année, conversion en nombres, un CSV propre ; le complexe est la somme des deux ports sur les mois communs.</li>
+      <li><b>CPPI</b> : édition 2025 : annexe Excel officielle lue par intitulés de colonnes ; éditions 2024 et 2023 : tableaux des rapports PDF extraits par coordonnées (les cases vides ne décalent pas les colonnes). Contrôles : 403 rangs 2024 présents sans doublon ; les scores 2020-2024 de l'annexe 2025 coïncident avec ceux du PDF (0 écart > 2 points sur plus de 300 ports).</li>
+      <li><b>CNUCED</b> : archives .7z de l'API publique, filtrées sur les pays et ports de comparaison ; Djibouti absent des séries d'escales, c'est signalé.</li>
+      <li><b>Prévision</b> : 3 modèles comparés par backtest sur 24 dates passées ; le plus précis est retenu ; fourchette = prévision ± MAE de l'horizon.</li>
+      <li><b>Anomalies</b> : décomposition STL robuste (période 12), écart en écarts robustes (MAD), seuil ±3.</li>
+      <li><b>Alertes</b> : seuils de vent, rafales, vagues, visibilité ; épisodes regroupés ; horizon 48 h.</li>
+      <li><b>Actualisation</b> : les pages lisent la base ; la météo n'est rappelée qu'après 15 minutes ; l'AIS est alimenté par un processus séparé.</li></ul></div>
+</section>
+
+<section class="card reveal mt"><div class="kicker">Limites</div><h2>Ce qu'il faut savoir avant de s'en servir</h2>
+  <div class="grid g2" style="gap:12px;margin-top:10px">
+    <div class="callout warn"><b>Long Beach.</b> polb.com refuse l'accès (HTTP 403 en automatique, « Access Denied » dans un navigateur ordinaire depuis le réseau de l'étudiant) ; aucun contournement n'a été tenté. Sources de remplacement : <b>BTS</b> (total mensuel officiel, 2019 → août 2023) puis une <b>estimation</b> à partir des tonnes de conteneurs du complexe (PortWatch), tracée avec sa marge d'erreur (±3,9 % sur le complexe, contrôlée sur des mois mis de côté). Long Beach n'est donc <b>pas</b> une donnée publiée après août 2023, et on ne dispose ni de son détail import/export/vides ni des EVP chargés. Un CSV obtenu par une voie légitime s'importe avec <code>import_polb</code>.</div>
+    <div class="callout warn"><b>Djibouti à la CNUCED.</b> Les séries d'escales et de temps médian ne publient pas Djibouti (22 économies individuelles). Repères alternatifs : débit en EVP, connectivité, escales PortWatch.</div>
+    <div class="callout warn"><b>CNUCED : période.</b> Escales et temps médian s'arrêtent en 2023 (publication de mars 2024). Le temps médian est une médiane par pays, pas par port.</div>
+    <div class="callout warn"><b>CPPI.</b> C'est un score de temps au port : il ne mesure ni le volume ni la qualité de service. Les trois éditions (2023, 2020-2024, 2025) n'ont pas exactement le même périmètre (405, 403 puis 400 ports ; Yangshan regroupé avec Shanghai en 2025) et un rang bouge beaucoup d'une année à l'autre : on lit la direction, pas l'écart au rang près.</div>
+    <div class="callout warn"><b>AIS.</b> La couverture gratuite d'aisstream.io peut être faible hors de Los Angeles. Sans clé, la carte affiche l'archive du TP, clairement datée. Le flux en direct n'a pas pu être testé ici faute de clé ; son traitement est vérifié sur des messages types.</div>
+    <div class="callout warn"><b>Météo.</b> Modèles globaux (≈ 11 km pour le vent, ≈ 5 km pour les vagues) : indicatifs, pas une mesure au quai ; les vagues sont au large de la jetée.</div>
+    <div class="callout warn"><b>Prévision.</b> Elle ne voit pas les chocs (grève, tempête, tarifs). L'erreur est calculée sur 24 origines passées : elle varie dans le temps.</div>
+    <div class="callout warn"><b>Données du dernier mois.</b> Les ports peuvent réviser leurs chiffres récents.</div></div></section>
+{% endblock %}

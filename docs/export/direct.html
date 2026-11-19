@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf" content="DBZKTG7I4jToYicLuqipQrE5RY1pdAsxKo51N0wotW3iNRfoXfb6VCdo3eCmeXDX">
+  <meta name="theme-color" content="#2b1b12">
+  <title>San Pedro Bay · En direct</title>
+  <meta name="description" content="Tableau de bord du complexe portuaire de San Pedro Bay (Los Angeles et Long Beach) : volumes, comparaison mondiale, direct AIS et météo, prévisions et recommandations.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d8571a'/%3E%3Cpath d='M16 6v15M10 12h12M7 19c1 5 5 8 9 8s8-3 9-8' fill='none' stroke='%231e120b' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="static/dashboard/css/dashboard.css">
+  <link rel="stylesheet" href="static/dashboard/vendor/leaflet.css">
+</head>
+<body data-export="1">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div class="app">
+  <aside class="rail" aria-label="Navigation principale">
+    <a class="brand" href="index.html" aria-label="San Pedro Bay, retour à la vue d'ensemble">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div>
+      <div><b>San Pedro Bay</b><span>Los Angeles · Long Beach</span></div>
+    </a>
+    <nav class="nav">
+      
+      <a href="index.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>Vue d&#x27;ensemble</span></a>
+      
+      <a href="volumes.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg><span>Volumes LA · LB</span></a>
+      
+      <a href="monde.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Comparaison mondiale</span></a>
+      
+      <a href="direct.html" class="on" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg><span>En direct</span></a>
+      
+      <a href="decision.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span>Aide à la décision</span></a>
+      
+      <a href="sources.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Sources &amp; méthode</span></a>
+      
+      <a href="fiche.html" class="" >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg><span>Fiche de conception</span></a>
+      
+    </nav>
+    <div class="rail-foot">
+      <div class="compass-card" role="group" aria-label="Vent actuel">
+        <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring" cx="50" cy="50" r="44"/><circle class="ring" cx="50" cy="50" r="33" stroke-dasharray="2 5"/>
+          <path class="tick" d="M50 4v8M50 88v8M4 50h8M88 50h8"/>
+          <text class="lbl" x="50" y="22">N</text><text class="lbl" x="82" y="54">E</text><text class="lbl" x="50" y="86">S</text><text class="lbl" x="18" y="54">O</text>
+          <g class="needle" id="needle" data-deg="174,0"><polygon class="north" points="50,16 57,50 43,50"/><polygon class="south" points="50,84 57,50 43,50"/><circle cx="50" cy="50" r="4.2" fill="#2b1b12" stroke="#ebe0cd" stroke-width="1.6"/></g>
+        </svg>
+        <div><b>6 nœuds</b><span>Vent du S (174°)<br>rafales 6 nœuds</span></div>
+      </div>
+      <div class="src-card"><b>9 sources</b> suivies ·
+        <span class="bad">1 indisponible</span>
+        <br><a href="sources.html">voir le détail →</a></div>
+      <svg class="waves" viewBox="0 0 600 54" preserveAspectRatio="none" aria-hidden="true">
+        <g class="w1"><path d="M0 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H0z M600 26c50-18 100-18 150 0s100 18 150 0 100-18 150 0 100 18 150 0V54H600z" fill="rgba(216,87,26,.35)"/></g>
+        <g class="w2"><path d="M0 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H0z M600 34c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0V54H600z" fill="rgba(235,224,205,.16)"/></g>
+      </svg>
+    </div>
+  </aside>
+
+  <main class="main" id="contenu" tabindex="-1">
+    <div class="toolbar">
+      <div class="crumbs"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg>San Pedro Bay <span aria-hidden="true">/</span>
+        <b>En direct</b></div>
+      <div class="topbar-m"><div class="brand-mark" style="background:linear-gradient(145deg,#ea8943,#c54b12);display:grid;place-items:center;border-radius:12px"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:#1e120b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M7 12h10M4 15c1 4 4.2 6 8 6s7-2 8-6"/></svg></div><div><b>San Pedro Bay</b><small>Port intelligence</small></div></div>
+      <div class="top-right">
+        <div class="clock" aria-label="Heure"><i aria-hidden="true"></i><b id="clock-utc">--:--:-- UTC</b> · <span id="clock-la">--:--</span></div>
+        <span class="pill vigilance" role="status"><i aria-hidden="true"></i>Vigilance</span>
+        <button class="btn primary" id="btn-refresh" type="button" aria-label="Actualiser les données" title="Actualise la météo si elle a plus de 15 minutes (Maj + clic : forcer)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg><span class="lbl">Actualiser</span></button>
+      </div>
+    </div>
+
+    <div class="stage">
+    
+    <div class="ticker" role="marquee" aria-label="Bulletin portuaire">
+      <div class="ticker-tag" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" style="stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 17c3-4 6-4 9 0s6 4 9 0M3 11c3-4 6-4 9 0s6 4 9 0"/></svg><span>Bulletin</span></div>
+      <div class="ticker-track">
+        <span class="ticker-item" ><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" ><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" ><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" ><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" ><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" ><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" ><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" ><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Volume mensuel</b><span>1 026 872 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Prévision du mois prochain (EVP)</b><span>962 829 EVP</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Escales de porte-conteneurs</b><span>39 escales</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Rang CPPI 2025</b><span>305ᵉ / 88ᵉ / 400</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Temps médian au port</b><span>1,08 jours</span></span><span class="ticker-item" aria-hidden="true"><i class="info"></i><b>Gros navires dans la baie (cargos, pétroliers)</b><span>2 navires</span></span><span class="ticker-item" aria-hidden="true"><i class="warn"></i><b>Vent et rafales</b><span>6 / 6 nœuds (vent / rafales)</span></span><span class="ticker-item" aria-hidden="true"><i class="ok"></i><b>Vagues au large de la jetée</b><span>1,2 m · période 10 s</span></span>
+      </div>
+    </div>
+    
+
+    
+
+    
+    <header class="pagehead">
+      <div>
+        <div class="kicker">Vue opérationnelle · décision en minutes et en heures</div>
+        <h1>La baie en direct : navires (AIS) et météo</h1>
+        <p>Positions des navires autour du port, avec type et statut, et prévision de vent, de rafales et de vagues sur 72 heures. Chaque bloc affiche son origine et son âge.</p>
+      </div>
+      <div class="pagehead-art" aria-hidden="true"><svg viewBox="0 0 240 150" role="img" aria-label="Radar de surveillance du port"><title>Radar de surveillance du port</title><g class="art-stroke"><circle cx="120" cy="76" r="62"/><circle cx="120" cy="76" r="42"/><circle cx="120" cy="76" r="22"/><path d="M120 12 V140 M56 76 H184"/></g><g class="art-spin" style="transform-origin:120px 76px"><path d="M120 76 L120 14 A62 62 0 0 1 172 45Z" fill="#d8571a" opacity=".28"/><path d="M120 76 V14" stroke="#d8571a" stroke-width="2.6" stroke-linecap="round"/></g><circle class="art-fill-o art-float" cx="152" cy="52" r="5"/><circle class="art-fill-b art-float d2" cx="92" cy="98" r="4"/><circle class="art-fill-k art-float d3" cx="140" cy="104" r="4"/><g class="art-stroke" opacity=".8"><path d="M200 40 q10 8 0 16 M208 34 q16 14 0 28"/></g></svg>
+</div>
+    </header>
+    
+
+    
+
+<div class="banner" style="border-color:rgba(79,122,58,.45);background:rgba(79,122,58,.07)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4"/></svg><div><b><span class="live-dot" aria-hidden="true"></span>Flux AIS en direct</b><span id="live-age">Dernière position reçue : 19/11/2026 13:44 UTC. Couverture gratuite par stations terrestres : peut être partielle hors de la baie.</span></div></div>
+
+
+<section data-stagger class="grid g-2-1">
+  <div class="card reveal" style="padding:14px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding:6px 8px 12px">
+      <div><div class="kicker">Niveau descriptif · où sont les navires ?</div><h2>Carte AIS de San Pedro Bay</h2></div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div id="map"></div>
+    <p class="small muted" style="margin:10px 6px 0">Taille du point = longueur du navire. Zone pointillée = zone de collecte. Fond de carte © OpenStreetMap.</p>
+  </div>
+  <div style="display:grid;gap:16px;align-content:start">
+    <div class="card reveal"><div class="kicker">Résumé AIS</div><h2 id="ais-titre">—</h2><p class="sub" id="ais-sous"></p>
+      <div class="kv" id="ais-kv"></div></div>
+    <div class="card reveal"><div class="kicker">Par type de navire</div><div id="c-types" class="chart short" style="height:240px"></div></div>
+  </div>
+</section>
+
+<section class="mt2"><div class="kicker">Météo du port · Open-Meteo</div><h2 >Vent, rafales et vagues : maintenant et dans les 72 prochaines heures</h2></section>
+
+<section data-stagger class="grid g-2-1 mt">
+  <div class="card reveal">
+    <div class="gauge" style="margin-bottom:14px">
+      <div class="g "><b class="num">6 <small style="font-size:13px;font-weight:500">nœuds</small></b><span>vent moyen</span></div>
+      <div class="g "><b class="num">6 <small style="font-size:13px;font-weight:500">nœuds</small></b><span>rafales</span></div>
+      <div class="g "><b class="num">1,2 <small style="font-size:13px;font-weight:500">m</small></b><span>vagues au large · 10 s</span></div>
+    </div>
+    <div id="c-meteo" class="chart tall"></div>
+    <p class="small muted" style="margin:6px 0 0">Heures de Los Angeles. Zone grisée : passé. Lignes pointillées : seuils de vigilance (orange) et d'alerte (rouge). Modèle global : indicatif, pas une mesure au quai.</p>
+  </div>
+  <div style="display:grid;gap:16px;align-content:start">
+    <div class="card reveal"><div class="kicker">Diagnostic · alertes à 48 h</div><h2>Épisodes détectés</h2>
+      <div class="alerts mt"><div class="alert-item vigilance"><b>vigilance</b><span>Rafales jusqu&#x27;à 30,9 nœuds entre 19/11 10h et 19/11 11h (heure de Los Angeles) — seuil de vigilance : 28 nœuds.</span></div><div class="alert-item vigilance"><b>vigilance</b><span>Visibilité réduite à 1 600 m entre 19/11 10h et 19/11 11h (seuil : 2 000 m).</span></div></div>
+      
+      </div>
+    <div class="card reveal"><div class="kicker">Règles d'alerte</div>
+      <table class="t"><thead><tr><th>Variable</th><th class="r">Vigilance</th><th class="r">Alerte</th></tr></thead><tbody>
+      <tr><td>Vent moyen</td><td class="r">≥ 21 nœuds</td><td class="r">≥ 34 nœuds</td></tr><tr><td>Rafales</td><td class="r">≥ 28 nœuds</td><td class="r">≥ 34 nœuds</td></tr>
+      <tr><td>Vagues au large</td><td class="r">≥ 2,5 m</td><td class="r">≥ 4 m</td></tr><tr><td>Visibilité</td><td class="r">≤ 2 000 m</td><td class="r">—</td></tr></tbody></table>
+      <p class="small muted" style="margin:10px 0 0">Seuils pédagogiques inspirés des avis du service météo américain (NWS) ; la capitainerie fixe ses propres limites. Une alerte par épisode, pas une par heure : c'est la parade à la fatigue d'alerte.</p></div>
+  </div>
+</section>
+
+
+
+    <footer class="foot">
+      <span>Données publiques sourcées (voir « Sources &amp; méthode »). Projet universitaire, IA sectorielle · secteur portuaire.</span>
+      <span>Vue générée le 19/11/2026 13:44 UTC · Los Angeles seul (Long Beach non importé)</span>
+    </footer>
+    </div>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigation mobile">
+  
+  <a href="index.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Accueil</a>
+  
+  <a href="volumes.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes</a>
+  
+  <a href="monde.html" class="" >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Monde</a>
+  
+  <a href="direct.html" class="on" aria-current="page">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>Direct</a>
+  
+  <button type="button" id="tab-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>Plus</button>
+</nav>
+<div class="sheet-scrim" aria-hidden="true"></div>
+<div class="more-sheet" id="sheet" role="dialog" aria-label="Autres pages">
+  <div class="grab"></div><h3>Toutes les pages</h3>
+  
+  <a href="index.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>Vue d&#x27;ensemble</a>
+  
+  <a href="volumes.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20V10m6 10V4m6 16v-7"/></svg>Volumes LA · LB</a>
+  
+  <a href="monde.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Comparaison mondiale</a>
+  
+  <a href="direct.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4M4.9 4.9a10 10 0 000 14.2M19.1 4.9a10 10 0 010 14.2"/></svg>En direct</a>
+  
+  <a href="decision.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Aide à la décision</a>
+  
+  <a href="sources.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Sources &amp; méthode</a>
+  
+  <a href="fiche.html" class=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg>Fiche de conception</a>
+  
+</div>
+
+<script src="static/dashboard/vendor/plotly.min.js"></script>
+<script src="static/dashboard/js/app.js"></script>
+
+<script id="d-direct" type="application/json">{"ais": {"origine": "live", "instant": "2026-11-19T13:44:16.646113+00:00", "navires": [{"mmsi": "215196000", "nom": "CMA CGM CASSIOPEIA", "lat": 33.73324, "lon": -118.25261, "sog": 0.0, "cog": 360.0, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:40:47+00:00"}, {"mmsi": "368165770", "nom": "V.A.CABRILLO", "lat": 33.72345, "lon": -118.28052, "sog": 0.0, "cog": 51.9, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:40:48+00:00"}, {"mmsi": "366760650", "nom": "LEADER", "lat": 33.73328, "lon": -118.26793, "sog": 0.0, "cog": 239.0, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:40:58+00:00"}, {"mmsi": "636017506", "nom": "MSC JADE", "lat": 33.75156, "lon": -118.24179, "sog": 0.0, "cog": 313.4, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:04+00:00"}, {"mmsi": "368453350", "nom": "DIVE BOAT II", "lat": 33.73628, "lon": -118.26944, "sog": 0.0, "cog": 360.0, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:10+00:00"}, {"mmsi": "367353080", "nom": "EMPIRE STATE", "lat": 33.73417, "lon": -118.22171, "sog": 0.1, "cog": 213.7, "statut": "\u00c0 l'ancre", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:10+00:00"}, {"mmsi": "366755010", "nom": "MASTER", "lat": 33.7403, "lon": -118.27811, "sog": 0.0, "cog": 292.0, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:13+00:00"}, {"mmsi": "366998840", "nom": "MILLENIUM MAVERICK", "lat": 33.76393, "lon": -118.25682, "sog": 0.0, "cog": 98.6, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:13+00:00"}, {"mmsi": "367672140", "nom": "MAURETANIA", "lat": 33.72353, "lon": -118.28044, "sog": 0.0, "cog": 161.2, "statut": "Non d\u00e9fini", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:13+00:00"}, {"mmsi": "367748970", "nom": "BECKY T", "lat": 33.74585, "lon": -118.21996, "sog": 0.0, "cog": 360.0, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:23+00:00"}, {"mmsi": "367471080", "nom": "ISABEL L", "lat": 33.59642, "lon": -118.14178, "sog": 2.5, "cog": 142.6, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:23+00:00"}, {"mmsi": "303584000", "nom": "MAUNALEI", "lat": 33.64645, "lon": -118.18834, "sog": 8.2, "cog": 57.6, "statut": "En route (moteur)", "type": "Cargo (conteneurs, vrac)", "longueur": 207.0, "vu": "2026-11-19T13:41:27+00:00"}, {"mmsi": "441162000", "nom": "HMM GAON", "lat": 33.74368, "lon": -118.19419, "sog": 0.0, "cog": 333.0, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:29+00:00"}, {"mmsi": "241705000", "nom": "APHRODITE", "lat": 33.75615, "lon": -118.21813, "sog": 0.0, "cog": 204.9, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:30+00:00"}, {"mmsi": "367492920", "nom": "WYATT M", "lat": 33.73521, "lon": -118.27131, "sog": 0.0, "cog": 168.0, "statut": "Non d\u00e9fini", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:33+00:00"}, {"mmsi": "636017727", "nom": "MSC ANNA", "lat": 33.70458, "lon": -118.18169, "sog": 8.2, "cog": 353.7, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:34+00:00"}, {"mmsi": "366768030", "nom": "STARSHIP EXPRESS", "lat": 33.76308, "lon": -118.19925, "sog": 0.1, "cog": 20.2, "statut": "\u00c0 quai", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:34+00:00"}, {"mmsi": "367004260", "nom": "CABRILLO", "lat": 33.76757, "lon": -118.21693, "sog": 0.0, "cog": 209.4, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:36+00:00"}, {"mmsi": "367199310", "nom": "CATALINA JET", "lat": 33.76304, "lon": -118.19946, "sog": 0.1, "cog": 97.6, "statut": "Non d\u00e9fini", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:38+00:00"}, {"mmsi": "367035570", "nom": "AMERICAN ISLANDER", "lat": 33.73342, "lon": -118.26352, "sog": 0.1, "cog": 191.0, "statut": "Man\u0153uvre restreinte", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:41+00:00"}, {"mmsi": "367661930", "nom": "MICHELLE SLOAN", "lat": 33.72798, "lon": -118.19946, "sog": 0.2, "cog": 313.7, "statut": "En route (moteur)", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:41:44+00:00"}, {"mmsi": "636025785", "nom": "PAN SKY", "lat": 33.75832, "lon": -118.2619, "sog": 0.0, "cog": 358.6, "statut": "En route (moteur)", "type": "Cargo (conteneurs, vrac)", "longueur": 200.0, "vu": "2026-11-19T13:41:49+00:00"}, {"mmsi": "369703000", "nom": "OCEAN RELIANCE", "lat": 33.73522, "lon": -118.14293, "sog": 0.1, "cog": 53.6, "statut": "\u00c0 l'ancre", "type": "Inconnu", "longueur": null, "vu": "2026-11-19T13:42:00+00:00"}]}, "meteo": [{"t": "2026-11-17T00:00:00+00:00", "vent": 7.3, "rafales": 11.9, "vagues": 2.04, "visibilite": 23500.0}, {"t": "2026-11-17T01:00:00+00:00", "vent": 7.5, "rafales": 12.1, "vagues": 2.06, "visibilite": 26000.0}, {"t": "2026-11-17T02:00:00+00:00", "vent": 7.3, "rafales": 12.4, "vagues": 2.1, "visibilite": 23300.0}, {"t": "2026-11-17T03:00:00+00:00", "vent": 5.4, "rafales": 11.1, "vagues": 2.12, "visibilite": 23600.0}, {"t": "2026-11-17T04:00:00+00:00", "vent": 8.3, "rafales": 17.1, "vagues": 2.24, "visibilite": 21700.0}, {"t": "2026-11-17T05:00:00+00:00", "vent": 6.5, "rafales": 16.7, "vagues": 2.34, "visibilite": 24100.0}, {"t": "2026-11-17T06:00:00+00:00", "vent": 8.6, "rafales": 16.3, "vagues": 2.46, "visibilite": 27700.0}, {"t": "2026-11-17T07:00:00+00:00", "vent": 9.9, "rafales": 18.7, "vagues": 2.54, "visibilite": 25900.0}, {"t": "2026-11-17T08:00:00+00:00", "vent": 10.3, "rafales": 22.4, "vagues": 2.64, "visibilite": 29900.0}, {"t": "2026-11-17T09:00:00+00:00", "vent": 8.7, "rafales": 24.9, "vagues": 2.72, "visibilite": 30800.0}, {"t": "2026-11-17T10:00:00+00:00", "vent": 10.1, "rafales": 21.6, "vagues": 2.68, "visibilite": 32400.0}, {"t": "2026-11-17T11:00:00+00:00", "vent": 7.1, "rafales": 14.8, "vagues": 2.66, "visibilite": 31500.0}, {"t": "2026-11-17T12:00:00+00:00", "vent": 5.5, "rafales": 16.7, "vagues": 2.62, "visibilite": 33900.0}, {"t": "2026-11-17T13:00:00+00:00", "vent": 6.7, "rafales": 16.9, "vagues": 2.52, "visibilite": 200.0}, {"t": "2026-11-17T14:00:00+00:00", "vent": 8.2, "rafales": 18.9, "vagues": 2.42, "visibilite": 200.0}, {"t": "2026-11-17T15:00:00+00:00", "vent": 6.5, "rafales": 11.9, "vagues": 2.32, "visibilite": 52700.0}, {"t": "2026-11-17T16:00:00+00:00", "vent": 7.3, "rafales": 11.1, "vagues": 2.3, "visibilite": 45300.0}, {"t": "2026-11-17T17:00:00+00:00", "vent": 6.5, "rafales": 8.6, "vagues": 2.28, "visibilite": 48400.0}, {"t": "2026-11-17T18:00:00+00:00", "vent": 5.7, "rafales": 6.8, "vagues": 2.26, "visibilite": 52800.0}, {"t": "2026-11-17T19:00:00+00:00", "vent": 5.2, "rafales": 5.8, "vagues": 2.16, "visibilite": 53600.0}, {"t": "2026-11-17T20:00:00+00:00", "vent": 2.5, "rafales": 4.1, "vagues": 2.06, "visibilite": 60800.0}, {"t": "2026-11-17T21:00:00+00:00", "vent": 8.6, "rafales": 9.5, "vagues": 1.96, "visibilite": 44300.0}, {"t": "2026-11-17T22:00:00+00:00", "vent": 7.9, "rafales": 9.9, "vagues": 1.92, "visibilite": 56300.0}, {"t": "2026-11-17T23:00:00+00:00", "vent": 6.5, "rafales": 8.2, "vagues": 1.88, "visibilite": 60700.0}, {"t": "2026-11-18T00:00:00+00:00", "vent": 7.6, "rafales": 9.5, "vagues": 1.84, "visibilite": 50500.0}, {"t": "2026-11-18T01:00:00+00:00", "vent": 4.7, "rafales": 11.1, "vagues": 1.82, "visibilite": 45600.0}, {"t": "2026-11-18T02:00:00+00:00", "vent": 2.6, "rafales": 9.9, "vagues": 1.8, "visibilite": 47100.0}, {"t": "2026-11-18T03:00:00+00:00", "vent": 7.3, "rafales": 12.6, "vagues": 1.78, "visibilite": 42300.0}, {"t": "2026-11-18T04:00:00+00:00", "vent": 3.5, "rafales": 10.1, "vagues": 1.76, "visibilite": 30600.0}, {"t": "2026-11-18T05:00:00+00:00", "vent": 3.9, "rafales": 7.6, "vagues": 1.72, "visibilite": 28700.0}, {"t": "2026-11-18T06:00:00+00:00", "vent": 3.5, "rafales": 5.6, "vagues": 1.7, "visibilite": 42100.0}, {"t": "2026-11-18T07:00:00+00:00", "vent": 5.6, "rafales": 6.2, "vagues": 1.66, "visibilite": 55300.0}, {"t": "2026-11-18T08:00:00+00:00", "vent": 4.7, "rafales": 4.7, "vagues": 1.62, "visibilite": 48100.0}, {"t": "2026-11-18T09:00:00+00:00", "vent": 4.2, "rafales": 5.4, "vagues": 1.58, "visibilite": 32600.0}, {"t": "2026-11-18T10:00:00+00:00", "vent": 4.9, "rafales": 6.0, "vagues": 1.54, "visibilite": 27000.0}, {"t": "2026-11-18T11:00:00+00:00", "vent": 5.0, "rafales": 7.2, "vagues": 1.48, "visibilite": 200.0}, {"t": "2026-11-18T12:00:00+00:00", "vent": 4.1, "rafales": 5.8, "vagues": 1.44, "visibilite": 27700.0}, {"t": "2026-11-18T13:00:00+00:00", "vent": 4.8, "rafales": 6.6, "vagues": 1.4, "visibilite": 200.0}, {"t": "2026-11-18T14:00:00+00:00", "vent": 4.9, "rafales": 5.4, "vagues": 1.38, "visibilite": 200.0}, {"t": "2026-11-18T15:00:00+00:00", "vent": 4.9, "rafales": 8.0, "vagues": 1.34, "visibilite": 200.0}, {"t": "2026-11-18T16:00:00+00:00", "vent": 5.9, "rafales": 7.0, "vagues": 1.32, "visibilite": 36500.0}, {"t": "2026-11-18T17:00:00+00:00", "vent": 5.2, "rafales": 6.2, "vagues": 1.28, "visibilite": 39200.0}, {"t": "2026-11-18T18:00:00+00:00", "vent": 4.4, "rafales": 5.1, "vagues": 1.26, "visibilite": 38800.0}, {"t": "2026-11-18T19:00:00+00:00", "vent": 1.4, "rafales": 4.1, "vagues": 1.22, "visibilite": 39400.0}, {"t": "2026-11-18T20:00:00+00:00", "vent": 5.0, "rafales": 5.2, "vagues": 1.2, "visibilite": 41300.0}, {"t": "2026-11-18T21:00:00+00:00", "vent": 5.5, "rafales": 6.0, "vagues": 1.16, "visibilite": 44000.0}, {"t": "2026-11-18T22:00:00+00:00", "vent": 5.6, "rafales": 6.4, "vagues": 1.14, "visibilite": 41400.0}, {"t": "2026-11-18T23:00:00+00:00", "vent": 5.6, "rafales": 6.6, "vagues": 1.12, "visibilite": 38300.0}, {"t": "2026-11-19T00:00:00+00:00", "vent": 5.0, "rafales": 6.6, "vagues": 1.1, "visibilite": 35400.0}, {"t": "2026-11-19T01:00:00+00:00", "vent": 5.7, "rafales": 9.1, "vagues": 1.08, "visibilite": 29100.0}, {"t": "2026-11-19T02:00:00+00:00", "vent": 4.5, "rafales": 8.6, "vagues": 1.06, "visibilite": 28000.0}, {"t": "2026-11-19T03:00:00+00:00", "vent": 7.3, "rafales": 13.2, "vagues": 1.04, "visibilite": 26400.0}, {"t": "2026-11-19T04:00:00+00:00", "vent": 8.3, "rafales": 14.0, "vagues": 1.02, "visibilite": 27100.0}, {"t": "2026-11-19T05:00:00+00:00", "vent": 8.5, "rafales": 14.0, "vagues": 0.98, "visibilite": 27200.0}, {"t": "2026-11-19T06:00:00+00:00", "vent": 9.4, "rafales": 14.6, "vagues": 0.96, "visibilite": 29500.0}, {"t": "2026-11-19T07:00:00+00:00", "vent": 9.1, "rafales": 13.8, "vagues": 0.98, "visibilite": 30000.0}, {"t": "2026-11-19T08:00:00+00:00", "vent": 6.6, "rafales": 10.3, "vagues": 0.98, "visibilite": 27500.0}, {"t": "2026-11-19T09:00:00+00:00", "vent": 8.4, "rafales": 11.9, "vagues": 1.0, "visibilite": 31800.0}, {"t": "2026-11-19T10:00:00+00:00", "vent": 10.1, "rafales": 14.0, "vagues": 1.06, "visibilite": 27000.0}, {"t": "2026-11-19T11:00:00+00:00", "vent": 9.8, "rafales": 13.7, "vagues": 1.1, "visibilite": 29900.0}, {"t": "2026-11-19T12:00:00+00:00", "vent": 11.0, "rafales": 15.3, "vagues": 1.16, "visibilite": 28000.0}, {"t": "2026-11-19T13:00:00+00:00", "vent": 12.9, "rafales": 17.8, "vagues": 1.26, "visibilite": 28600.0}, {"t": "2026-11-19T14:00:00+00:00", "vent": 14.2, "rafales": 19.2, "vagues": 1.36, "visibilite": 27700.0}, {"t": "2026-11-19T15:00:00+00:00", "vent": 16.2, "rafales": 22.4, "vagues": 1.46, "visibilite": 26300.0}, {"t": "2026-11-19T16:00:00+00:00", "vent": 16.4, "rafales": 23.3, "vagues": 1.64, "visibilite": 24000.0}, {"t": "2026-11-19T17:00:00+00:00", "vent": 17.7, "rafales": 25.5, "vagues": 1.84, "visibilite": 7100.0}, {"t": "2026-11-19T18:00:00+00:00", "vent": 18.8, "rafales": 30.9, "vagues": 2.02, "visibilite": 1600.0}, {"t": "2026-11-19T19:00:00+00:00", "vent": 12.4, "rafales": 24.5, "vagues": 2.14, "visibilite": 4700.0}, {"t": "2026-11-19T20:00:00+00:00", "vent": 13.1, "rafales": 24.9, "vagues": 2.24, "visibilite": 8800.0}, {"t": "2026-11-19T21:00:00+00:00", "vent": 13.8, "rafales": 26.4, "vagues": 2.36, "visibilite": 20300.0}, {"t": "2026-11-19T22:00:00+00:00", "vent": 11.7, "rafales": 23.9, "vagues": 2.36, "visibilite": 23000.0}, {"t": "2026-11-19T23:00:00+00:00", "vent": 10.4, "rafales": 22.2, "vagues": 2.34, "visibilite": 28300.0}, {"t": "2026-11-20T00:00:00+00:00", "vent": 9.3, "rafales": 20.4, "vagues": 2.34, "visibilite": 28200.0}, {"t": "2026-11-20T01:00:00+00:00", "vent": 4.3, "rafales": 15.4, "vagues": 2.34, "visibilite": 26100.0}, {"t": "2026-11-20T02:00:00+00:00", "vent": 5.7, "rafales": 15.0, "vagues": 2.32, "visibilite": 22700.0}, {"t": "2026-11-20T03:00:00+00:00", "vent": 6.3, "rafales": 16.3, "vagues": 2.32, "visibilite": 21900.0}, {"t": "2026-11-20T04:00:00+00:00", "vent": 7.6, "rafales": 18.9, "vagues": 2.32, "visibilite": 27400.0}, {"t": "2026-11-20T05:00:00+00:00", "vent": 8.2, "rafales": 20.0, "vagues": 2.3, "visibilite": 29800.0}, {"t": "2026-11-20T06:00:00+00:00", "vent": 5.7, "rafales": 15.6, "vagues": 2.3, "visibilite": 23500.0}, {"t": "2026-11-20T07:00:00+00:00", "vent": 6.2, "rafales": 12.4, "vagues": 2.24, "visibilite": 27500.0}, {"t": "2026-11-20T08:00:00+00:00", "vent": 5.9, "rafales": 13.2, "vagues": 2.2, "visibilite": 30400.0}, {"t": "2026-11-20T09:00:00+00:00", "vent": 6.3, "rafales": 15.0, "vagues": 2.14, "visibilite": 28400.0}, {"t": "2026-11-20T10:00:00+00:00", "vent": 6.8, "rafales": 14.1, "vagues": 2.08, "visibilite": 26960.0}, {"t": "2026-11-20T11:00:00+00:00", "vent": 6.0, "rafales": 12.1, "vagues": 2.02, "visibilite": 25520.0}, {"t": "2026-11-20T12:00:00+00:00", "vent": 5.2, "rafales": 10.2, "vagues": 1.96, "visibilite": 24930.0}, {"t": "2026-11-20T13:00:00+00:00", "vent": 4.3, "rafales": 8.4, "vagues": 1.9, "visibilite": 24140.0}, {"t": "2026-11-20T14:00:00+00:00", "vent": 4.1, "rafales": 7.2, "vagues": 1.86, "visibilite": 24140.0}, {"t": "2026-11-20T15:00:00+00:00", "vent": 3.5, "rafales": 6.2, "vagues": 1.8, "visibilite": 24140.0}, {"t": "2026-11-20T16:00:00+00:00", "vent": 4.1, "rafales": 5.2, "vagues": 1.74, "visibilite": 24140.0}, {"t": "2026-11-20T17:00:00+00:00", "vent": 4.3, "rafales": 4.3, "vagues": 1.7, "visibilite": 24140.0}, {"t": "2026-11-20T18:00:00+00:00", "vent": 4.3, "rafales": 5.1, "vagues": 1.64, "visibilite": 24140.0}, {"t": "2026-11-20T19:00:00+00:00", "vent": 5.0, "rafales": 6.0, "vagues": 1.6, "visibilite": 24140.0}, {"t": "2026-11-20T20:00:00+00:00", "vent": 6.4, "rafales": 6.8, "vagues": 1.58, "visibilite": 24140.0}, {"t": "2026-11-20T21:00:00+00:00", "vent": 7.0, "rafales": 8.0, "vagues": 1.54, "visibilite": 24140.0}, {"t": "2026-11-20T22:00:00+00:00", "vent": 8.2, "rafales": 8.7, "vagues": 1.54, "visibilite": 24140.0}, {"t": "2026-11-20T23:00:00+00:00", "vent": 8.4, "rafales": 10.3, "vagues": 1.52, "visibilite": 24140.0}], "seuils": {"vent": [21.0, 34.0], "rafales": [28.0, 34.0], "vagues": [2.5, 4.0], "visibilite": 2000.0}, "carte": {"centre": [33.7, -118.24], "bbox": [[33.55, -118.45], [33.85, -118.05]], "port": [33.72, -118.25], "mer": [33.6, -118.3], "ports": [{"nom": "Port of Los Angeles", "lat": 33.738, "lon": -118.262}, {"nom": "Port of Long Beach", "lat": 33.754, "lon": -118.216}]}}</script>
+<script src="static/dashboard/vendor/leaflet.js"></script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("d-direct").textContent), C = SPB.C;
+  const typeCol = { "Cargo (conteneurs, vrac)": C.cyan, "Pétrolier / chimiquier": C.amber, "Passagers": C.violet, "Remorqueur": C.green, "Plaisance / voilier": "#8F7A68", "Pêche": C.teal, "Service portuaire / sécurité": C.blue, "Autre": "#B3A28C", "Inconnu": "#B3A28C" };
+  // ---------- carte
+  const map = L.map("map", { zoomControl: true, attributionControl: true }).setView(D.carte.centre, 11);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "© OpenStreetMap" }).addTo(map);
+  L.rectangle(D.carte.bbox, { color: "#7A4B2E", weight: 1.6, dashArray: "7 7", fill: false }).addTo(map);
+  D.carte.ports.forEach(p => L.marker([p.lat, p.lon], { icon: L.divIcon({ className: "", html: '<div style="width:max-content;transform:translate(-50%,-100%);color:#fbf7ef;font:600 11.5px DM Sans,sans-serif;background:rgba(43,27,18,.94);border:1px solid rgba(235,224,205,.45);padding:3px 10px;border-radius:9px;white-space:nowrap;box-shadow:0 8px 14px -8px rgba(30,18,11,.7)">⚓ ' + p.nom + "</div>" }) }).addTo(map));
+  const couche = L.layerGroup().addTo(map);
+  const actifs = new Set(Object.keys(typeCol));
+  let navires = D.ais.navires;
+  function rayon(n) { return 4 + Math.min((n.longueur || 60) / 45, 7); }
+  function dessiner() {
+    couche.clearLayers();
+    navires.filter(n => actifs.has(n.type)).forEach(n => {
+      const m = L.circleMarker([n.lat, n.lon], { radius: rayon(n), color: "#2B1B12", weight: 1.2, fillColor: typeCol[n.type] || "#B3A28C", fillOpacity: .88 });
+      m.bindPopup("<b>" + n.nom + "</b><br>MMSI " + n.mmsi + "<br>" + n.type + (n.longueur ? " · " + Math.round(n.longueur) + " m" : "") + "<br>Statut : " + n.statut + "<br>Vitesse : " + (n.sog != null ? n.sog.toFixed(1) + " nœuds" : "—") + "<br><span style='color:#94a3c2'>Vu : " + SPB.fmtLA(n.vu) + " (LA)</span>");
+      couche.addLayer(m);
+    });
+  }
+  function resume() {
+    const par = {}; navires.forEach(n => par[n.type] = (par[n.type] || 0) + 1);
+    const gros = navires.filter(n => n.type === "Cargo (conteneurs, vrac)" || n.type === "Pétrolier / chimiquier"), anc = gros.filter(n => n.statut === "À l'ancre"), mvt = navires.filter(n => (n.sog || 0) >= 0.5);
+    document.getElementById("ais-titre").textContent = navires.length + " navires" + (D.ais.origine === "archive" ? " (archive)" : D.ais.origine === "live" ? " en direct" : "");
+    document.getElementById("ais-sous").textContent = D.ais.instant ? "Position la plus récente : " + SPB.fmtLA(D.ais.instant, { year: "numeric" }) + " (heure de Los Angeles)" : "Aucune donnée AIS";
+    document.getElementById("ais-kv").innerHTML = [["Gros navires (cargos, pétroliers)", gros.length], ["dont à l'ancre", anc.length], ["En mouvement (> 0,5 nœud)", mvt.length], ["Immobiles ou à quai", navires.length - mvt.length]].map(r => "<span>" + r[0] + "</span><span>" + r[1] + "</span>").join("");
+    const ks = Object.keys(par).sort((a, b) => par[b] - par[a]);
+    SPB.plot("c-types", [{ type: "bar", orientation: "h", y: ks.slice().reverse(), x: ks.map(k => par[k]).reverse(), marker: { color: ks.map(k => typeCol[k] || "#B3A28C").reverse() }, hovertemplate: "%{x} navires<extra></extra>" }],
+      { margin: { l: 170, r: 14, t: 6, b: 28 }, hovermode: "closest", yaxis: { automargin: true, tickfont: { size: 11.5, color: "#2B1B12" } } });
+    document.getElementById("chips").innerHTML = ks.map(k => '<span class="chip' + (actifs.has(k) ? "" : " off") + '" data-k="' + k + '" style="--c:' + (typeCol[k] || "#B3A28C") + '"><i></i>' + k + " · " + par[k] + "</span>").join("");
+    document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { const k = c.dataset.k; actifs.has(k) ? actifs.delete(k) : actifs.add(k); c.classList.toggle("off"); dessiner(); }));
+  }
+  dessiner(); resume();
+  // cadrer la carte sur les navires (pas sur toute la zone de collecte, souvent vide en mer)
+  const pts = navires.map(n => [n.lat, n.lon]);
+  if (pts.length > 3) map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 12 });
+  // ---------- météo
+  const M = D.meteo;
+  if (M.length) {
+    const la = iso => new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(new Date(iso)).replace(",", "");
+    const x = M.map(p => la(p.t)), now = la(new Date().toISOString());
+    const ligne = (y, col, nom) => ({ x: [x[0], x[x.length - 1]], y: [y, y], mode: "lines", line: { color: col, width: 1, dash: "dot" }, hoverinfo: "skip", showlegend: false });
+    SPB.plot("c-meteo", [
+      ligne(D.seuils.rafales[0], "rgba(196,138,28,.7)"), ligne(D.seuils.rafales[1], "rgba(166,50,30,.8)"),
+      { x: x, y: M.map(p => p.rafales), mode: "lines", name: "Rafales (nœuds)", line: { color: C.amber, width: 2.2 }, hovertemplate: "%{y:.0f} nœuds" },
+      { x: x, y: M.map(p => p.vent), mode: "lines", name: "Vent moyen (nœuds)", line: { color: C.cyan, width: 2.4 }, hovertemplate: "%{y:.0f} nœuds" },
+      { x: x, y: M.map(p => p.vagues), mode: "lines", name: "Vagues au large (m)", yaxis: "y2", fill: "tozeroy", fillcolor: "rgba(122,75,46,.14)", line: { color: C.violet, width: 2 }, hovertemplate: "%{y:.1f} m" }],
+      { xaxis: { type: "date", tickformat: "%d/%m\n%Hh" }, yaxis: { title: { text: "nœuds", font: { size: 11 } }, rangemode: "tozero" },
+        yaxis2: { overlaying: "y", side: "right", title: { text: "vagues (m)", font: { size: 11 } }, rangemode: "tozero", showgrid: false, gridcolor: "rgba(0,0,0,0)" },
+        shapes: [{ type: "rect", xref: "x", yref: "paper", x0: x[0], x1: now, y0: 0, y1: 1, fillcolor: "rgba(43,27,18,.045)", line: { width: 0 } }, { type: "line", xref: "x", yref: "paper", x0: now, x1: now, y0: 0, y1: 1, line: { color: C.text, width: 1.5, dash: "dash" } }],
+        annotations: [{ x: now, yref: "paper", y: 1.02, text: "maintenant", showarrow: false, font: { color: C.text, size: 11.5 } }], margin: { l: 52, r: 52, t: 30, b: 46 } });
+  }
+  // ---------- direct : rafraîchissement sans recharger la page (lit la base, aucun appel externe)
+  if (D.ais.origine === "live") {
+    setInterval(() => fetch("/api/live/").then(r => r.json()).then(j => { navires = j.direct.ais.navires; D.ais = j.direct.ais; dessiner(); resume(); }).catch(() => {}), 60000);
+  }
+})();
+</script>
+
+</body>
+</html>

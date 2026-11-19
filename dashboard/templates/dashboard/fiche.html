@@ -1,0 +1,84 @@
+{% extends "dashboard/base.html" %}
+{% block titre %}Fiche de conception{% endblock %}
+{% block kicker %}Conception · une page{% endblock %}
+{% block h1 %}Fiche de conception du tableau de bord{% endblock %}
+{% block lead %}Remplie selon la grille en huit cases du cours (séquence 6, partie 2) : utilisateur, décision, indicateurs, références, forme, fraîcheur, intelligence, automatisation. Imprimable en une page A4 (fichier PDF fourni dans <code>docs/</code>).{% endblock %}
+{% block head %}
+<style>
+  .sheet { background: #fff; color: #2B1B12; border-radius: 10px; padding: 20px 24px; max-width: 1040px; margin: 0 auto; box-shadow: 0 30px 70px -30px #000; font-size: 11.2px; line-height: 1.38; }
+  .sheet h1, .sheet h2, .sheet h3 { color: #2B1B12; margin: 0; }
+  .sheet .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #2B1B12; padding-bottom: 7px; margin-bottom: 9px; }
+  .sheet .head h2 { font-size: 17px; } .sheet .head span { color: #6F5846; font-size: 10.5px; text-align: right; }
+  .sheet .cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  .sheet .box { border: 1px solid #DFD0B6; border-radius: 7px; padding: 6px 9px; background: #FBF7EF; }
+  .sheet .box b.n { display: inline-block; background: #2B1B12; color: #fff; border-radius: 50%; width: 15px; height: 15px; text-align: center; line-height: 15px; font-size: 9.5px; margin-right: 5px; }
+  .sheet .box h3 { font-size: 11.5px; margin-bottom: 2px; } .sheet .box p { margin: 0; }
+  .sheet table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 10.2px; }
+  .sheet th { background: #2B1B12; color: #fff; text-align: left; padding: 3px 5px; font-weight: 600; }
+  .sheet td { border-bottom: 1px solid #EBE0CD; padding: 3px 5px; vertical-align: top; }
+  .sheet tr:nth-child(even) td { background: #F6EFE3; }
+  .sheet .lower { display: grid; grid-template-columns: 1.15fr 1fr; gap: 10px; }
+  .mock { border: 1.5px solid #2B1B12; border-radius: 8px; padding: 6px; background: #F5EEE1; display: grid; gap: 4px; font-size: 8.6px; color: #2B1B12; }
+  .mock .r { display: grid; gap: 4px; } .mock .r4 { grid-template-columns: repeat(4, 1fr); } .mock .r2 { grid-template-columns: 2fr 1fr; } .mock .rm { grid-template-columns: 1fr 1fr; }
+  .mock div.b { border: 1px dashed #B39B7C; background: #fff; border-radius: 4px; padding: 3px 4px; min-height: 24px; }
+  .mock div.b.top { background: #2B1B12; color: #fff; border: 0; display: flex; justify-content: space-between; gap: 8px; }
+  .mock div.b.warn { background: #fff4de; border-color: #e0a22f; } .mock div.b.hi { background: #FBE6D2; border-color: #D8571A; }
+  .sheet .foot2 { margin-top: 6px; color: #6F5846; font-size: 9.6px; border-top: 1px solid #DFD0B6; padding-top: 4px; }
+  @media (max-width: 719px) { .sheet { padding: 14px 12px; font-size: 12.5px; } .sheet .head { flex-direction: column; align-items: flex-start; gap: 4px; } .sheet .head span { text-align: left; }
+    .sheet .cols, .sheet .lower { grid-template-columns: 1fr !important; } .sheet table { display: block; overflow-x: auto; white-space: nowrap; } .sheet td { white-space: normal; min-width: 120px; } }
+  @media print { .topbar, .banner, .foot, .main > p { display: none !important; } @page { size: A4 landscape; margin: 8mm; } .sheet { box-shadow: none; padding: 0; border-radius: 0; } body { background: #fff !important; } }
+</style>
+{% endblock %}
+
+{% block art %}{% include "dashboard/_art_fiche.html" %}{% endblock %}
+
+{% block content %}
+<div class="sheet">
+  <div class="head"><div><h2>Fiche de conception · Tableau de bord du complexe portuaire de San Pedro Bay</h2>
+    <span style="text-align:left">Los Angeles + Long Beach · comparaison mondiale (CPPI, CNUCED, PortWatch, dont Djibouti) · direct AIS et météo</span></div>
+    <span>IA sectorielle · secteur portuaire · Master 2<br>Version du 18/11/2026</span></div>
+
+  <div class="cols">
+    <div class="box"><h3><b class="n">1</b>Pour qui ?</h3><p><b>Utilisateur principal :</b> directeur d'exploitation / planification d'un terminal ou de l'autorité portuaire (niveau <b>tactique</b>, quelques minutes par jour). <b>Secondaires :</b> capitainerie (vue « En direct », opérationnel) ; direction (vue « Comparaison mondiale », stratégique).</p></div>
+    <div class="box"><h3><b class="n">2</b>Quelle décision ?</h3><p>Quelles <b>équipes, postes à quai et pilotes</b> mobiliser cette semaine et ce mois ? Faut-il <b>différer des mouvements</b> à cause du vent ou des vagues dans les 48 h ? Où <b>chercher des gains de temps d'escale</b> face aux autres ports ?</p></div>
+    <div class="box"><h3><b class="n">8</b>Automatisation</h3><p><b>Niveau 3 sur 5 :</b> l'outil <b>recommande</b>, un humain <b>valide ou refuse</b> (capitainerie pour la météo, planificateur pour la charge). Jamais d'exécution automatique : coût d'erreur élevé, données partielles.</p></div>
+  </div>
+
+  <div class="box" style="margin-bottom:6px"><h3><b class="n">3</b>Indicateurs (8) et <b class="n">4</b>références <span style="font-weight:400">· chaque tuile affiche : valeur, référence, tendance, date de mise à jour et source</span></h3>
+  <table>
+    <thead><tr><th>#</th><th>Indicateur</th><th>Calcul</th><th>Référence (cible / seuil)</th><th>Source (référence)</th><th>Fréquence</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Volume mensuel</b> (EVP)</td><td>EVP importés + exportés, chargés + vides, LA (+ LB)</td><td>Cible ≥ même mois N−1 ; alerte &lt; −10 %</td><td>Port of Los Angeles ; Port of Long Beach</td><td>Mensuelle</td></tr>
+      <tr><td>2</td><td><b>Prévision du mois prochain</b> ± erreur</td><td>Modèle retenu par backtest (24 dates) ; fourchette = prévision ± MAE de l'horizon</td><td>Écart vs même mois N−1 ; fiabilité = MAE affichée</td><td>Calcul interne sur les volumes</td><td>À chaque actualisation</td></tr>
+      <tr><td>3</td><td><b>Escales de porte-conteneurs</b> / semaine</td><td>Somme lundi-dimanche, LA-LB</td><td>Médiane des 26 sem. ; alerte si |z| ≥ 3</td><td>FMI PortWatch</td><td>Hebdomadaire</td></tr>
+      <tr><td>4</td><td><b>Rang CPPI</b></td><td>Rang publié (score = temps au port)</td><td>Djibouti ; Fuzhou (1ᵉʳ en 2025) ; médiane mondiale</td><td>Banque mondiale, CPPI 2023, 2020-2024 et 2020-2025</td><td>Annuelle</td></tr>
+      <tr><td>5</td><td><b>Temps médian au port</b> (conteneurs, États-Unis)</td><td>Médiane en jours, par pays</td><td>Comparaison Pays-Bas, Chine, Allemagne ; tendance N−1</td><td>CNUCED, UNCTADstat (US.PortCalls)</td><td>Annuelle</td></tr>
+      <tr><td>6</td><td><b>Gros navires dans la baie</b> (AIS)</td><td>Cargos + pétroliers présents ; dont à l'ancre</td><td>Habituel à l'heure (plage p25-p75) ; file si ancre &gt; p75+3</td><td>aisstream.io (sinon archive MarineCadastre, datée)</td><td>Minutes (direct)</td></tr>
+      <tr><td>7</td><td><b>Vent et rafales</b> (nœuds)</td><td>Actuel + maximum prévu 48 h</td><td>Vigilance 21 / 28 ; alerte ≥ 34 (NWS)</td><td>Open-Meteo (forecast)</td><td>15 minutes</td></tr>
+      <tr><td>8</td><td><b>Vagues au large</b> (m)</td><td>Hauteur significative, actuelle + max 48 h</td><td>Vigilance ≥ 2,5 m ; alerte ≥ 4 m</td><td>Open-Meteo (marine)</td><td>15 minutes</td></tr>
+    </tbody></table></div>
+
+  <div class="lower">
+    <div>
+      <div class="cols" style="grid-template-columns:1fr 1fr;margin-bottom:6px">
+        <div class="box"><h3><b class="n">5</b>Forme (graphique ↔ question)</h3><p>Courbe/barres empilées : évolution des volumes · carte de chaleur : saisonnalité · barres triées + courbes : classement et score · carte : où sont les navires · chiffre + cible + écart : tuiles. Axes à zéro ; pas de camembert.</p></div>
+        <div class="box"><h3><b class="n">6</b>Fraîcheur</h3><p>Chaque valeur porte sa <b>période</b>, sa <b>date de récupération</b> et sa <b>source</b>. Sources lentes lues en base (pas d'appel à chaque page) ; météo rappelée après 15 min ; AIS par processus séparé ; bannière claire si une source est indisponible.</p></div>
+      </div>
+      <div class="box"><h3><b class="n">7</b>Intelligence ajoutée</h3><p><b>Prédictif :</b> prévision à 6 mois avec marge d'erreur (backtest). <b>Diagnostic :</b> détection d'anomalies mensuelles (STL robuste) avec flux responsable ; alerte météo par épisode à 48 h. <b>Prescriptif :</b> recommandations d'action avec preuves, décideur et « à ne pas suivre si ».</p>
+        <p style="margin-top:3px"><b>Exemple de recommandation :</b> « Rafales ≥ 34 nœuds prévues demain 14 h-20 h : prévenir pilotes et capitainerie, avancer ou différer les mouvements, informer les transporteurs. »</p></div>
+      <p class="foot2"><b>Limites :</b> sources aux périmètres différents (score, pays, navires) ; Djibouti absent des séries d'escales de la CNUCED ; Long Beach à importer à la main ; couverture AIS gratuite variable ; météo = modèle global.</p>
+    </div>
+    <div>
+      <div class="mock" aria-label="Maquette de l'écran">
+        <div class="b top"><span><b>San Pedro Bay</b> · Vue d'ensemble</span><span>● Vigilance · 20:15 UTC · [Actualiser]</span></div>
+        <div class="b warn">⚠ Bannière : « Source indisponible : … » (message clair + quoi faire)</div>
+        <div class="r r4"><div class="b hi"><b>1 Volume</b><br>1 026 872 EVP<br>▲ +21 % · réf N−1 · oct. 2026</div><div class="b hi"><b>2 Prévision</b><br>987 622 ± 65 220<br>nov. 2026</div><div class="b hi"><b>3 Escales</b><br>39 / semaine<br>réf médiane 26 sem.</div><div class="b hi"><b>4 CPPI</b><br>305ᵉ / 88ᵉ<br>Djibouti 53ᵉ</div></div>
+        <div class="r r4"><div class="b"><b>5 Temps médian</b><br>1,08 j · États-Unis</div><div class="b"><b>6 Navires AIS</b><br>41 · dont 8 ancre</div><div class="b"><b>7 Vent</b><br>4 / 5 nœuds · 21-34</div><div class="b"><b>8 Vagues</b><br>1,2 m · 2,5-4</div></div>
+        <div class="r r2"><div class="b" style="min-height:62px"><b>Volumes LA + LB et prévision</b> (courbe réel + bande ± MAE)<br>▁▂▃▅▆▇▆▅ ┄┄┄ bande</div><div class="b hi" style="min-height:62px"><b>Action recommandée</b><br>Titre · action · preuves · qui décide · niveau 3/5 · à ne pas suivre si…</div></div>
+        <div class="r rm"><div class="b" style="min-height:48px"><b>Comparaison mondiale</b><br>CPPI : scores/rangs LA, LB, Djibouti + 3 ports · CNUCED : escales, temps médian</div><div class="b" style="min-height:48px"><b>En direct</b><br>Carte AIS (type, statut, vitesse) · météo 72 h + seuils</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="small muted" style="text-align:center;margin-top:14px">Maquette : schéma de l'écran « Vue d'ensemble ». Les valeurs sont celles du 18/11/2026.</p>
+{% endblock %}

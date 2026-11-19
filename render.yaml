@@ -1,0 +1,24 @@
+# Déploiement Render (Blueprint). La clé secrète est générée par Render ; aucun secret n'est dans ce fichier.
+services:
+  - type: web
+    name: san-pedro-bay-dashboard
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: bash build.sh
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.9
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      # Flux AIS en direct : clé gratuite aisstream.io, à saisir dans le tableau de bord Render (jamais dans ce fichier).
+      # AIS_AUTOSTART=1 démarre la collecte dans le processus web (pas de second processus sur l'offre gratuite).
+      - key: AIS_AUTOSTART
+        value: "1"
+      - key: AISSTREAM_API_KEY
+        sync: false

@@ -1,0 +1,62 @@
+{% extends "dashboard/base.html" %}
+{% load dash %}
+{% block titre %}Aide à la décision{% endblock %}
+{% block kicker %}Du tableau de bord à la décision{% endblock %}
+{% block h1 %}Qu'est-ce que je décide, et sur quelle base ?{% endblock %}
+{% block lead %}Ce tableau de bord répond aux quatre niveaux d'analyse (descriptif, diagnostic, prédictif, prescriptif). Il <b>propose</b> ; une personne <b>choisit</b>. Voici les recommandations du jour, leurs preuves, et les limites à garder en tête.{% endblock %}
+
+{% block art %}{% include "dashboard/_art_decision.html" %}{% endblock %}
+
+{% block content %}
+<section class="levels reveal" data-stagger>
+  <div class="level on" data-i="1"><div class="n">Descriptif</div><h3>Que s'est-il passé ?</h3><p>Les chiffres, avec référence et tendance.</p>
+    <div class="eg">{% for t in kpis %}{% if t.id == 'volumes' %}{{ t.valeur }} EVP en {{ t.periode }} ({{ t.tendance }}).{% endif %}{% endfor %}</div></div>
+  <div class="level on" data-i="2"><div class="n">Diagnostic</div><h3>Pourquoi ?</h3><p>Écarts détectés et flux responsables ; alertes météo.</p>
+    <div class="eg">{% if anom_m.ok %}{{ anom_m.anomalies|length }} mois hors norme depuis 2019 ; {% endif %}{% if meteo.disponible %}{{ meteo.alertes|length }} épisode{{ meteo.alertes|length|pluralize }} météo à 48 h.{% endif %}</div></div>
+  <div class="level on" data-i="3"><div class="n">Prédictif</div><h3>Que va-t-il se passer ?</h3><p>Prévision à 6 mois avec fourchette d'erreur.</p>
+    <div class="eg">{% if forecast.ok %}{{ forecast.prevision.0.mois|moisfr }} : {{ forecast.prevision.0.valeur|nbfr }} EVP, ±{{ forecast.prevision.0.mae|nbfr }} (MAE).{% else %}Indisponible.{% endif %}</div></div>
+  <div class="level on" data-i="4"><div class="n">Prescriptif</div><h3>Que faire ?</h3><p>Actions proposées, avec effet attendu et décideur.</p>
+    <div class="eg">{{ recs|length }} recommandation{{ recs|length|pluralize }} ci-dessous.</div></div>
+</section>
+
+<section class="mt2"><div class="kicker">Niveau prescriptif</div><h2 >Recommandations d'action</h2>
+  <p class="muted" style="max-width:80ch">Chaque carte indique la priorité, l'action, les preuves chiffrées, l'effet attendu, qui décide, le niveau d'automatisation et <b>quand ne pas la suivre</b>.</p></section>
+<section data-stagger class="grid g2 mt">
+  {% for r in recs %}
+  <div class="rec reveal p{{ r.priorite }}">
+    <div class="rec-head"><span class="prio p{{ r.priorite }}">{% if r.priorite == 1 %}URGENT{% elif r.priorite == 2 %}À PLANIFIER{% else %}STRATÉGIQUE{% endif %}</span><span class="muted small">Horizon : {{ r.horizon }}</span></div>
+    <h3>{{ r.titre }}</h3><p class="action">{{ r.action }}</p>
+    <dl><dt>Pourquoi</dt><dd><ul>{% for p in r.pourquoi %}<li>{{ p }}</li>{% endfor %}</ul></dd>
+      <dt>Effet attendu</dt><dd>{{ r.effet }}</dd><dt>Qui décide</dt><dd>{{ r.qui }}</dd>
+      <dt>Automatisation</dt><dd><span class="steps">{% for i in "12345" %}<i class="{% if forloop.counter <= r.automatisation.niveau %}on{% endif %}"></i>{% endfor %}</span> <span class="small">{{ r.automatisation.libelle }}</span></dd>
+      <dt>À ne pas suivre si</dt><dd>{{ r.limites }}</dd></dl>
+  </div>
+  {% empty %}<div class="banner"><div><b>Aucune recommandation</b><span>Les analyses n'ont pas encore été calculées : lancer <code>python manage.py fetch_all</code>.</span></div></div>{% endfor %}
+</section>
+
+<section data-stagger class="grid g2 mt2">
+  <div class="card reveal"><div class="kicker">Niveau d'automatisation</div><h2>Pourquoi le niveau 3 et pas plus</h2>
+    <p class="sub">Échelle du cours (1 = l'outil affiche, 5 = l'outil exécute et informe). Cinq critères pour choisir.</p>
+    <table class="t"><thead><tr><th>Critère</th><th>Ici</th><th>Pousse vers</th></tr></thead><tbody>
+      <tr><td>Fréquence de la décision</td><td>quelques-unes par semaine</td><td>humain</td></tr>
+      <tr><td>Temps disponible</td><td>plusieurs heures</td><td>humain</td></tr>
+      <tr><td>Coût d'une erreur</td><td>élevé (sécurité, retards en chaîne)</td><td>humain</td></tr>
+      <tr><td>Réversibilité</td><td>partielle (un navire différé ne se rattrape pas)</td><td>humain</td></tr>
+      <tr><td>Qualité des données</td><td>partielle : modèles globaux, sources publiques décalées</td><td>humain</td></tr></tbody></table>
+    <div class="callout mt"><b>Niveau 3 : l'outil recommande une option, un humain valide ou refuse.</b> Aucune action n'est exécutée automatiquement. Une décision comme « fermer le port » reste au niveau 1 : l'outil informe, la capitainerie décide.</div></div>
+  <div class="card reveal"><div class="kicker">Limites à connaître</div><h2>Comment ce tableau de bord s'en protège</h2>
+    <table class="t"><thead><tr><th>Limite</th><th>Parade dans l'écran</th></tr></thead><tbody>
+      <tr><td><b>Biais d'automatisation</b><br><span class="muted small">suivre la recommandation sans vérifier</span></td><td>Chaque action liste ses preuves et son « à ne pas suivre si ». Les valeurs affichent leur source et leur date.</td></tr>
+      <tr><td><b>Fatigue d'alerte</b><br><span class="muted small">trop d'alertes, on les ignore toutes</span></td><td>Deux niveaux seulement ; une alerte par épisode ; horizon 48 h ; seuils visibles et réglables.</td></tr>
+      <tr><td><b>Boîte noire</b><br><span class="muted small">recommandation sans explication</span></td><td>Méthodes simples et décrites (backtest, STL, règles écrites) ; l'erreur du modèle est affichée à côté de la prévision.</td></tr>
+      <tr><td><b>Responsabilité</b><br><span class="muted small">qui répond si la décision tourne mal ?</span></td><td>Le décideur est nommé sur chaque carte ; l'outil ne décide jamais seul.</td></tr></tbody></table></div>
+</section>
+
+<section class="card reveal mt2"><div class="kicker">Architecture du système d'aide à la décision</div><h2>Données · modèles · règles · interface · retour</h2>
+  <div class="grid g4 mt" style="gap:12px">
+    <div class="hstat"><b style="font-size:18px">Données</b><span>Volumes des ports, CPPI, CNUCED, PortWatch, météo, AIS. Chaque source : adresse, date, état.</span></div>
+    <div class="hstat"><b style="font-size:18px">Modèles</b><span>Prévision (Holt-Winters, backtest), anomalies (STL robuste), alertes par seuil.</span></div>
+    <div class="hstat"><b style="font-size:18px">Règles métier</b><span>Seuils de vent et de vagues, seuil de variation, niveau d'automatisation maximal.</span></div>
+    <div class="hstat"><b style="font-size:18px">Interface</b><span>Tuiles à quatre éléments, graphiques adaptés à la question, bannières « source indisponible ».</span></div></div>
+  <p class="small muted" style="margin:14px 0 0"><b>Retour (cinquième élément, à construire) :</b> enregistrer la décision prise et son résultat pour recalculer l'erreur des modèles et ajuster les seuils. L'erreur du modèle est déjà recalculée à chaque actualisation des données.</p></section>
+{% endblock %}

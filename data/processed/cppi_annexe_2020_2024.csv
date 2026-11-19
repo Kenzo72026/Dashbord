@@ -1,0 +1,404 @@
+port,locode,pays,cppi_2020,cppi_2021,cppi_2022,cppi_2023,cppi_2024,rang_2024,heures_poste_pct,indice_stat_2024,indice_admin_2024
+Aarhus,DKAAR,Denmark,73.0,38.0,22.0,60.0,99.0,24.0,90.0,56.0,143.0
+Abidjan,CIABJ,Côte d’Ivoire,19.0,-153.0,-144.0,-38.0,-51.0,358.0,60.0,-27.0,-74.0
+Acajutla,SVAQJ,El Salvador,0.0,-7.0,-30.0,-89.0,-98.0,382.0,46.0,-65.0,-130.0
+Adelaide,AUADL,Australia,-20.0,-2.0,-24.0,-39.0,-8.0,266.0,87.0,-2.0,-14.0
+Aden,YEADE,"Yemen, Rep.",,-21.0,-13.0,4.0,-24.0,323.0,95.0,-14.0,-35.0
+Agadir,MAAGA,Morocco,-1.0,-4.0,-8.0,-10.0,-14.0,297.0,75.0,-9.0,-18.0
+Alexandria,EGALY,"Egypt, Arab Rep.",8.0,-6.0,-16.0,21.0,-4.0,247.0,52.0,-2.0,-7.0
+Algeciras,ESALG,Spain,116.0,113.0,104.0,126.0,109.0,20.0,76.0,63.0,155.0
+Alicante,ESALC,Spain,,4.0,0.0,-1.0,-5.0,249.0,95.0,0.0,-9.0
+Altamira,MXATM,Mexico,40.0,42.0,50.0,41.0,41.0,81.0,75.0,23.0,60.0
+Ambarli,TRAMR,Türkiye,102.0,75.0,43.0,7.0,17.0,124.0,73.0,8.0,26.0
+Ancona,ITAOI,Italy,14.0,13.0,11.0,2.0,-10.0,274.0,59.0,-6.0,-13.0
+Antofagasta,CLANF,Chile,,3.0,-29.0,,1.0,224.0,87.0,1.0,2.0
+Antwerp,BEANR,Belgium,101.0,40.0,34.0,57.0,19.0,123.0,74.0,9.0,29.0
+Apra Harbor,GUAPR,Guam,6.0,9.0,4.0,2.0,9.0,158.0,92.0,2.0,17.0
+Aqaba,JOAQB,Jordan,106.0,79.0,44.0,54.0,66.0,43.0,90.0,40.0,92.0
+Arica,CLARI,Chile,18.0,-15.0,-3.0,-20.0,7.0,172.0,81.0,2.0,12.0
+Arrecife De Lanzarote,ESACE,Canary Islands,,,,7.0,8.0,168.0,76.0,6.0,9.0
+Ashdod,ILASH,Israel,26.0,-42.0,-56.0,-93.0,-31.0,332.0,86.0,-13.0,-50.0
+Auckland,NZAKL,New Zealand,31.0,-93.0,-82.0,-42.0,-12.0,286.0,73.0,-7.0,-17.0
+Augusta,ITAUG,Italy,,,,,4.0,198.0,67.0,3.0,5.0
+Balboa,PABLB,Panama,96.0,58.0,36.0,-3.0,-46.0,354.0,62.0,-24.0,-69.0
+Baltimore,USBAL,United States,51.0,45.0,-52.0,15.0,5.0,191.0,77.0,2.0,8.0
+Bangkok,THBKK,Thailand,1.0,-19.0,-6.0,-8.0,-7.0,261.0,61.0,-5.0,-9.0
+Bar,MEBAR,Montenegro,,12.0,11.0,9.0,10.0,152.0,84.0,7.0,13.0
+Barcelona,ESBCN,Spain,109.0,90.0,67.0,93.0,52.0,62.0,73.0,29.0,74.0
+Bari,ITBRI,Italy,11.0,10.0,6.0,-2.0,-6.0,259.0,87.0,0.0,-11.0
+Barranquilla,COBAQ,Colombia,15.0,15.0,10.0,12.0,1.0,223.0,92.0,2.0,1.0
+Basseterre,KNBAS,St Kitts & Nevis,,,,8.0,8.0,162.0,61.0,6.0,10.0
+Bata,GQBSG,Equatorial Guinea,,,,-6.0,-6.0,260.0,85.0,-5.0,-7.0
+Batangas,PHBTG,Philippines,14.0,,15.0,18.0,-12.0,287.0,70.0,-7.0,-17.0
+Batumi,GEBUS,Georgia,1.0,2.0,-3.0,-2.0,4.0,206.0,84.0,4.0,3.0
+Beira,MZBEW,Mozambique,-8.0,-6.0,-1.0,-38.0,-13.0,292.0,96.0,-8.0,-17.0
+Beirut,LBBEY,Lebanon,97.0,-106.0,-79.0,58.0,57.0,54.0,79.0,31.0,84.0
+Bejaia,DZBJA,Algeria,-38.0,-12.0,-10.0,-91.0,-129.0,386.0,46.0,-77.0,-181.0
+Belawan,IDBLW,Indonesia,11.0,0.0,1.0,-13.0,-4.0,244.0,73.0,-3.0,-5.0
+Belfast,GBBEL,United Kingdom,,,,,-2.0,237.0,77.0,-2.0,-2.0
+Bell Bay,AUBEL,Australia,17.0,4.0,3.0,3.0,4.0,196.0,90.0,4.0,4.0
+Berbera,SOBBO,Somalia,2.0,12.0,13.0,31.0,-3.0,243.0,91.0,-1.0,-4.0
+Big Creek,BZBGK,Belize,,,,0.0,6.0,178.0,87.0,4.0,8.0
+Bilbao,ESBIO,Spain,4.0,11.0,3.0,3.0,-36.0,341.0,89.0,-17.0,-56.0
+Bintulu,MYBTU,Malaysia,,,,-77.0,-60.0,366.0,55.0,-44.0,-77.0
+Bluff,NZBLU,New Zealand,2.0,3.0,6.0,-3.0,-21.0,315.0,94.0,-14.0,-29.0
+Bordeaux,FRBOD,France,,3.0,1.0,1.0,-1.0,231.0,94.0,0.0,-1.0
+Borusan,TRBRU,Türkiye,7.0,17.0,9.0,16.0,13.0,140.0,83.0,9.0,17.0
+Boston,USBOS,United States,62.0,28.0,43.0,52.0,20.0,119.0,81.0,8.0,32.0
+Bremerhaven,DEBRV,Germany,94.0,57.0,39.0,44.0,7.0,173.0,71.0,5.0,9.0
+Brest,FRBES,France,,,8.0,4.0,2.0,222.0,90.0,2.0,2.0
+Bridgetown,BBBGI,Barbados,,,,1.0,3.0,212.0,81.0,2.0,3.0
+Brisbane,AUBNE,Australia,39.0,-10.0,-32.0,-35.0,-93.0,377.0,76.0,-48.0,-137.0
+Bristol,GBBRS,United Kingdom,-3.0,-71.0,,-65.0,-45.0,353.0,93.0,-27.0,-64.0
+Buenaventura,COBUN,Colombia,64.0,101.0,94.0,89.0,91.0,28.0,85.0,55.0,127.0
+Buenos Aires,ARBUE,Argentina,16.0,22.0,4.0,11.0,8.0,164.0,79.0,2.0,14.0
+Burgas,BGBOJ,Bulgaria,20.0,9.0,8.0,11.0,5.0,186.0,64.0,3.0,8.0
+Busan,KRPUS,Republic of Korea,112.0,85.0,94.0,97.0,92.0,27.0,88.0,55.0,129.0
+Cadiz,ESCAD,Spain,,3.0,11.0,3.0,13.0,141.0,73.0,7.0,19.0
+Cagayan De Oro,PHCGY,Philippines,20.0,6.0,11.0,13.0,9.0,159.0,67.0,7.0,12.0
+Cai Mep,VNTOT,Viet Nam,122.0,110.0,106.0,132.0,132.0,7.0,84.0,79.0,186.0
+Caldera,CRCAL,Costa Rica,15.0,-6.0,1.0,-1.0,-9.0,268.0,70.0,-6.0,-12.0
+Callao,PECLL,Peru,101.0,-4.0,62.0,108.0,79.0,37.0,78.0,54.0,104.0
+Cape Town,ZACPT,South Africa,-96.0,-277.0,-288.0,-519.0,-281.0,400.0,63.0,-156.0,-406.0
+Cartagena,COCTG,Colombia,86.0,110.0,124.0,137.0,64.0,46.0,72.0,30.0,99.0
+Casablanca,MACAS,Morocco,14.0,-4.0,10.0,-27.0,-12.0,288.0,73.0,-8.0,-16.0
+Castellon,ESCAS,Spain,31.0,,,4.0,-5.0,254.0,87.0,-4.0,-6.0
+Castries,LCCAS,St Lucia,,,,1.0,3.0,209.0,85.0,2.0,4.0
+Cat Lai,VNCLI,Viet Nam,24.0,17.0,23.0,25.0,20.0,122.0,72.0,14.0,26.0
+Caucedo,DOCAU,Dominican Republic,68.0,37.0,7.0,17.0,-26.0,328.0,74.0,-16.0,-35.0
+Cebu,PHCEB,Philippines,19.0,14.0,13.0,16.0,12.0,144.0,92.0,10.0,15.0
+Charleston,USCHS,United States,101.0,35.0,-196.0,68.0,-43.0,350.0,49.0,-14.0,-72.0
+Chattogram,BDCGP,Bangladesh,-12.0,-80.0,-59.0,-36.0,-48.0,356.0,63.0,-35.0,-61.0
+Chennai,INMAA,India,,42.0,23.0,47.0,10.0,154.0,82.0,1.0,19.0
+Chiwan,CNCWN,China,126.0,98.0,92.0,137.0,130.0,9.0,87.0,77.0,182.0
+Chu Lai,VNC8Q,Viet Nam,,4.0,11.0,15.0,9.0,157.0,80.0,6.0,12.0
+Cochin,INCOK,India,,35.0,37.0,62.0,56.0,56.0,73.0,30.0,81.0
+Coega (Ngqura) Port,ZAZBA,South Africa,-63.0,-226.0,-191.0,-444.0,-284.0,402.0,87.0,-171.0,-396.0
+Colombo,LKCMB,Sri Lanka,114.0,87.0,83.0,95.0,42.0,80.0,61.0,26.0,57.0
+Colon,PAONX,Panama,91.0,41.0,23.0,46.0,-42.0,348.0,62.0,-8.0,-76.0
+Conakry,GNCKY,Guinea,3.0,2.0,5.0,4.0,-2.0,235.0,73.0,-1.0,-2.0
+Constantza,ROCND,Romania,28.0,-1.0,-43.0,-51.0,-80.0,373.0,40.0,-58.0,-102.0
+Copenhagen,DKCPH,Denmark,19.0,6.0,4.0,4.0,7.0,171.0,88.0,6.0,8.0
+Corinto,NICIO,Nicaragua,,-12.0,-11.0,-29.0,-70.0,370.0,43.0,-45.0,-96.0
+Coronel,CLCNL,Chile,80.0,74.0,75.0,41.0,73.0,40.0,87.0,44.0,103.0
+Cotonou,BJCOO,Benin,22.0,-92.0,-105.0,-243.0,-17.0,303.0,54.0,-7.0,-26.0
+Cristobal,PACTB,Panama,28.0,23.0,-51.0,4.0,-202.0,398.0,54.0,-126.0,-278.0
+Da Chan Bay Terminal One,CNDCB,China,82.0,22.0,46.0,67.0,86.0,31.0,80.0,52.0,119.0
+Dakar,SNDKR,Senegal,35.0,-19.0,3.0,-82.0,23.0,108.0,66.0,15.0,30.0
+Dalian,CNDAG,China,122.0,38.0,54.0,123.0,137.0,4.0,75.0,83.0,190.0
+Damietta,EGDAM,"Egypt, Arab Rep.",58.0,58.0,-3.0,-91.0,-4.0,245.0,69.0,-2.0,-6.0
+Dammam,SADMM,Saudi Arabia,89.0,104.0,70.0,97.0,9.0,161.0,70.0,9.0,9.0
+Danang,VNDAD,Viet Nam,22.0,14.0,19.0,23.0,16.0,128.0,50.0,10.0,21.0
+Dar Es Salaam,TZDAR,Tanzania,-19.0,-176.0,-72.0,-80.0,-53.0,360.0,63.0,-34.0,-73.0
+Davao,PHDVO,Philippines,31.0,-5.0,-9.0,-10.0,-25.0,326.0,85.0,-14.0,-37.0
+Deendayal,INIXY,India,,,,,10.0,153.0,85.0,6.0,14.0
+Derince,TRDRC,Türkiye,,,,,65.0,45.0,86.0,41.0,89.0
+Diliskelesi,TRDIL,Türkiye,48.0,47.0,40.0,51.0,20.0,117.0,85.0,17.0,23.0
+Djibouti,DJJIB,Djibouti,92.0,95.0,91.0,-64.0,-56.0,364.0,60.0,-36.0,-75.0
+Douala,CMDLA,Cameroon,-13.0,-75.0,-41.0,-80.0,-97.0,381.0,36.0,-73.0,-122.0
+Dublin,IEDUB,Irish Republic,3.0,-18.0,-11.0,-16.0,-13.0,290.0,85.0,-9.0,-16.0
+Dunkirk,FRDKK,France,53.0,-74.0,-58.0,26.0,27.0,104.0,89.0,16.0,37.0
+Durban,ZADUR,South Africa,-108.0,-246.0,-220.0,-206.0,-721.0,403.0,52.0,-454.0,-989.0
+Durres,ALDRZ,Albania,5.0,-26.0,-11.0,-36.0,-10.0,275.0,70.0,-7.0,-12.0
+El Dekheila,EGEDK,"Egypt, Arab Rep.",14.0,22.0,11.0,-25.0,5.0,190.0,48.0,3.0,7.0
+Ensenada,MXESE,Mexico,50.0,38.0,19.0,-7.0,11.0,149.0,75.0,3.0,19.0
+Felixstowe,GBFXT,United Kingdom,40.0,-48.0,-18.0,23.0,-33.0,336.0,85.0,-20.0,-46.0
+Ferrol,ESFRO,Spain,,,,3.0,5.0,185.0,74.0,4.0,7.0
+Fortaleza,BRFOR,Brazil,,-9.0,,,-16.0,302.0,92.0,-11.0,-21.0
+Fort-De-France,MQFDF,Martinique,38.0,26.0,30.0,31.0,30.0,98.0,80.0,18.0,42.0
+Fredericia,DKFRC,Denmark,19.0,12.0,12.0,15.0,14.0,131.0,80.0,10.0,19.0
+Freeport (Bahamas),BSFPO,Bahamas,37.0,-100.0,-80.0,-45.0,-234.0,399.0,30.0,-133.0,-334.0
+Freetown,SLFNA,Sierra Leone,9.0,-5.0,0.0,0.0,2.0,216.0,76.0,2.0,3.0
+Fremantle,AUFRE,Australia,1.0,-50.0,-67.0,-89.0,-95.0,379.0,83.0,-58.0,-131.0
+Fuzhou,CNFZG,China,118.0,27.0,63.0,95.0,139.0,2.0,83.0,78.0,200.0
+Gavle,SEGVX,Sweden,9.0,-2.0,-7.0,6.0,7.0,176.0,89.0,5.0,8.0
+Gdansk,PLGDN,Poland,48.0,-7.0,-42.0,-24.0,62.0,47.0,86.0,35.0,88.0
+Gdynia,PLGDY,Poland,39.0,2.0,-12.0,13.0,5.0,187.0,84.0,1.0,10.0
+Gemlik,TRGEM,Türkiye,46.0,34.0,13.0,101.0,55.0,57.0,80.0,31.0,78.0
+General San Martin,PEGSM,Peru,,,,8.0,7.0,175.0,79.0,5.0,9.0
+General Santos,PHGES,Philippines,-8.0,,,-4.0,-2.0,234.0,82.0,-1.0,-2.0
+Genoa,ITGOA,Italy,25.0,-52.0,-82.0,-9.0,-55.0,363.0,78.0,-33.0,-77.0
+Georgetown,GYGEO,Guyana,,1.0,,-12.0,-9.0,270.0,70.0,-6.0,-12.0
+Gijon,ESGIJ,Spain,11.0,5.0,15.0,6.0,-13.0,291.0,85.0,-7.0,-18.0
+Gioia Tauro,ITGIT,Italy,60.0,46.0,8.0,13.0,60.0,49.0,86.0,30.0,90.0
+Gothenburg,SEGOT,Sweden,-20.0,23.0,10.0,16.0,51.0,63.0,83.0,29.0,73.0
+Grangemouth,GBGRG,United Kingdom,-1.0,-24.0,,-4.0,-5.0,255.0,77.0,-4.0,-6.0
+Greenock,GBGRK,United Kingdom,,,,-37.0,-34.0,337.0,78.0,-22.0,-46.0
+Guangzhou,CNGGZ,China,146.0,119.0,116.0,133.0,130.0,8.0,69.0,77.0,183.0
+Guayaquil,ECGYE,Ecuador,12.0,-12.0,-33.0,-6.0,-54.0,361.0,85.0,-27.0,-81.0
+Gustavia,BLSBH,St-Barthelemy,8.0,8.0,8.0,8.0,8.0,165.0,54.0,6.0,10.0
+Haifa,ILHFA,Israel,77.0,6.0,40.0,44.0,36.0,89.0,80.0,23.0,48.0
+Haiphong,VNHPH,Viet Nam,70.0,52.0,14.0,55.0,87.0,30.0,85.0,51.0,122.0
+Hakata,JPHKT,Japan,22.0,23.0,23.0,22.0,22.0,111.0,63.0,15.0,29.0
+Halifax,CAHAL,Canada,118.0,78.0,-34.0,41.0,56.0,55.0,84.0,31.0,80.0
+Halmstad,SEHAD,Sweden,,,,,6.0,183.0,83.0,4.0,8.0
+Hamad Port,QAHMD,Qatar,110.0,138.0,117.0,128.0,125.0,11.0,78.0,69.0,181.0
+Hamburg,DEHAM,Germany,80.0,8.0,-90.0,39.0,-13.0,295.0,71.0,-8.0,-19.0
+Hazira,INHZA,India,,45.0,37.0,54.0,43.0,76.0,85.0,25.0,60.0
+Helsingborg,SEHEL,Sweden,15.0,13.0,12.0,11.0,14.0,134.0,83.0,9.0,18.0
+Helsinki,FIHEL,Finland,,12.0,-1.0,3.0,4.0,202.0,89.0,3.0,5.0
+Heraklion,GRHER,Greece,4.0,4.0,3.0,1.0,-5.0,253.0,91.0,-3.0,-7.0
+Hibikinada,JPHBK,Japan,,,,13.0,5.0,193.0,51.0,3.0,7.0
+Hong Kong,HKHKG,"Hong Kong SAR, China",142.0,68.0,112.0,119.0,123.0,12.0,78.0,73.0,172.0
+Honolulu,USHNL,United States,,,,4.0,-7.0,263.0,96.0,-6.0,-8.0
+Houston,USHOU,United States,36.0,31.0,-178.0,-15.0,-33.0,335.0,76.0,-21.0,-45.0
+Huelva,ESHUV,Spain,,,,6.0,4.0,204.0,79.0,3.0,5.0
+Hueneme,USNTD,United States,-8.0,-8.0,-6.0,-8.0,-9.0,272.0,92.0,-5.0,-13.0
+Iloilo,PHILO,Philippines,,,,,3.0,210.0,82.0,2.0,4.0
+Imbituba,BRIBB,Brazil,,55.0,20.0,-72.0,53.0,60.0,87.0,30.0,75.0
+Incheon,KRINC,Republic of Korea,84.0,65.0,75.0,67.0,85.0,33.0,87.0,48.0,122.0
+Iquique,CLIQQ,Chile,-6.0,-26.0,-29.0,-48.0,-43.0,349.0,82.0,-27.0,-59.0
+Iskenderun,TRISK,Türkiye,31.0,48.0,-29.0,-113.0,21.0,115.0,67.0,11.0,31.0
+Itajai,BRITJ,Brazil,45.0,13.0,-11.0,-123.0,-111.0,383.0,24.0,-53.0,-170.0
+Itapoa,BRIOA,Brazil,58.0,51.0,45.0,48.0,47.0,65.0,86.0,28.0,67.0
+Izmir,TRIZM,Türkiye,14.0,2.0,13.0,26.0,25.0,105.0,83.0,16.0,34.0
+Jacksonville,USJAX,United States,46.0,38.0,35.0,43.0,43.0,73.0,84.0,27.0,60.0
+Jawaharlal Nehru Port,INNSA,India,66.0,62.0,35.0,48.0,100.0,23.0,70.0,57.0,143.0
+Jebel Ali,AEJEA,United Arab Emirates,102.0,72.0,61.0,73.0,-7.0,262.0,67.0,-10.0,-5.0
+Jeddah,SAJED,Saudi Arabia,113.0,118.0,81.0,68.0,79.0,36.0,71.0,44.0,113.0
+Johor,MYPGU,Malaysia,39.0,42.0,34.0,37.0,42.0,78.0,70.0,20.0,64.0
+Jubail,SAJUB,Saudi Arabia,90.0,13.0,34.0,68.0,48.0,64.0,77.0,28.0,68.0
+Kalundborg,DKKAL,Denmark,,,,,22.0,114.0,92.0,14.0,29.0
+Kamarajar,INENR,India,,40.0,40.0,71.0,33.0,94.0,84.0,16.0,49.0
+Kaohsiung,TWKHH,"Taiwan, China",146.0,94.0,89.0,110.0,113.0,18.0,68.0,67.0,159.0
+Karachi,PKKHI,Pakistan,61.0,39.0,36.0,69.0,30.0,99.0,88.0,14.0,46.0
+Kattupalli,INKAT,India,,35.0,40.0,62.0,-14.0,299.0,87.0,-9.0,-18.0
+Keelung,TWKEL,"Taiwan, China",66.0,48.0,42.0,60.0,59.0,51.0,85.0,33.0,85.0
+Khalifa Bin Salman,BHKBS,Bahrain,31.0,53.0,41.0,78.0,46.0,69.0,80.0,28.0,64.0
+Khalifa Port,AEKHL,United Arab Emirates,117.0,131.0,128.0,105.0,46.0,68.0,59.0,27.0,66.0
+Khoms,LYKHO,Libya,,,,-26.0,-24.0,321.0,95.0,-13.0,-35.0
+King Abdullah Port,SAKAC,Saudi Arabia,155.0,152.0,105.0,102.0,58.0,53.0,62.0,36.0,80.0
+Kingston,JMKIN,Jamaica,62.0,26.0,-17.0,-48.0,-76.0,371.0,60.0,-25.0,-126.0
+Klaipeda,LTKLJ,Lithuania,1.0,12.0,3.0,17.0,14.0,133.0,86.0,10.0,17.0
+Kobe,JPUKB,Japan,75.0,77.0,63.0,55.0,59.0,50.0,83.0,37.0,82.0
+Kompong Som,KHKOS,Cambodia,,3.0,,12.0,5.0,189.0,75.0,3.0,7.0
+Koper,SIKOP,Slovenia,66.0,15.0,-282.0,-40.0,11.0,148.0,69.0,3.0,19.0
+Kota Kinabalu,MYBKI,Malaysia,,,,-12.0,-31.0,333.0,70.0,-17.0,-46.0
+Kotka,FIKTK,Finland,5.0,3.0,-1.0,-3.0,-9.0,269.0,98.0,-4.0,-13.0
+Kribi Deep Sea Port,CMKBI,Cameroon,-5.0,-118.0,-84.0,-62.0,-199.0,397.0,47.0,-132.0,-267.0
+Krishnapatnam,INKRI,India,,39.0,46.0,49.0,-9.0,267.0,87.0,-6.0,-11.0
+Kristiansand,NOKRS,Norway,3.0,3.0,2.0,2.0,2.0,220.0,87.0,2.0,3.0
+Kuantan,MYKUA,Malaysia,,,,2.0,0.0,229.0,78.0,-1.0,1.0
+Kuching,MYKCH,Malaysia,,,,-12.0,-22.0,319.0,74.0,-17.0,-27.0
+La Guaira,VELAG,Venezuela,-9.0,-4.0,2.0,5.0,3.0,213.0,91.0,3.0,3.0
+La Spezia,ITSPE,Italy,58.0,-20.0,-136.0,-14.0,-129.0,387.0,64.0,-81.0,-178.0
+Lae,PGLAE,Papua New Guinea,-2.0,-20.0,-19.0,-25.0,-7.0,264.0,56.0,-6.0,-9.0
+Laem Chabang,THLCH,Thailand,107.0,57.0,87.0,81.0,66.0,41.0,85.0,39.0,94.0
+Lagos,NGLOS,Nigeria,-61.0,-128.0,-11.0,-16.0,-24.0,322.0,84.0,-14.0,-34.0
+Larvik,NOLAR,Norway,4.0,5.0,5.0,5.0,3.0,214.0,86.0,2.0,3.0
+Las Palmas,ESLPA,Canary Islands,,,,18.0,22.0,113.0,84.0,15.0,28.0
+Latakia,SYLTK,Syrian Arab Republic,12.0,13.0,7.0,8.0,2.0,219.0,88.0,2.0,3.0
+Lazaro Cardenas,MXLZC,Mexico,120.0,50.0,60.0,76.0,-27.0,330.0,61.0,-14.0,-40.0
+Le Havre,FRLEH,France,53.0,-12.0,-96.0,-68.0,4.0,203.0,73.0,5.0,3.0
+Leixoes,PTLEI,Portugal,9.0,7.0,9.0,-12.0,-3.0,242.0,74.0,-2.0,-4.0
+Lekki,NGLKK,Nigeria,,,,,-17.0,306.0,95.0,-12.0,-23.0
+Lianyungang,CNLYG,China,112.0,46.0,37.0,109.0,75.0,38.0,72.0,40.0,110.0
+Limassol,CYLMS,Cyprus,28.0,19.0,26.0,12.0,17.0,127.0,75.0,12.0,22.0
+Lirquen,CLLQN,Chile,31.0,27.0,14.0,18.0,43.0,75.0,92.0,26.0,59.0
+Lisbon,PTLIS,Portugal,,5.0,0.0,22.0,-20.0,311.0,81.0,-14.0,-27.0
+Liverpool,GBLIV,United Kingdom,,-35.0,,-8.0,-5.0,250.0,72.0,-3.0,-7.0
+Livorno,ITLIV,Italy,8.0,-58.0,-55.0,-13.0,-12.0,282.0,83.0,-4.0,-19.0
+Lome,TGLFW,Togo,-37.0,-92.0,-75.0,-22.0,-23.0,320.0,60.0,-14.0,-32.0
+London,GBLON,United Kingdom,77.0,-63.0,-36.0,60.0,39.0,83.0,65.0,26.0,53.0
+Long Beach,USLGB,United States,6.0,-665.0,-363.0,-65.0,-22.0,318.0,96.0,-21.0,-23.0
+Los Angeles,USLAX,United States,12.0,-598.0,-189.0,-66.0,-52.0,359.0,95.0,-59.0,-44.0
+Luanda,AOLAD,Angola,-42.0,-296.0,-176.0,-123.0,-119.0,384.0,61.0,-70.0,-168.0
+Lyttelton,NZLYT,New Zealand,23.0,-28.0,-67.0,-94.0,-9.0,273.0,73.0,-4.0,-14.0
+Malabo,GQSSG,Equatorial Guinea,-2.0,,,1.0,-12.0,285.0,85.0,-9.0,-15.0
+Malaga,ESAGP,Spain,34.0,29.0,14.0,39.0,27.0,102.0,82.0,20.0,34.0
+Manaus,BRMAO,Brazil,-5.0,-5.0,-5.0,-4.0,-20.0,312.0,93.0,-15.0,-26.0
+Manila,PHMNL,Philippines,11.0,-51.0,-107.0,-15.0,-34.0,339.0,46.0,-27.0,-41.0
+Manzanillo (Mexico),MXZLO,Mexico,81.0,39.0,-23.0,-12.0,-161.0,391.0,59.0,-105.0,-216.0
+Maputo,MZMPM,Mozambique,-2.0,-33.0,-9.0,-27.0,-40.0,347.0,51.0,-27.0,-52.0
+Mariel,CUMAR,Cuba,3.0,3.0,1.0,0.0,-11.0,281.0,97.0,-7.0,-15.0
+Marsaxlokk,MTMAR,Malta,87.0,47.0,60.0,48.0,6.0,184.0,67.0,7.0,4.0
+Marseille,FRMRS,France,-96.0,-18.0,-10.0,-40.0,-37.0,342.0,87.0,-15.0,-59.0
+Matadi,CDMAT,"Congo, Dem. Rep.",2.0,13.0,6.0,-105.0,-61.0,367.0,56.0,-45.0,-78.0
+Mawan,CNMWN,China,84.0,73.0,106.0,125.0,133.0,6.0,87.0,79.0,187.0
+Mayotte,YTLON,Comoros,,-17.0,-16.0,-16.0,-39.0,345.0,64.0,-25.0,-52.0
+Mazatlan,MXMZT,Mexico,,4.0,,-26.0,-12.0,283.0,95.0,-4.0,-19.0
+Mejillones,CLMJS,Chile,41.0,5.0,-21.0,-28.0,-13.0,293.0,87.0,-12.0,-13.0
+Melbourne,AUMEL,Australia,15.0,-19.0,-21.0,-11.0,-8.0,265.0,85.0,-4.0,-11.0
+Mersin,TRMER,Türkiye,94.0,76.0,3.0,-184.0,42.0,77.0,64.0,24.0,60.0
+Miami,USMIA,United States,56.0,81.0,-3.0,49.0,33.0,93.0,78.0,22.0,44.0
+Mobile,USMOB,United States,47.0,17.0,-6.0,13.0,23.0,109.0,69.0,17.0,29.0
+Mogadiscio,SOMGQ,Somalia,1.0,-3.0,-1.0,9.0,8.0,163.0,88.0,5.0,10.0
+Moji,JPMOJ,Japan,17.0,22.0,14.0,21.0,17.0,125.0,67.0,12.0,22.0
+Mombasa,KEMBA,Kenya,-31.0,-11.0,-81.0,-32.0,-89.0,375.0,64.0,-57.0,-121.0
+Mongla,BDMGL,Bangladesh,,,,,6.0,179.0,92.0,3.0,9.0
+Monrovia,LRMLW,Liberia,,,-19.0,-40.0,-37.0,343.0,66.0,-27.0,-48.0
+Montevideo,UYMVD,Uruguay,-4.0,-6.0,-55.0,-69.0,-12.0,289.0,53.0,-16.0,-9.0
+Montreal,CAMTR,Canada,-7.0,-26.0,-35.0,-42.0,-39.0,344.0,96.0,-30.0,-48.0
+Muara,BNMUA,Brunei,,,,7.0,3.0,215.0,70.0,3.0,3.0
+Muhammad Bin Qasim,PKQCT,Pakistan,8.0,43.0,31.0,22.0,43.0,74.0,77.0,22.0,64.0
+Mundra,INMUN,India,76.0,67.0,53.0,108.0,97.0,25.0,78.0,57.0,138.0
+Nacala,MZMNC,Mozambique,,,,-68.0,-64.0,368.0,74.0,-41.0,-88.0
+Nagoya,JPNGO,Japan,77.0,67.0,59.0,63.0,59.0,52.0,85.0,38.0,79.0
+Naha,JPNAH,Japan,25.0,23.0,23.0,24.0,23.0,107.0,79.0,12.0,34.0
+Namibe,AOMSZ,Angola,,,,-16.0,-11.0,277.0,96.0,-7.0,-15.0
+Nantes-St Nazaire,FRNTE,France,3.0,34.0,12.0,5.0,30.0,97.0,88.0,17.0,44.0
+Napier,NZNPE,New Zealand,12.0,-16.0,-79.0,-31.0,-27.0,329.0,64.0,-19.0,-35.0
+Naples,ITNAP,Italy,24.0,-4.0,-18.0,-32.0,-3.0,240.0,80.0,0.0,-5.0
+Nassau,BSNAS,Bahamas,4.0,5.0,-1.0,-3.0,-25.0,325.0,77.0,-15.0,-34.0
+Nelson,NZNSN,New Zealand,7.0,10.0,4.0,-5.0,0.0,227.0,77.0,-1.0,1.0
+Nemrut Bay,TRNEM,Türkiye,16.0,13.0,17.0,2.0,4.0,199.0,81.0,5.0,4.0
+New Orleans,USMSY,United States,35.0,33.0,13.0,25.0,36.0,88.0,78.0,23.0,49.0
+New York & New Jersey,USNYC,United States,89.0,-2.0,-63.0,45.0,13.0,139.0,78.0,11.0,15.0
+Nghi Son,VNNGH,Viet Nam,,,,2.0,2.0,221.0,86.0,1.0,3.0
+Ningbo,CNNBO,China,139.0,125.0,118.0,128.0,128.0,10.0,89.0,77.0,179.0
+Norrkoping,SENRK,Sweden,20.0,10.0,6.0,9.0,1.0,225.0,80.0,1.0,1.0
+Nouakchott,MRNKC,Mauritania,-8.0,-130.0,-106.0,-53.0,-21.0,314.0,63.0,-13.0,-29.0
+Noumea,NCNOU,New Caledonia,20.0,39.0,16.0,-8.0,20.0,118.0,84.0,14.0,27.0
+Novorossiysk,RUNVS,Russian Federation,3.0,16.0,4.0,0.0,0.0,228.0,94.0,1.0,-1.0
+Oakland,USOAK,United States,18.0,-128.0,-252.0,-158.0,-87.0,374.0,85.0,-41.0,-133.0
+Oita,JPOIT,Japan,4.0,,,3.0,6.0,182.0,33.0,4.0,7.0
+Omaezaki,JPOMZ,Japan,17.0,22.0,15.0,18.0,15.0,129.0,73.0,10.0,21.0
+Onne,NGONN,Nigeria,-12.0,-72.0,-45.0,-16.0,-25.0,327.0,94.0,-14.0,-36.0
+Osaka,JPOSA,Japan,43.0,77.0,41.0,43.0,-25.0,324.0,84.0,6.0,-56.0
+Oslo,NOOSL,Norway,28.0,18.0,11.0,27.0,6.0,181.0,88.0,5.0,7.0
+Otago Harbour,NZORR,New Zealand,5.0,-15.0,-23.0,-9.0,-36.0,340.0,70.0,-22.0,-51.0
+Owendo,GAOWE,Gabon,-4.0,-20.0,-21.0,-50.0,-30.0,331.0,60.0,-20.0,-40.0
+Paita,PEPAI,Peru,38.0,43.0,27.0,6.0,66.0,44.0,81.0,38.0,94.0
+Palermo,ITPMO,Italy,4.0,5.0,3.0,1.0,1.0,226.0,79.0,0.0,1.0
+Panjang,IDPNJ,Indonesia,7.0,1.0,-2.0,7.0,-31.0,334.0,80.0,-20.0,-43.0
+Papeete,PFPPT,French Polynesia,15.0,14.0,13.0,13.0,22.0,112.0,89.0,12.0,31.0
+Paranagua,BRPNG,Brazil,53.0,13.0,41.0,39.0,-157.0,388.0,37.0,-67.0,-248.0
+Pecem,BRPEC,Brazil,58.0,28.0,16.0,15.0,-58.0,365.0,57.0,-34.0,-82.0
+Penang,MYPEN,Malaysia,19.0,30.0,32.0,-9.0,35.0,91.0,88.0,18.0,52.0
+Philadelphia,USPHL,United States,41.0,57.0,22.0,66.0,92.0,26.0,77.0,52.0,133.0
+Philipsburg,SXPHI,Sint Maarten,12.0,13.0,10.0,5.0,9.0,156.0,82.0,7.0,12.0
+Pipavav,INPAV,India,78.0,82.0,80.0,86.0,85.0,32.0,77.0,51.0,119.0
+Piraeus,GRPIR,Greece,93.0,41.0,45.0,35.0,40.0,82.0,74.0,23.0,58.0
+Ploce,HRPLE,Croatia,,12.0,,4.0,7.0,169.0,78.0,5.0,10.0
+Point Lisas Ports,TTPTS,Trinidad & Tobago,5.0,-18.0,-8.0,3.0,-21.0,313.0,64.0,-16.0,-25.0
+Pointe-A-Pitre,GPPTP,Guadeloupe,38.0,34.0,29.0,36.0,31.0,95.0,89.0,20.0,42.0
+Pointe-Noire,CGPNR,"Congo, Rep.",-50.0,-225.0,-74.0,-145.0,-283.0,401.0,40.0,-145.0,-420.0
+Port Akdeniz,TRAYT,Türkiye,16.0,17.0,16.0,18.0,13.0,136.0,86.0,9.0,18.0
+Port Botany,AUPBT,Australia,0.0,-36.0,-44.0,-38.0,-48.0,357.0,84.0,-27.0,-70.0
+Port Elizabeth,ZAPLZ,South Africa,-103.0,-29.0,-31.0,-128.0,-169.0,395.0,78.0,-104.0,-234.0
+Port Everglades,USPEF,United States,33.0,32.0,30.0,60.0,47.0,67.0,83.0,25.0,69.0
+Port Klang,MYPKG,Malaysia,135.0,44.0,65.0,106.0,74.0,39.0,71.0,45.0,102.0
+Port Louis,MUPLU,Mauritius,-60.0,-38.0,-95.0,-59.0,-70.0,369.0,76.0,-38.0,-102.0
+Port Moresby,PGPOM,Papua New Guinea,9.0,,,-9.0,-5.0,248.0,51.0,-4.0,-5.0
+Port Of Spain,TTPOS,Trinidad & Tobago,4.0,0.0,-4.0,-6.0,-17.0,305.0,59.0,-11.0,-22.0
+Port Of Virginia,USNFF,United States,87.0,90.0,51.0,-2.0,-14.0,298.0,53.0,-5.0,-22.0
+Port Reunion,RELPT,Reunion,-26.0,-49.0,-43.0,-21.0,-46.0,355.0,86.0,-27.0,-66.0
+Port Said,EGPSD,"Egypt, Arab Rep.",96.0,101.0,111.0,118.0,137.0,3.0,80.0,80.0,195.0
+Port Tampa Bay,USTPA,United States,,53.0,11.0,9.0,-22.0,317.0,75.0,-10.0,-34.0
+Port Victoria,SCPOV,Seychelles,-15.0,-18.0,-9.0,-15.0,-17.0,304.0,76.0,-11.0,-22.0
+Posorja,ECPSJ,Ecuador,34.0,47.0,103.0,95.0,107.0,21.0,89.0,66.0,148.0
+Poti,GEPTI,Georgia,2.0,3.0,-32.0,-39.0,-40.0,346.0,50.0,-29.0,-50.0
+Pozzallo,ITPZL,Italy,,,,,4.0,200.0,44.0,3.0,5.0
+Prince Rupert,CAPRR,Canada,-10.0,-85.0,-248.0,-188.0,-54.0,362.0,90.0,-26.0,-83.0
+Puerto Barrios,GTPBR,Guatemala,21.0,13.0,19.0,21.0,12.0,145.0,87.0,9.0,16.0
+Puerto Bolivar,ECPBO,Ecuador,13.0,14.0,12.0,13.0,13.0,138.0,86.0,8.0,18.0
+Puerto Cabello,VEPBL,Venezuela,-17.0,-13.0,-10.0,-15.0,-10.0,276.0,90.0,-6.0,-14.0
+Puerto Cortes,HNPCR,Honduras,18.0,19.0,31.0,9.0,22.0,110.0,59.0,12.0,32.0
+Puerto Limon,CRLIO,Costa Rica,35.0,39.0,35.0,46.0,47.0,66.0,78.0,29.0,65.0
+Puerto Progreso,MXPGO,Mexico,6.0,8.0,11.0,10.0,7.0,174.0,74.0,5.0,9.0
+Puerto Quetzal,GTPRQ,Guatemala,42.0,30.0,15.0,7.0,-124.0,385.0,50.0,-63.0,-185.0
+Pyeong Taek,KRPTK,"Korea, Rep.",,,,8.0,17.0,126.0,88.0,12.0,22.0
+Qasr Ahmed,LYMRA,Libya,,-11.0,-46.0,-80.0,-12.0,284.0,91.0,-10.0,-14.0
+Qingdao,CNQIN,China,148.0,68.0,-7.0,34.0,54.0,58.0,50.0,33.0,75.0
+Qinzhou,CNQZH,China,18.0,2.0,,62.0,13.0,143.0,70.0,9.0,16.0
+Quanzhou,CNQZL,China,,,,16.0,33.0,92.0,81.0,20.0,47.0
+Quy Nhon,VNUIH,Viet Nam,25.0,15.0,13.0,9.0,11.0,150.0,56.0,7.0,14.0
+Rades,TNRDS,Tunisia,,1.0,1.0,-1.0,-5.0,251.0,86.0,-4.0,-6.0
+Rauma,FIRAU,Finland,11.0,9.0,5.0,6.0,4.0,201.0,93.0,3.0,5.0
+Ravenna,ITRAN,Italy,14.0,10.0,10.0,6.0,4.0,205.0,67.0,2.0,6.0
+Riga,LVRIX,Latvia,7.0,5.0,-7.0,-6.0,11.0,151.0,76.0,7.0,15.0
+Rijeka,HRRJK,Croatia,43.0,17.0,-173.0,-203.0,-159.0,390.0,45.0,-78.0,-240.0
+Rio De Janeiro,BRRIO,Brazil,11.0,41.0,44.0,82.0,-13.0,296.0,67.0,-14.0,-13.0
+Rio Grande,BRRIG,Brazil,72.0,38.0,55.0,33.0,-78.0,372.0,62.0,-54.0,-102.0
+Rio Haina,DOHAI,Dominican Republic,16.0,15.0,11.0,14.0,8.0,167.0,89.0,6.0,9.0
+Rizhao,CNRZH,China,,,,,13.0,137.0,82.0,8.0,18.0
+Rosario,ARROS,Argentina,,,,,5.0,188.0,83.0,4.0,7.0
+Rotterdam,NLRTM,Netherlands,93.0,-10.0,-25.0,47.0,4.0,197.0,65.0,-3.0,12.0
+Sagunto,ESSAG,Spain,,,,13.0,8.0,166.0,80.0,5.0,10.0
+Saigon,VNSGN,Viet Nam,14.0,19.0,17.0,16.0,20.0,116.0,81.0,14.0,27.0
+Saint John,CASJB,Canada,17.0,2.0,-3.0,-2.0,-43.0,352.0,75.0,-21.0,-66.0
+Salalah,OMSLL,Oman,141.0,143.0,136.0,141.0,117.0,15.0,64.0,62.0,172.0
+Salerno,ITSAL,Italy,15.0,10.0,10.0,7.0,20.0,120.0,71.0,9.0,30.0
+Salvador,BRSSA,Brazil,68.0,30.0,14.0,58.0,-5.0,257.0,80.0,-21.0,10.0
+Samsun,TRSSX,Türkiye,-3.0,-1.0,,-11.0,-15.0,301.0,90.0,-5.0,-25.0
+San Antonio,CLSAI,Chile,74.0,-23.0,-16.0,41.0,-2.0,236.0,86.0,4.0,-8.0
+San Juan,PRSJU,Puerto Rico,16.0,16.0,16.0,17.0,27.0,101.0,86.0,16.0,38.0
+San Pedro,CISPY,Côte d’Ivoire,-10.0,-33.0,-41.0,-26.0,-43.0,351.0,60.0,-29.0,-57.0
+San Vicente,CLSVE,Chile,18.0,18.0,-14.0,-21.0,-14.0,300.0,73.0,-8.0,-21.0
+Santa Cruz De Tenerife,ESSCT,Canary Islands,45.0,48.0,43.0,38.0,-1.0,232.0,88.0,2.0,-4.0
+Santa Marta,COSMR,Colombia,15.0,17.0,15.0,16.0,15.0,130.0,82.0,10.0,21.0
+Santo Tomas De Castilla,GTSTC,Guatemala,7.0,-6.0,-11.0,8.0,3.0,208.0,82.0,3.0,3.0
+Santos,BRSSZ,Brazil,64.0,15.0,9.0,-5.0,-166.0,392.0,45.0,-81.0,-251.0
+Savannah,USSAV,United States,92.0,-305.0,-675.0,-147.0,-97.0,380.0,49.0,-55.0,-138.0
+Savona-Vado,ITSVN,Italy,13.0,39.0,45.0,93.0,37.0,87.0,56.0,19.0,54.0
+Seattle,USSEA,United States,30.0,-49.0,-41.0,-44.0,-9.0,271.0,94.0,-4.0,-14.0
+Sepetiba,BRSPB,Brazil,60.0,25.0,0.0,-5.0,-173.0,396.0,54.0,-100.0,-247.0
+Setubal,PTSET,Portugal,,,,-33.0,-5.0,258.0,83.0,-5.0,-6.0
+Seville,ESSVQ,Spain,,,,-2.0,-1.0,233.0,94.0,0.0,-1.0
+Shanghai,CNSHG,China,110.0,-36.0,-1.0,31.0,-11.0,280.0,32.0,-10.0,-13.0
+Shantou,CNSTG,China,32.0,15.0,40.0,29.0,35.0,90.0,73.0,22.0,49.0
+Sharjah,AESHJ,United Arab Emirates,,14.0,17.0,20.0,10.0,155.0,79.0,8.0,12.0
+Shekou,CNSHK,China,147.0,103.0,106.0,109.0,82.0,35.0,68.0,45.0,118.0
+Shibushi,JPSBS,Japan,7.0,,,6.0,3.0,211.0,21.0,2.0,4.0
+Shimizu,JPSMZ,Japan,90.0,74.0,60.0,76.0,66.0,42.0,80.0,37.0,95.0
+Shuaiba,KWSAA,Kuwait,2.0,10.0,18.0,13.0,11.0,146.0,89.0,7.0,15.0
+Shuwaikh,KWSWK,Kuwait,7.0,9.0,13.0,5.0,13.0,142.0,88.0,8.0,17.0
+Siam Seaport,THSRI,Thailand,15.0,37.0,41.0,21.0,28.0,100.0,88.0,18.0,37.0
+Sines,PTSIE,Portugal,113.0,81.0,-7.0,34.0,42.0,79.0,60.0,27.0,57.0
+Singapore,SGSIN,Singapore,139.0,76.0,100.0,115.0,88.0,29.0,87.0,52.0,124.0
+Sohar,OMSOH,Oman,94.0,69.0,56.0,64.0,61.0,48.0,75.0,35.0,87.0
+Sokhna,EGSOK,"Egypt, Arab Rep.",32.0,-103.0,-27.0,31.0,2.0,217.0,80.0,-4.0,9.0
+Songkhla,THSGK,Thailand,,,,0.0,-1.0,230.0,91.0,-1.0,0.0
+Southampton,GBSOU,United Kingdom,39.0,-67.0,-8.0,50.0,11.0,147.0,78.0,12.0,10.0
+Suape,BRSUA,Brazil,46.0,-4.0,4.0,24.0,-94.0,378.0,69.0,-55.0,-133.0
+Subic Bay,PHSFS,Philippines,,12.0,6.0,2.0,4.0,195.0,75.0,3.0,6.0
+Syama Prasad Mookerjee Port,INCCU,India,,,,-4.0,-2.0,238.0,94.0,-1.0,-4.0
+Tacoma,USTIW,United States,-10.0,-74.0,-92.0,-198.0,-167.0,394.0,90.0,-87.0,-248.0
+Taichung,TWTXG,"Taiwan, China",18.0,25.0,17.0,20.0,20.0,121.0,81.0,14.0,25.0
+Taipei,TWTPE,"Taiwan, China",102.0,,,,84.0,34.0,70.0,42.0,126.0
+Tallinn,EETLL,Estonia,,,,30.0,13.0,135.0,84.0,9.0,18.0
+Tanger- Mediterranean,MAPTM,Morocco,133.0,128.0,125.0,139.0,136.0,5.0,80.0,81.0,191.0
+Tanjung Emas,IDSRG,Indonesia,15.0,16.0,15.0,13.0,7.0,170.0,63.0,6.0,8.0
+Tanjung Pelepas,MYTPP,Malaysia,140.0,93.0,118.0,137.0,118.0,13.0,81.0,70.0,166.0
+Tanjung Perak,IDSUB,Indonesia,25.0,34.0,29.0,32.0,24.0,106.0,74.0,17.0,32.0
+Tanjung Priok,IDCTO,Indonesia,96.0,25.0,-24.0,108.0,27.0,103.0,86.0,17.0,36.0
+Tauranga,NZTRG,New Zealand,57.0,-34.0,-90.0,-31.0,5.0,194.0,59.0,3.0,7.0
+Tawau,MYTWU,Malaysia,,,,,-18.0,307.0,72.0,-13.0,-23.0
+Teesport,GBTEE,United Kingdom,5.0,-2.0,-5.0,3.0,-3.0,241.0,80.0,0.0,-5.0
+Tema,GHTEM,Ghana,44.0,-96.0,-10.0,-69.0,-166.0,393.0,44.0,-108.0,-223.0
+Thessaloniki,GRSKG,Greece,10.0,-50.0,-82.0,-27.0,-19.0,310.0,52.0,-15.0,-24.0
+Tianjin,CNTNJ,China,124.0,75.0,89.0,109.0,118.0,14.0,83.0,72.0,164.0
+Timaru,NZTIU,New Zealand,0.0,-25.0,-8.0,-7.0,-4.0,246.0,84.0,-3.0,-6.0
+Tin Can Island,NGTIN,Nigeria,-68.0,-57.0,-57.0,-60.0,-21.0,316.0,92.0,-13.0,-30.0
+Toamasina,MGTOA,Madagascar,5.0,-10.0,-2.0,-12.0,6.0,177.0,72.0,5.0,8.0
+Tokyo,JPTYO,Japan,74.0,62.0,52.0,62.0,37.0,86.0,85.0,27.0,48.0
+Trieste,ITTRS,Italy,46.0,-34.0,-202.0,-152.0,-34.0,338.0,73.0,-14.0,-54.0
+Tripoli,LBKYE,Lebanon,66.0,39.0,-3.0,29.0,45.0,72.0,91.0,26.0,64.0
+Turbo,COTRB,Colombia,,-7.0,,-32.0,-19.0,309.0,97.0,-13.0,-26.0
+Umm Qasr,IQUQR,Iraq,1.0,18.0,8.0,-6.0,-3.0,239.0,79.0,-3.0,-2.0
+Valencia,ESVLC,Spain,52.0,28.0,-53.0,27.0,-18.0,308.0,64.0,-10.0,-27.0
+Valparaiso,CLVAP,Chile,55.0,38.0,1.0,17.0,9.0,160.0,89.0,7.0,11.0
+Vancouver,CAVAN,Canada,18.0,-394.0,-395.0,-35.0,-159.0,389.0,75.0,-84.0,-234.0
+Varna,BGVAR,Bulgaria,9.0,4.0,-5.0,0.0,5.0,192.0,73.0,4.0,7.0
+Venice,ITVCE,Italy,7.0,4.0,-8.0,-6.0,-11.0,278.0,75.0,-8.0,-13.0
+Veracruz,MXVER,Mexico,42.0,36.0,27.0,26.0,38.0,84.0,86.0,19.0,57.0
+Vigo,ESVGO,Spain,16.0,17.0,14.0,20.0,6.0,180.0,75.0,4.0,8.0
+Vila Do Conde,BRVDC,Brazil,1.0,1.0,5.0,-10.0,-5.0,256.0,68.0,-2.0,-9.0
+Visakhapatnam,INVTZ,India,,36.0,20.0,115.0,46.0,70.0,86.0,25.0,67.0
+Vitoria,BRVIX,Brazil,5.0,4.0,8.0,-32.0,-13.0,294.0,86.0,-8.0,-19.0
+Vlissingen,NLVLI,Netherlands,,,,-8.0,-11.0,279.0,80.0,-10.0,-12.0
+Walvis Bay,NAWVB,Namibia,-19.0,-47.0,-37.0,-86.0,-91.0,376.0,57.0,-58.0,-125.0
+Wellington,NZWLG,New Zealand,30.0,16.0,11.0,30.0,-5.0,252.0,88.0,-3.0,-7.0
+Wilhelmshaven,DEWVN,Germany,106.0,17.0,6.0,48.0,52.0,61.0,79.0,33.0,71.0
+Wilmington,USILM,United States,64.0,65.0,58.0,57.0,38.0,85.0,76.0,25.0,51.0
+Xiamen,CNXAM,China,114.0,70.0,72.0,103.0,115.0,17.0,72.0,69.0,161.0
+Yangon,MMRGN,Myanmar,,-23.0,,1.0,2.0,218.0,85.0,2.0,3.0
+Yangshan,CNYSN,China,142.0,132.0,139.0,152.0,146.0,1.0,90.0,88.0,205.0
+Yantian,CNYTN,China,131.0,4.0,47.0,112.0,111.0,19.0,78.0,68.0,155.0
+Yarimca,TRYAR,Türkiye,98.0,84.0,62.0,38.0,45.0,71.0,88.0,30.0,61.0
+Yeosu,KRYOS,"Korea, Rep.",111.0,79.0,95.0,113.0,103.0,22.0,75.0,64.0,141.0
+Yokkaichi,JPYKK,Japan,42.0,36.0,28.0,38.0,31.0,96.0,80.0,18.0,44.0
+Yokohama,JPYOK,Japan,170.0,117.0,106.0,125.0,115.0,16.0,78.0,58.0,173.0
+Zarate,ARZAE,Argentina,,,,-4.0,3.0,207.0,94.0,1.0,5.0
+Zeebrugge,BEZEE,Belgium,57.0,1.0,41.0,94.0,14.0,132.0,90.0,7.0,21.0
+"Zhoushan Source: World Bank, For further details to",CNZOS,China provided by S&P insights into the,136.0,26.0,29.0,52.0,53.0,59.0,51.0,34.0,73.0

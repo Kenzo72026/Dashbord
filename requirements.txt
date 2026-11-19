@@ -1,0 +1,10 @@
+Django>=5.2,<7
+pandas>=2.2
+numpy>=1.26
+statsmodels>=0.14
+requests>=2.31
+websockets>=12
+pymupdf>=1.24      # lecture des PDF du CPPI (Banque mondiale)
+py7zr>=0.21        # lecture des archives .7z d'UNCTADstat
+whitenoise>=6.6    # fichiers statiques en production
+gunicorn>=22.0      # serveur WSGI en production

@@ -1,0 +1,224 @@
+{% extends "dashboard/base.html" %}
+{% load dash %}
+{% block titre %}Volumes Los Angeles · Long Beach{% endblock %}
+{% block kicker %}Vue des volumes · décision tactique et stratégique{% endblock %}
+{% block h1 %}Volumes de conteneurs de Los Angeles et Long Beach{% endblock %}
+{% block lead %}Évolution mensuelle en EVP (équivalent vingt pieds) depuis 2019 : importations, exportations, conteneurs chargés et vides. {{ donnees.perimetre }}.{% endblock %}
+
+{% block art %}{% include "dashboard/_art_volumes.html" %}{% endblock %}
+
+{% block content %}
+{% if donnees.complexe %}
+<section data-stagger class="grid g4">
+  {% with c=donnees.complexe %}
+  <div class="card reveal"><div class="kicker">Dernier mois</div><h2 class="num" id="s-last" style="font-size:28px">—</h2><p class="sub" id="s-last-sub"></p></div>
+  <div class="card reveal"><div class="kicker">Cumul depuis janvier</div><h2 class="num" id="s-ytd" style="font-size:28px">—</h2><p class="sub" id="s-ytd-sub"></p></div>
+  <div class="card reveal"><div class="kicker">Conteneurs vides à l'export</div><h2 class="num" id="s-empty" style="font-size:28px">—</h2><p class="sub">part des exportations en EVP (dernier mois)</p></div>
+  <div class="card reveal"><div class="kicker">Meilleur mois depuis 2019</div><h2 class="num" id="s-best" style="font-size:28px">—</h2><p class="sub" id="s-best-sub"></p></div>
+  {% endwith %}
+</section>
+
+<section class="card reveal mt">
+  <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:end">
+    <div><div class="kicker">Niveau descriptif · que s'est-il passé ?</div><h2>Volume mensuel</h2></div>
+    <div class="seg" id="seg-vol"><button data-m="compo" class="on">Composition</button>{% if donnees.inclus|length > 1 %}<button data-m="ports">Par port</button>{% endif %}<button data-m="yoy">Variation sur un an</button></div>
+  </div>
+  <div id="c-vol" class="chart tall"></div>
+  <p class="small muted" id="note-vol" style="margin:6px 0 0"></p>
+</section>
+
+{% if donnees.pw %}
+<section class="card reveal mt hi">
+  <div class="kicker">Le complexe en entier · FMI PortWatch</div>
+  <h2>San Pedro Bay en tonnes de conteneurs</h2>
+  <p class="sub">Les volumes de Long Beach ne sont pas disponibles (source fermée). PortWatch donne, gratuitement et depuis 2019, les <b>tonnes de conteneurs importées et exportées par le complexe Los Angeles-Long Beach</b>, estimées par le FMI à partir des signaux AIS des navires.</p>
+  <div class="grid g-2-1">
+    <div><div id="c-pw-complexe" class="chart"></div></div>
+    <div>
+      <div class="kv" id="pw-kv"></div>
+      <div class="callout mt"><b>Ce que cette mesure ne dit pas.</b> Ce sont des <b>tonnes estimées</b> (pas des EVP), pour le <b>complexe en bloc</b> : impossible d'en tirer Long Beach séparément. Elle suit bien les EVP de Los Angeles, donc la tendance du complexe est fiable ; le niveau exact en EVP ne l'est pas.</div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if donnees.lb %}
+<section class="card reveal mt hi">
+  <div class="kicker">Long Beach · observé puis estimé</div>
+  <h2>Long Beach, malgré le blocage de son site</h2>
+  <p class="sub">Le site du port refuse l'accès. Les chiffres de Long Beach viennent donc de deux autres sources : le <b>BTS</b> (ministère américain des Transports, données officielles du port, jusqu'en août 2023), puis une <b>estimation</b> à partir des tonnes de conteneurs du complexe (FMI PortWatch). La partie estimée est tracée en pointillés, avec sa marge d'erreur : ce n'est pas une donnée publiée par le port.</p>
+  <div class="grid g-2-1">
+    <div><div id="c-lb" class="chart tall"></div></div>
+    <div>
+      <div class="kv" id="lb-kv"></div>
+      <h3 style="font-size:14px;margin:16px 0 6px">Contrôle sur des mois mis de côté (2026)</h3>
+      <table class="t"><thead><tr><th>Mois</th><th class="r">Publié</th><th class="r">Estimé</th><th class="r">Écart</th></tr></thead><tbody id="lb-controle"></tbody></table>
+      <div class="callout warn mt"><b>À savoir.</b> Ces trois mois n'ont pas servi à caler l'estimation. L'erreur sur Long Beach est environ le double de celle du complexe, car Long Beach n'en est qu'une moitié. Entre septembre 2023 et fin 2025, seul le test rétrospectif sur 2021-2023 garantit la méthode : aucun chiffre publié ne permet de vérifier directement ces mois.</div>
+    </div>
+  </div>
+  <p class="small muted" style="margin:10px 0 0">Sources : BTS, jeux <a href="https://data.bts.gov/d/rd72-aq8r" target="_blank" rel="noopener">rd72-aq8r</a> et iahn-a7j4 (domaine public) ; FMI PortWatch ; Port of Los Angeles ; 2026 : communiqués mensuels du Port of Long Beach repris par la presse spécialisée, août et septembre 2026 confirmés par une seconde source (MacroMicro).</p>
+</section>
+{% endif %}
+
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><div class="kicker">Saisonnalité</div><h2>Quels mois sont les plus chargés ?</h2><p class="sub">Volume mensuel par année (millions d'EVP). Les cases vides sont des mois non encore publiés.</p><div id="c-heat" class="chart"></div></div>
+  <div class="card reveal"><div class="kicker">Bilan annuel</div><h2>Années comparées</h2><p class="sub">Une année en cours est comparée à la même période des années précédentes, pas au total annuel.</p>
+    <div class="scroll"><table class="t"><thead><tr><th>Année</th><th class="r">Total (EVP)</th><th class="r">Mois</th><th class="r">Même période</th><th class="r">Vides / exports</th></tr></thead><tbody id="tb-annuel"></tbody></table></div></div>
+</section>
+
+<section class="card reveal mt hi">
+  <div class="kicker">Niveau prédictif · que va-t-il se passer ?</div>
+  <h2>Prévision à 6 mois avec marge d'incertitude</h2>
+  {% if forecast.ok %}
+  <p class="sub">« 987 000 EVP » seul serait trompeur : l'écran affiche la prévision <b>et</b> l'erreur moyenne mesurée sur le passé, mois par mois d'horizon.</p>
+  <div class="grid g-2-1">
+    <div><div id="c-forecast" class="chart tall"></div></div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:8px">Backtest : le modèle est-il fiable ?</h3>
+      <p class="small muted">Je me replace à {{ forecast.n_origines }} dates passées, je prévois les 6 mois suivants avec les seules données connues alors, puis je compare au réel.</p>
+      <table class="t"><thead><tr><th>Modèle</th><th class="r">MAE</th><th class="r">Erreur</th></tr></thead><tbody>
+      {% for b in forecast.backtest %}<tr><td>{{ b.modele }}{% if forloop.first %} <span class="badge blue">retenu</span>{% endif %}</td><td class="r">{{ b.mae|nbfr }}</td><td class="r">{{ b.wape_pct|floatformat:1 }}&nbsp;%</td></tr>{% endfor %}
+      </tbody></table>
+      <div class="callout mt"><b>Lecture.</b> La fourchette « ± MAE » contenait la valeur réelle dans <b>{{ forecast.couverture_mae|floatformat:2 }}</b> des cas passés (≈ {% widthratio forecast.couverture_mae 1 100 %} %) : elle indique l'ordre de grandeur de l'erreur, pas une garantie. La bande claire (80 % des erreurs passées) est plus prudente.</div>
+      <p class="small muted mt">Le modèle ne voit pas les chocs (grève, tempête, tarifs douaniers) : il faut revoir la prévision dès qu'une anomalie apparaît.</p>
+    </div>
+  </div>
+  {% else %}<div class="banner"><div><b>Prévision indisponible</b><span>{{ forecast.raison }}</span></div></div>{% endif %}
+</section>
+
+<section data-stagger class="grid g2 mt">
+  <div class="card reveal"><div class="kicker">Niveau diagnostic · pourquoi ?</div><h2>Détection d'anomalies mensuelles</h2>
+    {% if anom.ok %}<p class="sub">Écart du volume à ce qui est attendu (tendance + saison), en écarts robustes. Au-delà de ±{{ anom.seuil_z|floatformat:0 }}, le mois est signalé.</p><div id="c-anom" class="chart short"></div>
+      {% if anom.anomalies %}<table class="t"><thead><tr><th>Mois</th><th class="r">Écart à l'attendu</th><th>Flux le plus touché (vs même mois un an avant)</th></tr></thead><tbody>
+      {% for a in anom.anomalies %}<tr><td>{{ a.mois|moisfr }}</td><td class="r">{{ a.ecart_pct|floatformat:1 }}&nbsp;%</td><td>{% if a.diagnostic %}{{ a.diagnostic.0.flux }} ({{ a.diagnostic.0.variation_pct|floatformat:0 }}&nbsp;%){% else %}—{% endif %}</td></tr>{% endfor %}</tbody></table>
+      <p class="small muted" style="margin-top:10px">Ces mois correspondent à des chocs que les chiffres seuls n'expliquent pas : la cause est à documenter par un humain avant d'en tirer une règle.</p>{% endif %}
+    {% else %}<div class="banner"><div><b>Détection indisponible</b><span>{{ anom.raison }}</span></div></div>{% endif %}</div>
+  <div class="card reveal"><div class="kicker">Activité des navires · PortWatch</div><h2>Escales hebdomadaires de porte-conteneurs</h2>
+    {% if anom_h.ok %}<p class="sub">Los Angeles-Long Beach, 104 dernières semaines. Bande = médiane des 26 semaines précédentes ± 2 écarts robustes ; point rouge : z ≥ 3.</p><div id="c-hebdo" class="chart short"></div>
+      <p class="small muted" style="margin:6px 0 0">Source : FMI PortWatch (signaux AIS, publication avec quelques jours de décalage). Ce sont des <b>navires</b>, pas des EVP : les deux séries ne se comparent pas en valeur.</p>
+    {% else %}<div class="banner"><div><b>Série indisponible</b><span>{{ anom_h.raison }}</span></div></div>{% endif %}</div>
+</section>
+{% else %}
+<div class="banner red"><div><b>Aucune donnée de volumes</b><span>Lancer <code>python manage.py fetch_all</code> pour télécharger les statistiques du Port of Los Angeles.</span></div></div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ donnees|json_script:"d-vol" }}{{ forecast|json_script:"d-forecast" }}{{ anom|json_script:"d-anom" }}{{ anom_h|json_script:"d-hebdo" }}
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("d-vol").textContent), F = JSON.parse(document.getElementById("d-forecast").textContent),
+        A = JSON.parse(document.getElementById("d-anom").textContent), H = JSON.parse(document.getElementById("d-hebdo").textContent);
+  const C = SPB.C, j = m => m + "-01", nf0 = SPB.nf0, M = D.complexe;
+  if (!M) return;
+  const n = M.total.length, last = n - 1;
+  // ---- tuiles du haut
+  const yoyLast = M.yoy[last];
+  document.getElementById("s-last").textContent = nf0.format(M.total[last]) + " EVP";
+  document.getElementById("s-last-sub").textContent = SPB.moisFr(M.mois[last]) + (yoyLast != null ? " · " + (yoyLast > 0 ? "+" : "−") + SPB.nf1.format(Math.abs(yoyLast)) + " % sur un an" : "");
+  const cum = D.cumul_meme_periode, an = Object.keys(cum.valeurs).map(Number).sort(), cur = an[an.length - 1], prev = cum.valeurs[cur - 1];
+  document.getElementById("s-ytd").textContent = nf0.format(cum.valeurs[cur]) + " EVP";
+  document.getElementById("s-ytd-sub").textContent = prev ? "janv.–" + SPB.moisFr(M.mois[last]).split(" ")[0] + " " + cur + " · " + (cum.valeurs[cur] > prev ? "+" : "−") + SPB.nf1.format(Math.abs(cum.valeurs[cur] / prev - 1) * 100) + " % vs " + (cur - 1) : "";
+  const tot = M.loaded_exports[last] + M.empty_exports[last];
+  document.getElementById("s-empty").textContent = SPB.nf1.format(M.empty_exports[last] / tot * 100) + " %";
+  const best = M.total.indexOf(Math.max.apply(null, M.total));
+  document.getElementById("s-best").textContent = nf0.format(M.total[best]) + " EVP";
+  document.getElementById("s-best-sub").textContent = SPB.moisFr(M.mois[best]);
+  // ---- graphique principal à trois vues
+  const noms = { loaded_imports: ["Importations chargées", C.cyan], empty_imports: ["Importations vides", C.blue], loaded_exports: ["Exportations chargées", C.teal], empty_exports: ["Exportations vides", C.violet] };
+  const x = M.mois.map(j);
+  function vue(m) {
+    const note = document.getElementById("note-vol");
+    if (m === "compo") {
+      note.textContent = "Environ les trois quarts des exportations en EVP sont des conteneurs vides renvoyés vers l'Asie : un volume élevé ne veut pas dire des exportations élevées.";
+      const tr = Object.keys(noms).map(k => ({ x: x, y: M[k], type: "bar", name: noms[k][0], marker: { color: noms[k][1] }, hovertemplate: "%{y:,.0f}" }));
+      tr.push({ x: x, y: M.total, mode: "lines", name: "Total", line: { color: C.text, width: 1.6 }, hovertemplate: "%{y:,.0f}" });
+      SPB.plot("c-vol", tr, { barmode: "stack", yaxis: { tickformat: ",.0f", title: { text: "EVP par mois", font: { size: 11 } } }, xaxis: { type: "date" } });
+    } else if (m === "ports") {
+      note.textContent = "Chaque port reste lisible séparément ; le complexe est la somme des deux.";
+      const cols = { LA: C.cyan, LB: C.amber }, nom = { LA: "Los Angeles", LB: "Long Beach" };
+      const tr = Object.keys(D.ports).map(p => ({ x: D.ports[p].mois.map(j), y: D.ports[p].total, type: "bar", name: nom[p], marker: { color: cols[p] }, hovertemplate: "%{y:,.0f}" }));
+      SPB.plot("c-vol", tr, { barmode: "stack", yaxis: { tickformat: ",.0f" }, xaxis: { type: "date" } });
+    } else {
+      note.textContent = "Un axe qui part de zéro : les variations de ± 20 % sont réelles, pas un effet d'échelle. Janv.–mars 2020 : début du Covid ; 2021 : rebond.";
+      SPB.plot("c-vol", [{ x: x, y: M.yoy, type: "bar", marker: { color: M.yoy.map(v => v == null ? C.muted : v >= 0 ? C.green : C.amber) }, hovertemplate: "%{y:+.1f} %" , name: "Variation sur un an" }],
+        { yaxis: { ticksuffix: " %", zeroline: true, zerolinecolor: "rgba(43,27,18,.3)" }, xaxis: { type: "date" }, showlegend: false });
+    }
+  }
+  vue("compo");
+  document.querySelectorAll("#seg-vol button").forEach(b => b.addEventListener("click", () => { document.querySelectorAll("#seg-vol button").forEach(o => o.classList.remove("on")); b.classList.add("on"); vue(b.dataset.m); }));
+  // ---- complexe en tonnes (PortWatch)
+  if (D.pw && document.getElementById("c-pw-complexe")) {
+    const P = D.pw, xs = P.mois.map(j), last = P.mois.length - 1, mt = v => SPB.nf1.format(v / 1e6);
+    const tr = [{ x: xs, y: P.indice_tonnes, mode: "lines", name: "Complexe LA-LB · tonnes (PortWatch)", line: { color: C.cyan, width: 2.6 }, hovertemplate: "%{y:.0f}" }];
+    if (P.indice_la) tr.push({ x: xs, y: P.indice_la, mode: "lines", name: "Los Angeles · EVP (port)", line: { color: C.amber, width: 2, dash: "dot" }, hovertemplate: "%{y:.0f}" });
+    SPB.plot("c-pw-complexe", tr, { yaxis: { title: { text: "Indice (moyenne 2019 = 100)", font: { size: 11 } } }, xaxis: { type: "date" }, shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: 100, y1: 100, line: { color: "rgba(43,27,18,.3)", dash: "dot" } }] });
+    const lignes = [["Dernier mois complet", SPB.moisFr(P.mois[last])], ["Tonnes de conteneurs (import + export)", mt(P.total_t[last]) + " Mt"],
+      ["Sur un an", (P.yoy[last] >= 0 ? "+" : "−") + SPB.nf1.format(Math.abs(P.yoy[last])) + " %"]];
+    if (P.corr_total != null) lignes.push(["Corrélation avec les EVP de Los Angeles (" + P.n_mois_comparaison + " mois)", SPB.nf1.format(P.corr_total * 100).replace(",0", "") + " %"], ["Tonnes par EVP chargé importé (médiane)", SPB.nf1.format(P.tonnes_par_evp) + " t"]);
+    document.getElementById("pw-kv").innerHTML = lignes.map(r => "<span>" + r[0] + "</span><span>" + r[1] + "</span>").join("");
+  }
+  // ---- Long Beach : observé (BTS) puis estimé (PortWatch)
+  if (D.lb && document.getElementById("c-lb")) {
+    const B = D.lb, xo = B.observe.mois.map(j), xe = B.estime.mois.map(j), xl = B.la.mois.map(j);
+    const com = Object.keys(B.communiques).sort();
+    const tr = [
+      { x: xl, y: B.la.valeurs, mode: "lines", name: "Los Angeles (publié par le port)", line: { color: C.cyan, width: 2 }, hovertemplate: "%{y:,.0f}" },
+      { x: xe.concat(xe.slice().reverse()), y: B.estime.haut.concat(B.estime.bas.slice().reverse()), fill: "toself", mode: "lines", fillcolor: "rgba(196,138,28,.16)", line: { width: 0 }, hoverinfo: "skip", showlegend: false },
+      { x: xo, y: B.observe.valeurs, mode: "lines", name: "Long Beach observé (BTS)", line: { color: C.amber, width: 2.4 }, hovertemplate: "%{y:,.0f}" },
+      { x: [xo[xo.length - 1]].concat(xe), y: [B.observe.valeurs[B.observe.valeurs.length - 1]].concat(B.estime.valeurs), mode: "lines", name: "Long Beach estimé", line: { color: C.amber, width: 2.4, dash: "dot" },
+        customdata: [[null, null]].concat(B.estime.bas.map((b, i) => [b, B.estime.haut[i]])), hovertemplate: "%{y:,.0f} (estimé) [%{customdata[0]:,.0f} – %{customdata[1]:,.0f}]" },
+      { x: com.map(j), y: com.map(m => B.communiques[m]), mode: "markers", name: "Chiffre publié par le port (2026)", marker: { color: "#FFFCF7", size: 9, symbol: "diamond", line: { color: C.amber, width: 2 } }, hovertemplate: "%{y:,.0f} (publié)" }];
+    SPB.plot("c-lb", tr, { yaxis: { tickformat: ",.0f", title: { text: "EVP par mois", font: { size: 11 } }, rangemode: "tozero" }, xaxis: { type: "date" },
+      shapes: [{ type: "line", xref: "x", yref: "paper", x0: xe[0], x1: xe[0], y0: 0, y1: 1, line: { color: "rgba(43,27,18,.45)", dash: "dash", width: 1 } }],
+      annotations: [{ x: xe[0], yref: "paper", y: 1.04, xanchor: "left", text: " fin des données BTS · estimation", showarrow: false, font: { size: 11, color: "#6F5846" } }] });
+    const pct = (v, d) => (v >= 0 ? "+" : "−") + SPB.nf1.format(Math.abs(v)) + " %";
+    document.getElementById("lb-kv").innerHTML = [
+      ["Observé (BTS)", SPB.moisFr(B.observe.mois[0]) + " → " + SPB.moisFr(B.observe.mois[B.observe.mois.length - 1]) + " · " + B.observe.mois.length + " mois"],
+      ["Estimé", SPB.moisFr(B.estime.mois[0]) + " → " + SPB.moisFr(B.estime.mois[B.estime.mois.length - 1]) + " · " + B.estime.mois.length + " mois"],
+      ["Erreur moyenne du complexe (rétro-test 2021-2023, " + B.n_retro + " prévisions)", SPB.nf1.format(B.mape_complexe * 100) + " %"],
+      ["Rapport tonnes / EVP du complexe (observé)", SPB.nf1.format(B.rapport.observe_min) + " à " + SPB.nf1.format(B.rapport.observe_max)]].map(r => "<span>" + r[0] + "</span><span>" + r[1] + "</span>").join("");
+    document.getElementById("lb-controle").innerHTML = B.controle.map(c => "<tr><td>" + SPB.moisFr(c.mois) + '</td><td class="r">' + nf0.format(c.publie) + '</td><td class="r">' + nf0.format(c.estime) + '</td><td class="r">' + pct(c.erreur_pct) + "</td></tr>").join("");
+  }
+  // ---- carte de chaleur
+  const H1 = D.heatmap;
+  SPB.plot("c-heat", [{ type: "heatmap", z: H1.z.map(r => r.map(v => v == null ? null : v / 1e6)), x: ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."], y: H1.annees.map(String),
+    colorscale: [[0, "#F7EBD6"], [.5, "#F3BE8A"], [1, "#E4803A"]], xgap: 3, ygap: 3, hovertemplate: "%{y} %{x} : %{z:.2f} M EVP<extra></extra>", colorbar: { thickness: 10, ticksuffix: " M", tickfont: { color: C.muted } },
+    text: H1.z.map(r => r.map(v => v == null ? "" : (v / 1e6).toFixed(2).replace(".", ","))), texttemplate: "%{text}", textfont: { size: 10.5, color: "#2B1B12" } }],
+    { yaxis: { autorange: "reversed", type: "category" }, xaxis: { side: "top" }, margin: { l: 48, r: 10, t: 36, b: 10 }, hovermode: "closest" });
+  // ---- tableau annuel
+  document.getElementById("tb-annuel").innerHTML = D.annuel.map(a => {
+    const same = cum.valeurs[a.annee];
+    return "<tr><td>" + a.annee + (a.partiel ? ' <span class="badge blue">' + (a.annee === D.annuel[D.annuel.length - 1].annee ? "en cours" : "incomplet") + "</span>" : "") + '</td><td class="r">' + nf0.format(a.total) + '</td><td class="r">' + a.mois + '/12</td><td class="r">' + (same ? nf0.format(same) : "—") + '</td><td class="r">' + SPB.nf1.format(a.part_vides) + " %</td></tr>";
+  }).join("");
+  // ---- prévision
+  if (F.ok) {
+    const h = F.historique.slice(-48), p = F.prevision, mh = h.map(d => j(d.mois)), mp = p.map(d => j(d.mois));
+    const band = (lo, hi, col) => ({ x: mp.concat(mp.slice().reverse()), y: p.map(d => d[hi]).concat(p.map(d => d[lo]).reverse()), fill: "toself", mode: "lines", fillcolor: col, line: { width: 0 }, hoverinfo: "skip", showlegend: false });
+    SPB.plot("c-forecast", [band("bas80", "haut80", "rgba(216,87,26,.12)"), band("bas", "haut", "rgba(216,87,26,.3)"),
+      { x: mh, y: h.map(d => d.valeur), mode: "lines", name: "Réel", line: { color: C.text, width: 2.2 }, hovertemplate: "%{y:,.0f}" },
+      { x: p.map(d => d.annee_precedente ? mp[p.indexOf(d)] : null), y: p.map(d => d.annee_precedente), mode: "markers", name: "Même mois l'an dernier", marker: { color: C.amber, size: 8, symbol: "diamond" }, hovertemplate: "%{y:,.0f}" },
+      { x: [mh[mh.length - 1]].concat(mp), y: [h[h.length - 1].valeur].concat(p.map(d => d.valeur)), mode: "lines+markers", name: "Prévision", line: { color: C.cyan, width: 3, dash: "dot" }, marker: { size: 8, color: C.cyan },
+        customdata: [[null, null]].concat(p.map(d => [d.bas, d.haut])), hovertemplate: "%{y:,.0f}  [%{customdata[0]:,.0f} – %{customdata[1]:,.0f}]" }],
+      { yaxis: { tickformat: ",.0f", title: { text: "EVP par mois", font: { size: 11 } } }, xaxis: { type: "date", tickformat: "%b %Y" } });
+  }
+  // ---- anomalies mensuelles
+  if (A.ok) {
+    const s = A.serie, flag = new Set(A.anomalies.map(a => a.mois)), pts = s.filter(d => flag.has(d.mois));
+    SPB.plot("c-anom", [{ x: s.map(d => j(d.mois)), y: s.map(d => d.z), mode: "lines", name: "z (écart robuste)", line: { color: C.cyan, width: 1.6 }, hovertemplate: "z = %{y:.1f}" },
+      { x: pts.map(d => j(d.mois)), y: pts.map(d => d.z), mode: "markers", name: "Anomalie", marker: { color: C.red, size: 10, line: { color: "#FFFCF7", width: 1.2 } }, hovertemplate: "z = %{y:.1f}" }],
+      { yaxis: { zeroline: true, zerolinecolor: "rgba(43,27,18,.25)" }, xaxis: { type: "date" }, shapes: [3, -3].map(v => ({ type: "line", xref: "paper", x0: 0, x1: 1, y0: v, y1: v, line: { color: C.amber, width: 1, dash: "dash" } })), showlegend: false });
+  }
+  // ---- escales hebdomadaires
+  if (H.ok) {
+    const s = H.serie, ix = s.map(d => d.semaine), med = s.map(d => d.mediane), bw = s.map(d => 2 * d.mad);
+    const pts = s.filter(d => Math.abs(d.z) >= H.seuil_z);
+    SPB.plot("c-hebdo", [{ x: ix.concat(ix.slice().reverse()), y: med.map((v, i) => v + bw[i]).concat(med.map((v, i) => v - bw[i]).reverse()), fill: "toself", mode: "lines", fillcolor: "rgba(62,106,120,.16)", line: { width: 0 }, hoverinfo: "skip", showlegend: false },
+      { x: ix, y: med, mode: "lines", name: "Médiane (26 sem.)", line: { color: C.blue, width: 1.5, dash: "dot" }, hovertemplate: "%{y:.0f}" },
+      { x: ix, y: s.map(d => d.valeur), mode: "lines", name: "Escales", line: { color: C.teal, width: 2 }, hovertemplate: "%{y:.0f} escales" },
+      { x: pts.map(d => d.semaine), y: pts.map(d => d.valeur), mode: "markers", name: "Anomalie", marker: { color: C.red, size: 9 } }],
+      { yaxis: { rangemode: "tozero" }, xaxis: { type: "date" }, showlegend: false });
+  }
+})();
+</script>
+{% endblock %}

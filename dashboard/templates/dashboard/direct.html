@@ -1,0 +1,128 @@
+{% extends "dashboard/base.html" %}
+{% load static dash %}
+{% block titre %}En direct{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'dashboard/vendor/leaflet.css' %}">{% endblock %}
+{% block kicker %}Vue opérationnelle · décision en minutes et en heures{% endblock %}
+{% block h1 %}La baie en direct : navires (AIS) et météo{% endblock %}
+{% block lead %}Positions des navires autour du port, avec type et statut, et prévision de vent, de rafales et de vagues sur 72 heures. Chaque bloc affiche son origine et son âge.{% endblock %}
+
+{% block art %}{% include "dashboard/_art_direct.html" %}{% endblock %}
+
+{% block content %}
+{% if donnees.ais.origine == 'archive' %}
+<div class="banner blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>La carte montre une ARCHIVE AIS, pas le direct</b>
+  <span>Dernières positions du <b>{{ donnees.ais.instant|frdate }}</b> (extrait MarineCadastre du TP). {% if not cle_ais %}Pour activer le flux en direct : créer une clé gratuite sur aisstream.io, la placer dans la variable <code>AISSTREAM_API_KEY</code> (fichier .env), puis lancer <code>python manage.py collect_ais --loop</code>.{% else %}La clé est configurée : lancer <code>python manage.py collect_ais --loop</code> pour alimenter la carte.{% endif %}</span></div></div>
+{% elif donnees.ais.origine == 'live' %}
+<div class="banner" style="border-color:rgba(79,122,58,.45);background:rgba(79,122,58,.07)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4"/></svg><div><b><span class="live-dot" aria-hidden="true"></span>Flux AIS en direct</b><span id="live-age">Dernière position reçue : {{ donnees.ais.instant|frdate }}. Couverture gratuite par stations terrestres : peut être partielle hors de la baie.</span></div></div>
+{% elif not donnees.ais.origine %}
+<div class="banner red"><div><b>Aucune position AIS disponible</b><span>Ni flux en direct ni archive. Voir « Sources &amp; méthode ».</span></div></div>
+{% endif %}
+
+<section data-stagger class="grid g-2-1">
+  <div class="card reveal" style="padding:14px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding:6px 8px 12px">
+      <div><div class="kicker">Niveau descriptif · où sont les navires ?</div><h2>Carte AIS de San Pedro Bay</h2></div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div id="map"></div>
+    <p class="small muted" style="margin:10px 6px 0">Taille du point = longueur du navire. Zone pointillée = zone de collecte. Fond de carte © OpenStreetMap.</p>
+  </div>
+  <div style="display:grid;gap:16px;align-content:start">
+    <div class="card reveal"><div class="kicker">Résumé AIS</div><h2 id="ais-titre">—</h2><p class="sub" id="ais-sous"></p>
+      <div class="kv" id="ais-kv"></div></div>
+    <div class="card reveal"><div class="kicker">Par type de navire</div><div id="c-types" class="chart short" style="height:240px"></div></div>
+  </div>
+</section>
+
+<section class="mt2"><div class="kicker">Météo du port · Open-Meteo</div><h2 >Vent, rafales et vagues : maintenant et dans les 72 prochaines heures</h2></section>
+{% if meteo.disponible %}
+<section data-stagger class="grid g-2-1 mt">
+  <div class="card reveal">
+    <div class="gauge" style="margin-bottom:14px">
+      <div class="g {% if meteo.courant.rafales >= 34 %}alert{% elif meteo.courant.rafales >= 28 %}warn{% endif %}"><b class="num">{{ meteo.courant.vent|nbfr:0 }} <small style="font-size:13px;font-weight:500">nœuds</small></b><span>vent moyen</span></div>
+      <div class="g {% if meteo.courant.rafales >= 34 %}alert{% elif meteo.courant.rafales >= 28 %}warn{% endif %}"><b class="num">{{ meteo.courant.rafales|nbfr:0 }} <small style="font-size:13px;font-weight:500">nœuds</small></b><span>rafales</span></div>
+      <div class="g {% if meteo.courant.vagues >= 4 %}alert{% elif meteo.courant.vagues >= 2.5 %}warn{% endif %}"><b class="num">{{ meteo.courant.vagues|nbfr:1 }} <small style="font-size:13px;font-weight:500">m</small></b><span>vagues au large{% if meteo.courant.periode %} · {{ meteo.courant.periode|nbfr:0 }} s{% endif %}</span></div>
+    </div>
+    <div id="c-meteo" class="chart tall"></div>
+    <p class="small muted" style="margin:6px 0 0">Heures de Los Angeles. Zone grisée : passé. Lignes pointillées : seuils de vigilance (orange) et d'alerte (rouge). Modèle global : indicatif, pas une mesure au quai.</p>
+  </div>
+  <div style="display:grid;gap:16px;align-content:start">
+    <div class="card reveal"><div class="kicker">Diagnostic · alertes à 48 h</div><h2>Épisodes détectés</h2>
+      {% if meteo.alertes %}<div class="alerts mt">{% for a in meteo.alertes %}<div class="alert-item {{ a.niveau }}"><b>{{ a.niveau }}</b><span>{{ a.message }}</span></div>{% endfor %}</div>
+      {% else %}<p class="muted">Rien au-dessus des seuils sur 48 h.</p>{% endif %}
+      {% if file_attente.message %}<div class="alert-item vigilance mt"><b>vigilance</b><span>{{ file_attente.message }}</span></div>{% endif %}</div>
+    <div class="card reveal"><div class="kicker">Règles d'alerte</div>
+      <table class="t"><thead><tr><th>Variable</th><th class="r">Vigilance</th><th class="r">Alerte</th></tr></thead><tbody>
+      <tr><td>Vent moyen</td><td class="r">≥ 21 nœuds</td><td class="r">≥ 34 nœuds</td></tr><tr><td>Rafales</td><td class="r">≥ 28 nœuds</td><td class="r">≥ 34 nœuds</td></tr>
+      <tr><td>Vagues au large</td><td class="r">≥ 2,5 m</td><td class="r">≥ 4 m</td></tr><tr><td>Visibilité</td><td class="r">≤ 2 000 m</td><td class="r">—</td></tr></tbody></table>
+      <p class="small muted" style="margin:10px 0 0">Seuils pédagogiques inspirés des avis du service météo américain (NWS) ; la capitainerie fixe ses propres limites. Une alerte par épisode, pas une par heure : c'est la parade à la fatigue d'alerte.</p></div>
+  </div>
+</section>
+{% else %}
+<div class="banner"><div><b>Météo indisponible</b><span>{{ meteo.message }} Les alertes météo sont suspendues tant que la source ne répond pas.</span></div></div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ donnees|json_script:"d-direct" }}
+<script src="{% static 'dashboard/vendor/leaflet.js' %}"></script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("d-direct").textContent), C = SPB.C;
+  const typeCol = { "Cargo (conteneurs, vrac)": C.cyan, "Pétrolier / chimiquier": C.amber, "Passagers": C.violet, "Remorqueur": C.green, "Plaisance / voilier": "#8F7A68", "Pêche": C.teal, "Service portuaire / sécurité": C.blue, "Autre": "#B3A28C", "Inconnu": "#B3A28C" };
+  // ---------- carte
+  const map = L.map("map", { zoomControl: true, attributionControl: true }).setView(D.carte.centre, 11);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "© OpenStreetMap" }).addTo(map);
+  L.rectangle(D.carte.bbox, { color: "#7A4B2E", weight: 1.6, dashArray: "7 7", fill: false }).addTo(map);
+  D.carte.ports.forEach(p => L.marker([p.lat, p.lon], { icon: L.divIcon({ className: "", html: '<div style="width:max-content;transform:translate(-50%,-100%);color:#fbf7ef;font:600 11.5px DM Sans,sans-serif;background:rgba(43,27,18,.94);border:1px solid rgba(235,224,205,.45);padding:3px 10px;border-radius:9px;white-space:nowrap;box-shadow:0 8px 14px -8px rgba(30,18,11,.7)">⚓ ' + p.nom + "</div>" }) }).addTo(map));
+  const couche = L.layerGroup().addTo(map);
+  const actifs = new Set(Object.keys(typeCol));
+  let navires = D.ais.navires;
+  function rayon(n) { return 4 + Math.min((n.longueur || 60) / 45, 7); }
+  function dessiner() {
+    couche.clearLayers();
+    navires.filter(n => actifs.has(n.type)).forEach(n => {
+      const m = L.circleMarker([n.lat, n.lon], { radius: rayon(n), color: "#2B1B12", weight: 1.2, fillColor: typeCol[n.type] || "#B3A28C", fillOpacity: .88 });
+      m.bindPopup("<b>" + n.nom + "</b><br>MMSI " + n.mmsi + "<br>" + n.type + (n.longueur ? " · " + Math.round(n.longueur) + " m" : "") + "<br>Statut : " + n.statut + "<br>Vitesse : " + (n.sog != null ? n.sog.toFixed(1) + " nœuds" : "—") + "<br><span style='color:#94a3c2'>Vu : " + SPB.fmtLA(n.vu) + " (LA)</span>");
+      couche.addLayer(m);
+    });
+  }
+  function resume() {
+    const par = {}; navires.forEach(n => par[n.type] = (par[n.type] || 0) + 1);
+    const gros = navires.filter(n => n.type === "Cargo (conteneurs, vrac)" || n.type === "Pétrolier / chimiquier"), anc = gros.filter(n => n.statut === "À l'ancre"), mvt = navires.filter(n => (n.sog || 0) >= 0.5);
+    document.getElementById("ais-titre").textContent = navires.length + " navires" + (D.ais.origine === "archive" ? " (archive)" : D.ais.origine === "live" ? " en direct" : "");
+    document.getElementById("ais-sous").textContent = D.ais.instant ? "Position la plus récente : " + SPB.fmtLA(D.ais.instant, { year: "numeric" }) + " (heure de Los Angeles)" : "Aucune donnée AIS";
+    document.getElementById("ais-kv").innerHTML = [["Gros navires (cargos, pétroliers)", gros.length], ["dont à l'ancre", anc.length], ["En mouvement (> 0,5 nœud)", mvt.length], ["Immobiles ou à quai", navires.length - mvt.length]].map(r => "<span>" + r[0] + "</span><span>" + r[1] + "</span>").join("");
+    const ks = Object.keys(par).sort((a, b) => par[b] - par[a]);
+    SPB.plot("c-types", [{ type: "bar", orientation: "h", y: ks.slice().reverse(), x: ks.map(k => par[k]).reverse(), marker: { color: ks.map(k => typeCol[k] || "#B3A28C").reverse() }, hovertemplate: "%{x} navires<extra></extra>" }],
+      { margin: { l: 170, r: 14, t: 6, b: 28 }, hovermode: "closest", yaxis: { automargin: true, tickfont: { size: 11.5, color: "#2B1B12" } } });
+    document.getElementById("chips").innerHTML = ks.map(k => '<span class="chip' + (actifs.has(k) ? "" : " off") + '" data-k="' + k + '" style="--c:' + (typeCol[k] || "#B3A28C") + '"><i></i>' + k + " · " + par[k] + "</span>").join("");
+    document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { const k = c.dataset.k; actifs.has(k) ? actifs.delete(k) : actifs.add(k); c.classList.toggle("off"); dessiner(); }));
+  }
+  dessiner(); resume();
+  // cadrer la carte sur les navires (pas sur toute la zone de collecte, souvent vide en mer)
+  const pts = navires.map(n => [n.lat, n.lon]);
+  if (pts.length > 3) map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 12 });
+  // ---------- météo
+  const M = D.meteo;
+  if (M.length) {
+    const la = iso => new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(new Date(iso)).replace(",", "");
+    const x = M.map(p => la(p.t)), now = la(new Date().toISOString());
+    const ligne = (y, col, nom) => ({ x: [x[0], x[x.length - 1]], y: [y, y], mode: "lines", line: { color: col, width: 1, dash: "dot" }, hoverinfo: "skip", showlegend: false });
+    SPB.plot("c-meteo", [
+      ligne(D.seuils.rafales[0], "rgba(196,138,28,.7)"), ligne(D.seuils.rafales[1], "rgba(166,50,30,.8)"),
+      { x: x, y: M.map(p => p.rafales), mode: "lines", name: "Rafales (nœuds)", line: { color: C.amber, width: 2.2 }, hovertemplate: "%{y:.0f} nœuds" },
+      { x: x, y: M.map(p => p.vent), mode: "lines", name: "Vent moyen (nœuds)", line: { color: C.cyan, width: 2.4 }, hovertemplate: "%{y:.0f} nœuds" },
+      { x: x, y: M.map(p => p.vagues), mode: "lines", name: "Vagues au large (m)", yaxis: "y2", fill: "tozeroy", fillcolor: "rgba(122,75,46,.14)", line: { color: C.violet, width: 2 }, hovertemplate: "%{y:.1f} m" }],
+      { xaxis: { type: "date", tickformat: "%d/%m\n%Hh" }, yaxis: { title: { text: "nœuds", font: { size: 11 } }, rangemode: "tozero" },
+        yaxis2: { overlaying: "y", side: "right", title: { text: "vagues (m)", font: { size: 11 } }, rangemode: "tozero", showgrid: false, gridcolor: "rgba(0,0,0,0)" },
+        shapes: [{ type: "rect", xref: "x", yref: "paper", x0: x[0], x1: now, y0: 0, y1: 1, fillcolor: "rgba(43,27,18,.045)", line: { width: 0 } }, { type: "line", xref: "x", yref: "paper", x0: now, x1: now, y0: 0, y1: 1, line: { color: C.text, width: 1.5, dash: "dash" } }],
+        annotations: [{ x: now, yref: "paper", y: 1.02, text: "maintenant", showarrow: false, font: { color: C.text, size: 11.5 } }], margin: { l: 52, r: 52, t: 30, b: 46 } });
+  }
+  // ---------- direct : rafraîchissement sans recharger la page (lit la base, aucun appel externe)
+  if (D.ais.origine === "live") {
+    setInterval(() => fetch("/api/live/").then(r => r.json()).then(j => { navires = j.direct.ais.navires; D.ais = j.direct.ais; dessiner(); resume(); }).catch(() => {}), 60000);
+  }
+})();
+</script>
+{% endblock %}
