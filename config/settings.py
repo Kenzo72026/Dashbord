@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3", "OPTIONS": {"timeout": 20}}}
 
 LANGUAGE_CODE = "fr"
 TIME_ZONE = "UTC"

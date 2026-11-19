@@ -94,7 +94,13 @@ def collect_live(duree=45):
     except Exception as exc:  # réseau, TLS, quota… : on garde l'état précédent et on le dit
         declare("ais_live", "error", f"Flux AIS injoignable ({type(exc).__name__}) : dernières positions conservées.", retrieved=False)
         return 0
-    for mmsi, p in positions.items():
+    total = enregistrer(positions, statiques, f"{len(positions)} navires reçus en {duree} s ; {{total}} navires suivis (positions < 6 h).")
+    return len(positions)
+
+
+def enregistrer(positions, statiques, message_modele):
+    """Écrit la dernière position de chaque navire en base et met à jour l'état de la source. `{total}` est remplacé dans le message."""
+    for mmsi, p in list(positions.items()):
         s = statiques.get(mmsi, {})
         ancien = AisPosition.objects.filter(mmsi=mmsi, origin="live").first()
         type_ais = s.get("ship_type") if s.get("ship_type") is not None else (ancien.ship_type if ancien else None)
@@ -104,10 +110,10 @@ def collect_live(duree=45):
             "length": s.get("length") or (ancien.length if ancien else None), "seen_at": p["seen_at"]})
     AisPosition.objects.filter(origin="live", seen_at__lt=timezone.now() - timedelta(hours=6)).delete()
     total = AisPosition.objects.filter(origin="live").count()
-    declare("ais_live", "ok", f"{len(positions)} navires reçus en {duree} s ; {total} navires suivis (positions < 6 h).",
+    declare("ais_live", "ok", message_modele.replace("{total}", str(total)),
             rows=total, last_period=timezone.now().strftime("%Y-%m-%d %H:%M UTC"), retrieved=True,
             notes="Couverture gratuite par stations terrestres : peut être faible hors de la baie de Los Angeles.")
-    return len(positions)
+    return total
 
 
 def live_status():

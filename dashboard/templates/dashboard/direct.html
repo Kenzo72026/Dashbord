@@ -9,12 +9,14 @@
 {% block art %}{% include "dashboard/_art_direct.html" %}{% endblock %}
 
 {% block content %}
-{% if donnees.ais.origine == 'archive' %}
+{% if cle_ais %}
+<div class="banner" id="live-banner" style="border-color:rgba(79,122,58,.45);background:rgba(79,122,58,.07)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4"/></svg><div><b><span class="live-dot" aria-hidden="true"></span><span id="live-titre">{% if donnees.ais.origine == 'live' %}Flux AIS en direct{% else %}Flux AIS : connexion en cours{% endif %}</span></b><span id="live-age">{% if donnees.ais.origine == 'live' %}Dernière position reçue : {{ donnees.ais.instant|frdate }}.{% else %}Ouverture du lien avec aisstream.io… En attendant, la carte montre l'archive AIS du TP (datée du {{ donnees.ais.instant|frdate }}).{% endif %}</span></div></div>
+{% elif donnees.ais.origine == 'archive' %}
 <div class="banner blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>La carte montre une ARCHIVE AIS, pas le direct</b>
-  <span>Dernières positions du <b>{{ donnees.ais.instant|frdate }}</b> (extrait MarineCadastre du TP). {% if not cle_ais %}Pour activer le flux en direct : créer une clé gratuite sur aisstream.io, la placer dans la variable <code>AISSTREAM_API_KEY</code> (fichier .env), puis lancer <code>python manage.py collect_ais --loop</code>.{% else %}La clé est configurée : lancer <code>python manage.py collect_ais --loop</code> pour alimenter la carte.{% endif %}</span></div></div>
+  <span>Dernières positions du <b>{{ donnees.ais.instant|frdate }}</b> (extrait MarineCadastre du TP). Pour activer le direct : créer une clé gratuite sur aisstream.io et la placer dans la variable <code>AISSTREAM_API_KEY</code> (fichier .env) ; le serveur ouvre alors tout seul un lien permanent au démarrage.</span></div></div>
 {% elif donnees.ais.origine == 'live' %}
-<div class="banner" style="border-color:rgba(79,122,58,.45);background:rgba(79,122,58,.07)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4"/></svg><div><b><span class="live-dot" aria-hidden="true"></span>Flux AIS en direct</b><span id="live-age">Dernière position reçue : {{ donnees.ais.instant|frdate }}. Couverture gratuite par stations terrestres : peut être partielle hors de la baie.</span></div></div>
-{% elif not donnees.ais.origine %}
+<div class="banner" style="border-color:rgba(79,122,58,.45);background:rgba(79,122,58,.07)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4"/></svg><div><b>Dernières positions du direct (lien fermé)</b><span>Dernière position reçue : {{ donnees.ais.instant|frdate }}.</span></div></div>
+{% else %}
 <div class="banner red"><div><b>Aucune position AIS disponible</b><span>Ni flux en direct ni archive. Voir « Sources &amp; méthode ».</span></div></div>
 {% endif %}
 
@@ -68,6 +70,7 @@
 <script src="{% static 'dashboard/vendor/leaflet.js' %}"></script>
 <script>
 (function () {
+  const CLE = {{ cle_ais|yesno:"true,false" }};
   const D = JSON.parse(document.getElementById("d-direct").textContent), C = SPB.C;
   const typeCol = { "Cargo (conteneurs, vrac)": C.cyan, "Pétrolier / chimiquier": C.amber, "Passagers": C.violet, "Remorqueur": C.green, "Plaisance / voilier": "#8F7A68", "Pêche": C.teal, "Service portuaire / sécurité": C.blue, "Autre": "#B3A28C", "Inconnu": "#B3A28C" };
   // ---------- carte
@@ -75,17 +78,27 @@
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "© OpenStreetMap" }).addTo(map);
   L.rectangle(D.carte.bbox, { color: "#7A4B2E", weight: 1.6, dashArray: "7 7", fill: false }).addTo(map);
   D.carte.ports.forEach(p => L.marker([p.lat, p.lon], { icon: L.divIcon({ className: "", html: '<div style="width:max-content;transform:translate(-50%,-100%);color:#fbf7ef;font:600 11.5px DM Sans,sans-serif;background:rgba(43,27,18,.94);border:1px solid rgba(235,224,205,.45);padding:3px 10px;border-radius:9px;white-space:nowrap;box-shadow:0 8px 14px -8px rgba(30,18,11,.7)">⚓ ' + p.nom + "</div>" }) }).addTo(map));
-  const couche = L.layerGroup().addTo(map);
+  const couche = L.layerGroup().addTo(map), marqueurs = new Map();
   const actifs = new Set(Object.keys(typeCol));
   let navires = D.ais.navires;
   function rayon(n) { return 4 + Math.min((n.longueur || 60) / 45, 7); }
+  function popup(n) {
+    return "<b>" + n.nom + "</b><br>MMSI " + n.mmsi + "<br>" + n.type + (n.longueur ? " · " + Math.round(n.longueur) + " m" : "") + "<br>Statut : " + n.statut + "<br>Vitesse : " + (n.sog != null ? n.sog.toFixed(1) + " nœuds" : "—") + "<br><span style='color:#6F5846'>Vu : " + SPB.fmtLA(n.vu) + " (LA)</span>";
+  }
+  // mise à jour incrémentale : un navire qui bouge se déplace, un nouveau apparaît, un absent disparaît (pas de carte redessinée)
   function dessiner() {
-    couche.clearLayers();
+    const voulus = new Set();
     navires.filter(n => actifs.has(n.type)).forEach(n => {
-      const m = L.circleMarker([n.lat, n.lon], { radius: rayon(n), color: "#2B1B12", weight: 1.2, fillColor: typeCol[n.type] || "#B3A28C", fillOpacity: .88 });
-      m.bindPopup("<b>" + n.nom + "</b><br>MMSI " + n.mmsi + "<br>" + n.type + (n.longueur ? " · " + Math.round(n.longueur) + " m" : "") + "<br>Statut : " + n.statut + "<br>Vitesse : " + (n.sog != null ? n.sog.toFixed(1) + " nœuds" : "—") + "<br><span style='color:#94a3c2'>Vu : " + SPB.fmtLA(n.vu) + " (LA)</span>");
-      couche.addLayer(m);
+      voulus.add(n.mmsi);
+      const style = { radius: rayon(n), fillColor: typeCol[n.type] || "#B3A28C" };
+      let m = marqueurs.get(n.mmsi);
+      if (m) { m.setLatLng([n.lat, n.lon]); m.setStyle(style); m._n = n; }
+      else {
+        m = L.circleMarker([n.lat, n.lon], Object.assign({ color: "#2B1B12", weight: 1.2, fillOpacity: .88 }, style)); m._n = n;
+        m.bindPopup(() => popup(m._n)); couche.addLayer(m); marqueurs.set(n.mmsi, m);
+      }
     });
+    marqueurs.forEach((m, k) => { if (!voulus.has(k)) { couche.removeLayer(m); marqueurs.delete(k); } });
   }
   function resume() {
     const par = {}; navires.forEach(n => par[n.type] = (par[n.type] || 0) + 1);
@@ -99,10 +112,12 @@
     document.getElementById("chips").innerHTML = ks.map(k => '<span class="chip' + (actifs.has(k) ? "" : " off") + '" data-k="' + k + '" style="--c:' + (typeCol[k] || "#B3A28C") + '"><i></i>' + k + " · " + par[k] + "</span>").join("");
     document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { const k = c.dataset.k; actifs.has(k) ? actifs.delete(k) : actifs.add(k); c.classList.toggle("off"); dessiner(); }));
   }
-  dessiner(); resume();
-  // cadrer la carte sur les navires (pas sur toute la zone de collecte, souvent vide en mer)
-  const pts = navires.map(n => [n.lat, n.lon]);
-  if (pts.length > 3) map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 12 });
+  let cadre = false;
+  function cadrer() { // cadre la carte sur les navires (pas sur toute la zone de collecte, souvent vide en mer)
+    const pts = navires.map(n => [n.lat, n.lon]);
+    if (pts.length > 3) { map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 12 }); cadre = true; }
+  }
+  dessiner(); resume(); cadrer();
   // ---------- météo
   const M = D.meteo;
   if (M.length) {
@@ -119,9 +134,34 @@
         shapes: [{ type: "rect", xref: "x", yref: "paper", x0: x[0], x1: now, y0: 0, y1: 1, fillcolor: "rgba(43,27,18,.045)", line: { width: 0 } }, { type: "line", xref: "x", yref: "paper", x0: now, x1: now, y0: 0, y1: 1, line: { color: C.text, width: 1.5, dash: "dash" } }],
         annotations: [{ x: now, yref: "paper", y: 1.02, text: "maintenant", showarrow: false, font: { color: C.text, size: 11.5 } }], margin: { l: 52, r: 52, t: 30, b: 46 } });
   }
-  // ---------- direct : rafraîchissement sans recharger la page (lit la base, aucun appel externe)
-  if (D.ais.origine === "live") {
-    setInterval(() => fetch("/api/live/").then(r => r.json()).then(j => { navires = j.direct.ais.navires; D.ais = j.direct.ais; dessiner(); resume(); }).catch(() => {}), 60000);
+  // ---------- direct : lien permanent (Server-Sent Events). Le serveur tient la connexion à aisstream.io (clé jamais exposée)
+  let dernierEtat = null, dernierResume = 0, flux = null;
+  function bandeau() {
+    const age = document.getElementById("live-age"), titre = document.getElementById("live-titre");
+    if (!age || !dernierEtat) return;
+    const e = dernierEtat, depuis = e.dernier_message ? Math.max(0, Math.round((Date.now() - new Date(e.dernier_message).getTime()) / 1000)) : null;
+    titre.textContent = e.connectee ? "Flux AIS en direct · connecté" : "Flux AIS · reconnexion en cours";
+    age.textContent = (e.connectee ? "Lien permanent ouvert avec aisstream.io. " : "Lien interrompu" + (e.erreur ? " (" + e.erreur + ")" : "") + " : reconnexion automatique. ") +
+      e.messages.toLocaleString("fr-FR") + " messages reçus" + (depuis != null ? " · dernier il y a " + depuis + " s" : "") + " · " + navires.length + " navires suivis. Couverture gratuite par stations terrestres : peut être partielle hors de la baie.";
+  }
+  function recevoir(j) {
+    const avantLive = D.ais.origine === "live";
+    D.ais = j.ais; navires = j.ais.navires; dernierEtat = j.etat;
+    dessiner(); bandeau();
+    if (!cadre && j.ais.origine === "live") cadrer();
+    if (!avantLive || Date.now() - dernierResume > 4000) { resume(); dernierResume = Date.now(); }
+  }
+  function ouvrir() {
+    if (flux || !("EventSource" in window)) return;
+    flux = new EventSource("/api/ais/stream/");
+    flux.onmessage = e => { try { recevoir(JSON.parse(e.data)); } catch (_) {} };
+    flux.onerror = () => { if (dernierEtat) { dernierEtat = Object.assign({}, dernierEtat, { connectee: false }); bandeau(); } };
+  }
+  function fermer() { if (flux) { flux.close(); flux = null; } }
+  if ((CLE || D.ais.origine === "live") && document.body.dataset.export !== "1") {
+    ouvrir();
+    setInterval(bandeau, 1000);                       // « dernier message il y a X s » défile même entre deux envois
+    document.addEventListener("visibilitychange", () => document.hidden ? fermer() : ouvrir()); // onglet caché : on libère le serveur
   }
 })();
 </script>

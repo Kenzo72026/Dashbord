@@ -10,11 +10,15 @@ class DashboardConfig(AppConfig):
     verbose_name = "San Pedro Bay · tableau de bord portuaire"
 
     def ready(self):
-        """Démarre la collecte AIS en tâche de fond seulement si on le demande (AIS_AUTOSTART=1) et si la clé existe."""
-        if os.environ.get("AIS_AUTOSTART") != "1" or not os.environ.get("AISSTREAM_API_KEY"):
+        """Ouvre le lien permanent avec le flux AIS dès que le serveur démarre, si une clé existe (AIS_AUTOSTART=0 pour l'empêcher)."""
+        if not os.environ.get("AISSTREAM_API_KEY") or os.environ.get("AIS_AUTOSTART") == "0":
             return
+        argv = sys.argv or [""]
         # jamais pendant les commandes de gestion (tests, migrate, collectstatic…) : seulement sous un serveur
-        if sys.argv and sys.argv[0].endswith("manage.py") and (len(sys.argv) < 2 or sys.argv[1] != "runserver"):
+        if argv[0].endswith("manage.py") and (len(argv) < 2 or argv[1] != "runserver"):
             return
-        from dashboard.services.collectors import ais_background
-        ais_background.demarrer()
+        # runserver lance deux processus (surveillant + serveur) : on n'ouvre la connexion que dans le serveur
+        if argv[0].endswith("manage.py") and "--noreload" not in argv and os.environ.get("RUN_MAIN") != "true":
+            return
+        from dashboard.services.collectors import ais_stream
+        ais_stream.demarrer()

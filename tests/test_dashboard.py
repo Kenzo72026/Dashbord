@@ -318,26 +318,59 @@ class EstimationLongBeach(TestCase):
         self.assertIn("calibration impossible", r["raison"])
 
 
-class CollecteAisArrierePlanTests(TestCase):
-    """La collecte AIS dans le processus web (hébergement gratuit) ne démarre que si on le demande, et jamais pendant les tests."""
+class LienAisPermanentTests(TestCase):
+    """Le lien permanent avec le flux AIS : démarrage conditionnel, mémoire des positions, diffusion continue."""
 
-    def _ready(self, env, argv):
-        with mock.patch.dict(os.environ, env, clear=False), mock.patch.object(sys, "argv", argv),                 mock.patch("dashboard.services.collectors.ais_background.demarrer") as demarrer:
+    def _ready(self, env, argv, retirer=()):
+        with mock.patch.dict(os.environ, env, clear=False), mock.patch.object(sys, "argv", argv),                 mock.patch("dashboard.services.collectors.ais_stream.demarrer") as demarrer:
+            for k in retirer:
+                os.environ.pop(k, None)
             apps.get_app_config("dashboard").ready()
         return demarrer
 
-    def test_ne_demarre_pas_sans_demande(self):
-        env = {"AIS_AUTOSTART": "0", "AISSTREAM_API_KEY": "cle-factice"}
-        self.assertFalse(self._ready(env, ["gunicorn"]).called)
-
     def test_ne_demarre_pas_sans_cle(self):
-        with mock.patch.dict(os.environ, {"AIS_AUTOSTART": "1"}):
-            os.environ.pop("AISSTREAM_API_KEY", None)
-            with mock.patch.object(sys, "argv", ["gunicorn"]), mock.patch("dashboard.services.collectors.ais_background.demarrer") as d:
-                apps.get_app_config("dashboard").ready()
-        self.assertFalse(d.called)
+        self.assertFalse(self._ready({}, ["gunicorn"], retirer=["AISSTREAM_API_KEY"]).called)
 
-    def test_demarre_sous_un_serveur_et_pas_sous_manage_test(self):
-        env = {"AIS_AUTOSTART": "1", "AISSTREAM_API_KEY": "cle-factice"}
+    def test_ne_demarre_pas_si_desactive(self):
+        self.assertFalse(self._ready({"AISSTREAM_API_KEY": "cle-factice", "AIS_AUTOSTART": "0"}, ["gunicorn"]).called)
+
+    def test_demarre_sous_un_serveur_pas_sous_manage_test(self):
+        env = {"AISSTREAM_API_KEY": "cle-factice"}
         self.assertTrue(self._ready(env, ["gunicorn"]).called)
         self.assertFalse(self._ready(env, ["manage.py", "test"]).called)
+
+    def test_runserver_ouvre_le_lien_une_seule_fois(self):
+        env = {"AISSTREAM_API_KEY": "cle-factice"}
+        self.assertFalse(self._ready(env, ["manage.py", "runserver"], retirer=["RUN_MAIN"]).called)   # processus surveillant
+        self.assertTrue(self._ready({**env, "RUN_MAIN": "true"}, ["manage.py", "runserver"]).called)   # processus serveur
+
+    def test_memoire_des_positions_et_fenetre(self):
+        from dashboard.services.collectors.ais_stream import FluxAis
+        f = FluxAis()
+        maintenant = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        vieux = (timezone.now() - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+        f.recevoir({"MessageType": "PositionReport", "MetaData": {"MMSI": 366000001, "ShipName": "TEST A", "latitude": 33.7, "longitude": -118.25, "time_utc": maintenant + ".0 +0000 UTC"},
+                    "Message": {"PositionReport": {"Sog": 0.1, "Cog": 10, "NavigationalStatus": 5}}})
+        f.recevoir({"MessageType": "PositionReport", "MetaData": {"MMSI": 366000002, "ShipName": "VIEUX", "latitude": 33.7, "longitude": -118.2, "time_utc": vieux + ".0 +0000 UTC"},
+                    "Message": {"PositionReport": {"Sog": 5, "Cog": 90, "NavigationalStatus": 0}}})
+        f.recevoir({"MessageType": "ShipStaticData", "MetaData": {"MMSI": 366000001},
+                    "Message": {"ShipStaticData": {"Type": 70, "Dimension": {"A": 200, "B": 100}, "Name": "TEST A"}}})
+        navires = f.liste()
+        self.assertEqual([n["mmsi"] for n in navires], ["366000001"])            # le navire silencieux depuis 2 h est exclu
+        self.assertEqual(navires[0]["type_group"], "Cargo (conteneurs, vrac)")   # le type vient du message statique
+        self.assertEqual(navires[0]["length"], 300)
+        self.assertEqual(f.etat()["messages"], 3)
+        self.assertFalse(f.etat()["connectee"])                                  # aucun réseau dans ce test
+
+    def test_canal_de_diffusion_continue(self):
+        import json
+        from itertools import islice
+        reponse = self.client.get("/api/ais/stream/")
+        self.assertEqual(reponse["Content-Type"], "text/event-stream")
+        self.assertIn("no-cache", reponse["Cache-Control"])
+        morceaux = [m.decode() for m in islice(reponse.streaming_content, 2)]
+        reponse.close()
+        self.assertTrue(morceaux[0].startswith("retry:"))
+        charge = json.loads(morceaux[1].removeprefix("data: ").strip())
+        self.assertIn("navires", charge["ais"])
+        self.assertIn("connectee", charge["etat"])

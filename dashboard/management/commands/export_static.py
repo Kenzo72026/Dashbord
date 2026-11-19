@@ -27,6 +27,7 @@ class Command(BaseCommand):
             shutil.rmtree(sortie)
         shutil.copytree(settings.BASE_DIR / "dashboard" / "static" / "dashboard", sortie / "static" / "dashboard")
         client = Client(HTTP_HOST="localhost")
+        cle_ais, settings.AISSTREAM_API_KEY = settings.AISSTREAM_API_KEY, ""  # la photo ne se connecte à rien : elle ne doit pas promettre un direct
         for url, fichier in PAGES.items():
             html = client.get(url).content.decode("utf-8")
             html = html.replace('href="/static/', 'href="static/').replace('src="/static/', 'src="static/')
@@ -35,4 +36,5 @@ class Command(BaseCommand):
             html = html.replace("<body>", '<body data-export="1">', 1)
             (sortie / fichier).write_text(html, encoding="utf-8")
             self.stdout.write(f"  {fichier}  ({len(html) // 1024} Ko)")
+        settings.AISSTREAM_API_KEY = cle_ais
         self.stdout.write(self.style.SUCCESS(f"Instantané écrit dans {sortie} : ouvrir index.html"))

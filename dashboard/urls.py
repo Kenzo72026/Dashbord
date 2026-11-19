@@ -12,4 +12,5 @@ urlpatterns = [
     path("fiche/", views.fiche, name="fiche"),
     path("api/live/", views.api_live, name="api_live"),
     path("api/refresh/", views.api_refresh, name="api_refresh"),
+    path("api/ais/stream/", views.api_ais_stream, name="api_ais_stream"),
 ]

@@ -128,12 +128,24 @@ def monde_payload():
 
 
 # --------------------------------------------------------------------------------------------- direct
-def direct_payload():
+def _navire(mmsi, nom, lat, lon, sog, cog, nav_status, groupe, longueur, vu):
+    return {"mmsi": mmsi, "nom": nom or "(sans nom)", "lat": lat, "lon": lon, "sog": sog, "cog": cog,
+            "statut": NAV_STATUS.get(nav_status, "Non renseigné"), "type": groupe or "Inconnu", "longueur": longueur, "vu": vu.isoformat()}
+
+
+def ais_payload():
+    """Navires à afficher : le flux permanent (mémoire) s'il reçoit, sinon la base (direct récent), sinon l'archive du TP."""
+    from .collectors.ais_stream import flux
     maintenant = timezone.now()
-    live = AisPosition.objects.filter(origin="live", seen_at__gte=maintenant - timedelta(minutes=30))
-    if live.exists():
-        origine, qs = "live", list(live)
-        instant = maintenant
+    en_memoire = flux.liste()
+    if en_memoire:
+        navires = [_navire(p["mmsi"], p["name"], p["lat"], p["lon"], p["sog"], p["cog"], p["nav_status"], p["type_group"], p["length"], p["seen_at"])
+                   for p in en_memoire]
+        instant = max(p["seen_at"] for p in en_memoire)
+        return {"origine": "live", "instant": instant.isoformat(), "navires": navires}
+    live = list(AisPosition.objects.filter(origin="live", seen_at__gte=maintenant - timedelta(minutes=30)))
+    if live:
+        origine, qs, instant = "live", live, maintenant
     else:
         arch = list(AisPosition.objects.filter(origin="archive"))
         if arch:
@@ -141,12 +153,14 @@ def direct_payload():
             origine, qs, instant = "archive", [p for p in arch if p.seen_at >= fin - timedelta(minutes=60)], fin
         else:
             origine, qs, instant = None, [], None
-    navires = [{"mmsi": p.mmsi, "nom": p.name or "(sans nom)", "lat": p.lat, "lon": p.lon, "sog": p.sog, "cog": p.cog,
-                "statut": NAV_STATUS.get(p.nav_status, "Non renseigné"), "type": p.type_group or "Inconnu", "longueur": p.length,
-                "vu": p.seen_at.isoformat()} for p in qs]
+    navires = [_navire(p.mmsi, p.name, p.lat, p.lon, p.sog, p.cog, p.nav_status, p.type_group, p.length, p.seen_at) for p in qs]
+    return {"origine": origine, "instant": instant.isoformat() if instant else None, "navires": navires}
+
+
+def direct_payload():
     meteo = [{"t": w.time.isoformat(), "vent": w.wind_kn, "rafales": w.gust_kn, "vagues": w.wave_m, "visibilite": w.visibility_m}
              for w in WeatherPoint.objects.filter(is_current=False).order_by("time")]
-    return {"ais": {"origine": origine, "instant": instant.isoformat() if instant else None, "navires": navires},
+    return {"ais": ais_payload(),
             "meteo": meteo, "seuils": {"vent": [WIND_WARN_KN, WIND_ALERT_KN], "rafales": [GUST_WARN_KN, GUST_ALERT_KN],
                                        "vagues": [WAVE_WARN_M, WAVE_ALERT_M], "visibilite": VISIBILITY_WARN_M},
             "carte": {"centre": MAP_CENTER, "bbox": AIS_BBOX, "port": PORT_POINT, "mer": MARINE_POINT,

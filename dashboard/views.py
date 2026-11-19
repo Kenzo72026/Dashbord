@@ -1,9 +1,11 @@
 """Vues : elles lisent la base (jamais les API externes). Seule l'action « Actualiser » peut rappeler la météo,
 et seulement si les données ont dépassé leur durée de validité."""
+import json
+import time
 from datetime import timedelta
 
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -135,3 +137,30 @@ def api_refresh(request):
     return JsonResponse({"ok": True, "force": force, "age_meteo_s": nouvel_age, "ttl_s": settings.WEATHER_TTL_SECONDS,
                          "message": "Météo rafraîchie." if force or (age is None or age > settings.WEATHER_TTL_SECONDS)
                          else f"Données encore valables (récupérées il y a {int(age)} s) : aucun appel externe."})
+
+
+def api_ais_stream(request):
+    """Diffusion continue (Server-Sent Events) des navires : le navigateur reçoit chaque évolution sans rien redemander.
+
+    La connexion au fournisseur est tenue par le serveur (clé jamais exposée). On n'envoie que si quelque chose a changé
+    (au plus un envoi toutes les 1,5 s), avec un signe de vie toutes les 15 s ; le flux se ferme après 10 minutes et le
+    navigateur se reconnecte tout seul (EventSource), ce qui libère les fils du serveur.
+    """
+    from .services.collectors.ais_stream import flux
+
+    def evenements():
+        debut, derniere_version, dernier_envoi = time.time(), -1, 0.0
+        yield "retry: 3000\n\n"
+        while time.time() - debut < 600:
+            maintenant = time.time()
+            if (flux.version != derniere_version and maintenant - dernier_envoi >= 1.5) or maintenant - dernier_envoi >= 15:
+                derniere_version = flux.version
+                dernier_envoi = maintenant
+                charge = {"ais": viewdata.ais_payload(), "etat": flux.etat()}
+                yield "data: " + json.dumps(charge, separators=(",", ":")) + "\n\n"
+            time.sleep(0.5)
+
+    reponse = StreamingHttpResponse(evenements(), content_type="text/event-stream")
+    reponse["Cache-Control"] = "no-cache, no-transform"
+    reponse["X-Accel-Buffering"] = "no"
+    return reponse
