@@ -20,5 +20,7 @@ class DashboardConfig(AppConfig):
         # runserver lance deux processus (surveillant + serveur) : on n'ouvre la connexion que dans le serveur
         if argv[0].endswith("manage.py") and "--noreload" not in argv and os.environ.get("RUN_MAIN") != "true":
             return
+        if argv[0].endswith("gunicorn") or "gunicorn" in argv[0]:
+            return  # sous gunicorn, le lien s'ouvre à la première page, dans le processus de travail (voir ais_stream.assurer)
         from dashboard.services.collectors import ais_stream
         ais_stream.demarrer()

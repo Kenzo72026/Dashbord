@@ -10,6 +10,7 @@ La connexion se rétablit seule après une coupure (attente 3 s, puis jusqu'à 6
 import asyncio
 import json
 import logging
+import os
 import threading
 import time
 from datetime import datetime, timedelta, timezone as tz
@@ -43,6 +44,8 @@ class FluxAis:
         self.erreur = ""
         self.version = 0              # change à chaque message : les diffuseurs n'envoient que s'il y a du nouveau
         self._lance = False
+        self._pid = None              # processus qui tient la connexion (un fork ne reprend pas les fils)
+        self._fil_ais = None
 
     # ------------------------------------------------------------ réception
     def recevoir(self, msg):
@@ -67,7 +70,7 @@ class FluxAis:
 
     def etat(self):
         """Résumé de la connexion pour l'affichage (« connecté, N messages, dernier il y a … »)."""
-        return {"active": self._lance, "connectee": self.connectee, "messages": self.nb_messages, "erreur": self.erreur,
+        return {"active": self._lance, "pid": os.getpid(), "connectee": self.connectee, "messages": self.nb_messages, "erreur": self.erreur,
                 "depuis": self.depuis.isoformat() if self.depuis else None,
                 "dernier_message": self.dernier_message.isoformat() if self.dernier_message else None}
 
@@ -79,6 +82,7 @@ class FluxAis:
             await ws.send(json.dumps({"APIKey": settings.AISSTREAM_API_KEY, "BoundingBoxes": [AIS_BBOX],
                                       "FilterMessageTypes": ["PositionReport", "ShipStaticData"]}))
             self.connectee, self.erreur, self.depuis = True, "", datetime.now(tz.utc)
+            journal.warning("flux AIS : lien ouvert avec aisstream.io (processus %s)", os.getpid())
             boucle = asyncio.get_running_loop()
             await boucle.run_in_executor(None, self._persister, False)  # l'état « OK » s'affiche tout de suite, sans attendre la prochaine copie
             derniere_copie = derniere_analyse = boucle.time()
@@ -159,12 +163,21 @@ class FluxAis:
         asyncio.run(self._boucle())
 
     def demarrer(self):
-        """Ouvre la connexion dans un fil de fond (une seule fois par processus). Retourne False si elle tournait déjà."""
+        """Ouvre la connexion dans un fil de fond, dans CE processus. Retourne False si elle tourne déjà ici.
+
+        Un fil n'est pas hérité lors d'un fork (gunicorn charge parfois l'application avant de créer ses processus de travail) :
+        on compare donc le numéro de processus et on relance le fil si besoin.
+        """
+        if self._pid is not None and self._pid != os.getpid():
+            self.verrou = threading.Lock()   # le verrou copié par le fork peut être resté fermé
+            self._lance = False
         with self.verrou:
-            if self._lance:
+            if self._lance and self._fil_ais is not None and self._fil_ais.is_alive():
                 return False
-            self._lance = True
-        threading.Thread(target=self._fil, daemon=True, name="ais-flux").start()
+            self._lance, self._pid = True, os.getpid()
+        self._fil_ais = threading.Thread(target=self._fil, daemon=True, name="ais-flux")
+        self._fil_ais.start()
+        journal.warning("flux AIS : fil démarré (processus %s)", os.getpid())
         return True
 
 
@@ -173,3 +186,10 @@ flux = FluxAis()
 
 def demarrer():
     return flux.demarrer()
+
+
+def assurer():
+    """Appelé par les pages : ouvre le lien s'il n'est pas déjà ouvert dans ce processus (clé présente, AIS_AUTOSTART != 0)."""
+    if settings.AISSTREAM_API_KEY and os.environ.get("AIS_AUTOSTART") != "0":
+        return flux.demarrer()
+    return False

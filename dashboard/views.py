@@ -50,6 +50,8 @@ def _ticker():
 
 
 def _ctx(page, **extra):
+    from .services.collectors import ais_stream
+    ais_stream.assurer()  # ouvre le lien permanent avec le flux AIS dans ce processus s'il ne l'est pas encore
     synth = lire("synthese", {"niveau": "na"})
     meta = lire("meta", {})
     sources = list(DataSource.objects.all())
@@ -146,7 +148,8 @@ def api_ais_stream(request):
     (au plus un envoi toutes les 1,5 s), avec un signe de vie toutes les 15 s ; le flux se ferme après 10 minutes et le
     navigateur se reconnecte tout seul (EventSource), ce qui libère les fils du serveur.
     """
-    from .services.collectors.ais_stream import flux
+    from .services.collectors.ais_stream import assurer, flux
+    assurer()
 
     def evenements():
         debut, derniere_version, dernier_envoi = time.time(), -1, 0.0

@@ -334,10 +334,20 @@ class LienAisPermanentTests(TestCase):
     def test_ne_demarre_pas_si_desactive(self):
         self.assertFalse(self._ready({"AISSTREAM_API_KEY": "cle-factice", "AIS_AUTOSTART": "0"}, ["gunicorn"]).called)
 
-    def test_demarre_sous_un_serveur_pas_sous_manage_test(self):
-        env = {"AISSTREAM_API_KEY": "cle-factice"}
-        self.assertTrue(self._ready(env, ["gunicorn"]).called)
+    def test_demarre_sous_runserver_pas_sous_manage_test(self):
+        env = {"AISSTREAM_API_KEY": "cle-factice", "RUN_MAIN": "true"}
+        self.assertTrue(self._ready(env, ["manage.py", "runserver"]).called)
         self.assertFalse(self._ready(env, ["manage.py", "test"]).called)
+
+    def test_sous_gunicorn_le_lien_s_ouvre_dans_le_processus_de_travail(self):
+        from dashboard.services.collectors import ais_stream
+        self.assertFalse(self._ready({"AISSTREAM_API_KEY": "cle-factice"}, ["/usr/bin/gunicorn"]).called)   # pas au chargement
+        with mock.patch.object(settings, "AISSTREAM_API_KEY", "cle-factice"), mock.patch.object(ais_stream.flux, "demarrer", return_value=True) as d:
+            self.assertTrue(ais_stream.assurer())
+        self.assertTrue(d.called)
+        with mock.patch.object(settings, "AISSTREAM_API_KEY", ""), mock.patch.object(ais_stream.flux, "demarrer") as d:
+            self.assertFalse(ais_stream.assurer())
+        self.assertFalse(d.called)
 
     def test_runserver_ouvre_le_lien_une_seule_fois(self):
         env = {"AISSTREAM_API_KEY": "cle-factice"}
